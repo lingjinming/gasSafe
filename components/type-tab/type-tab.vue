@@ -1,0 +1,90 @@
+<template>
+	<view class="tab_box">
+		<view class="tit">{{title}}</view>
+		<view class="tab_item_box">
+			<view v-for="item in tabs" :key='item.id'
+			:class="['tab_item flex_center_row',{'cur':item.checked}]"
+			@click="changeType(item)">
+				{{item.value}}
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			};
+		},
+		props:{
+			title:{
+				type:String,
+				default:'tab标题'
+			},
+			tabs:{
+				type: Array,
+				default: [
+					{	
+						id:0,
+						value:'类型1',
+						checked:true
+					},
+					{	
+						id:1,
+						value:'类型2',
+						checked:false
+					},
+					{
+						id:2,
+						value:'类型3',
+						checked:true
+					}
+				]
+			}
+		},
+		onShow(){
+			// console.log(this.title)
+			// console.log(this.tabs)
+		},
+		methods:{
+			changeType(item){
+				item.checked = !item.checked
+				// console.log(this.tabs)
+				this.$emit('update:tabs',this.tabs)
+			}
+		}
+	}
+</script>
+
+<style lang="less" scoped>
+.tab_box{
+	
+	.tit{
+		color: #999;
+		height: 40rpx;
+		line-height: 40rpx;
+		margin-bottom: 15rpx;
+	}
+	.tab_item_box{
+		display: flex;
+		flex-wrap: wrap;
+		.tab_item{
+			width: 194rpx;
+			height: 72rpx;
+			border-radius: 10rpx;
+			color: #999;
+			background: #f5f6fa;
+			margin-right: 20rpx;
+			&:nth-child(3n){
+				margin-right: 0;
+			}
+		}
+		.cur{
+			color: #428ee4;
+			background: #e9f1fb;
+		}
+	}
+}
+</style>

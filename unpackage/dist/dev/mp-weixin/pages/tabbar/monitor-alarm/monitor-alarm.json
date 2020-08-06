@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "type-tab": "/components/type-tab/type-tab",
+    "monitor-item": "/components/monitor-item/monitor-item"
+  }
+}

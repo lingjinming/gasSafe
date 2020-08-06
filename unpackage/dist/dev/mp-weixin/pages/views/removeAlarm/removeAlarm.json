@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "报警解除",
+  "usingComponents": {
+    "uni-search-bar": "/components/uni-search-bar/uni-search-bar"
+  }
+}

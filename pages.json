@@ -1,0 +1,67 @@
+{
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/tabbar/monitor-alarm/monitor-alarm",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/tabbar/tabbar-2/tabbar-2",
+			"style": {}
+		},
+		{
+			"path": "pages/tabbar/tabbar-3/tabbar-3",
+			"style": {}
+		},
+		{
+			"path": "pages/tabbar/tabbar-4/tabbar-4",
+			"style": {}
+		},
+		{
+			"path": "pages/tabbar/user-center/user-center",
+			"style": {
+				"navigationBarTitleText": "用户中心"
+			}
+		},
+		{
+			"path": "pages/views/map",
+			"style": {
+				"navigationBarTitleText": "地图分布"
+			}
+		},
+		{
+			"path": "pages/views/removeAlarm/removeAlarm",
+			"style": {
+				"navigationBarTitleText": "报警解除"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "gas-safe",
+		"navigationBarBackgroundColor": "#428ee4",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"borderStyle": "black",
+		"backgroundColor": "#fff",
+		"color": "#999",
+		"selectedColor": "#428ee4",
+		"list": [{
+				"pagePath": "pages/tabbar/monitor-alarm/monitor-alarm",
+				"iconPath": "static/img/tabbar/home.png",
+				"selectedIconPath": "static/img/tabbar/homeactive.png",
+				"text": "监测报警"
+			},
+			{
+				"pagePath": "pages/tabbar/user-center/user-center",
+				"iconPath": "static/img/tabbar/me.png",
+				"selectedIconPath": "static/img/tabbar/meactive.png",
+				"text": "个人中心"
+			}
+		]
+	}
+}
