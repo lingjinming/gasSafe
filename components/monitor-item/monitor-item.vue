@@ -1,5 +1,5 @@
 <template>
-	<view class="item_box">
+	<view class="item_box box_shadow">
 	  	<view class="info">
 			<view class="tit">
 				<view class="alarm_level not_readed">{{listData.level}}</view>

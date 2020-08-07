@@ -12,7 +12,7 @@
 			  <image src="../../../static/img/qa.png" mode="aspectFit" @click="enterMap"></image>
 		  </view>
 	  </view>
-	  <view class="filter_box">
+	  <view class="filter_box box_shadow">
 		  <template v-if="curType == '报警列表'">
 			  <type-tab :title="'报警类型'" :tabs.sync="alarmTypes">
 			  </type-tab>
@@ -29,7 +29,6 @@
 		  <view @click="enterSearch">搜索</view>
 	  </view>
 		<scroll-view scroll-y="true" :style="{height:curType == '报警列表'?'calc(100% - 690rpx)':'calc(100% - 540rpx)'}">
-			<monitor-item></monitor-item>
 			<monitor-item></monitor-item>
 			<monitor-item></monitor-item>
 		</scroll-view>

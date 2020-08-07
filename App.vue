@@ -50,4 +50,7 @@ page,
 	justify-content: space-around;
 	align-items: center;
 }
+.box_shadow{
+	box-shadow: 0 0 10rpx 8rpx rgba(228, 228, 228, 0.2);
+}
 </style>
