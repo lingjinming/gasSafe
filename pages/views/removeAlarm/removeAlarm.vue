@@ -1,6 +1,5 @@
 <template>
 	<view class="container">
-	<uni-search-bar ></uni-search-bar> 
 	</view>
 </template>
 
@@ -8,12 +7,24 @@
 export default {
 	data() {
 		return {
+			alarmId:'',
+			relieveTime:'',
+			operator:''
 		};
 	},
-	onShow() {
-		let vm = this;
+	onLoad(option) {
+		this.alarmId = option.id
 	},
 	methods: {
+		relieveAlarmFn(){
+			this.$api.relieveAlarm({
+				relieveTime:this.relieveTime,
+				alarmId:this.alarmId,
+				operator:this.operator
+			}).then(res => {
+				uni.navigateBack()
+			})
+		}
 	}
 };
 </script>

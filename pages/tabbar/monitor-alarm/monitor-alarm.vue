@@ -29,8 +29,7 @@
 		  <view @click="enterSearch">搜索</view>
 	  </view>
 		<scroll-view scroll-y="true" :style="{height:curType == '报警列表'?'calc(100% - 690rpx)':'calc(100% - 540rpx)'}">
-			<monitor-item></monitor-item>
-			<monitor-item></monitor-item>
+			<monitor-item v-for='item in monitorData' :monitorData.sync='item' :key='item.alarmId'></monitor-item>
 		</scroll-view>
 	</view>
 </template>
@@ -52,29 +51,29 @@ export default {
 			],
 			alarmTypes:[
 					{	
-						id:0,
+						id:1,
 						value:'一级报警',
 						checked:true
 					},
 					{	
-						id:1,
+						id:2,
 						value:'二级报警',
 						checked:true
 					},
 					{
-						id:2,
+						id:3,
 						value:'三级报警',
-						checked:false
+						checked:true
 					}
 			],
 			alarmStatus:[
 					{	
-						id:3,
+						id:0,
 						value:'未解除',
 						checked:true
 					},
 					{	
-						id:4,
+						id:1,
 						value:'已解除',
 						checked:true
 					}
@@ -91,20 +90,42 @@ export default {
 					checked:true
 				}
 			],
-			recordsNum:0
+			level:'1,2,3',
+			ravelflag:"0,1",
+			recordsNum:0,
+			monitorData:null
 		};
 	},
 	onShow() {
-		let vm = this;
-		console.log(vm.$api)
-
+		this.getAlarmInfoFn()
 	},
 	watch:{
-		alarmTypes(newVal) {
-			console.log(newVal)
+		alarmTypes:{
+			handler(newVal){
+				// debugger
+				let arr = []
+				 newVal.forEach(item => {
+					 if (item.checked) {
+						 arr.push(item.id)
+					 }
+				 })
+				this.level = arr.join(',')
+				this.getAlarmInfoFn()
+			},
+			deep:true
 		},
-		alarmStatus(newVal) {
-			console.log(newVal)
+		alarmStatus:{
+			handler(newVal){
+				let arr = []
+				 newVal.forEach(item => {
+					 if (item.checked) {
+						 arr.push(item.id)
+					 }
+				 })
+				this.ravelflag = arr.join(',')
+				this.getAlarmInfoFn()
+			},
+			deep:true
 		},
 	},
 	methods: {
@@ -120,6 +141,15 @@ export default {
 		},
 		changeType(type){
 			this.curType = type
+		},
+		getAlarmInfoFn(){
+			this.$api.getAlarmInfo({
+				level:this.level,
+				ravelflag:this.ravelflag,
+			}).then(res =>{
+				this.monitorData = res.data.data
+				this.recordsNum = res.data.data.length
+			})
 		}
 	}
 };
@@ -199,7 +229,7 @@ type-tab{
 		margin: 0 6rpx;
 	}
 }
-scroll-view{
-	padding: 0 30rpx;
-}
+// scroll-view{
+// 	padding: 0 30rpx;
+// }
 </style>

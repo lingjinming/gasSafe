@@ -15,6 +15,7 @@ export default {
 <style>
 /*每个页面公共css */ 
 page,view,scroll-view,text{
+	font-family: 微软雅黑;
 	box-sizing: border-box !important;
 }
 page,
@@ -51,6 +52,6 @@ page,
 	align-items: center;
 }
 .box_shadow{
-	box-shadow: 0 0 10rpx 8rpx rgba(228, 228, 228, 0.2);
+	box-shadow: 0 0 10rpx 8rpx rgba(211, 211, 211, 0.2);
 }
 </style>

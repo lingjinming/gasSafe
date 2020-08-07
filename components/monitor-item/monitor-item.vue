@@ -2,21 +2,21 @@
 	<view class="item_box box_shadow">
 	  	<view class="info">
 			<view class="tit">
-				<view class="alarm_level not_readed">{{listData.level}}</view>
-				<view class="alarm_type">{{listData.alarmType}}</view>
+				<view class="alarm_level not_readed">{{monitorData.alarmLevel}}</view>
+				<view class="alarm_type">{{monitorData.alarmDesc}}</view>
 			</view>
 			<view class="info_box">
 				<view class="label">最新报警时间</view>
-				<view class="value">{{listData.alarmDate}}</view>
+				<view class="value">{{monitorData.monitorTimeStr}}</view>
 			</view>
 			<view class="info_box">
 				<view class="label">具体位置</view>
-				<view class="value">{{listData.alarmPos}}</view>
+				<view class="value">{{monitorData.alarmDesc}}</view>
 			</view>
 		</view>
-		<view @click="removeAlarm(listData)" class="btn_box" 
-		:style="{'color':listData.removed?'#999':'#428ee4'}">
-		{{listData.removed?'报警已解除':'报警解除'}}
+		<view @click="removeAlarm(monitorData.alarmId)" class="btn_box" 
+		:style="{'color':monitorData.ravelFlag?'#999':'#428ee4'}">
+		{{monitorData.ravelFlag?'报警已解除':'报警解除'}}
 		</view>
 	</view>
 </template>
@@ -28,15 +28,15 @@ export default {
 		};
 	},
 	props:{
-		listData:{
+		monitorData:{
 			type:Object,
 			default:{
-				id:'11',
-				level:'一级',
-				alarmType:'某某处报警',
-				alarmDate:'2020-01-01 12:00:00',
-				alarmPos:'位置',
-				removed:0 //1表示已解除 0表示未解除
+				alarmId:'',
+				alarmLevel:'',
+				alarmDesc:'',
+				monitorTimeStr:'',
+				alarmDesc:'',
+				ravelFlag:0 //1表示已解除 0表示未解除
 			},
 		},
 	},
@@ -44,12 +44,12 @@ export default {
 		let vm = this;
 	},
 	methods: {
-		removeAlarm(data){
-			if(data.removed){
+		removeAlarm(id){
+			if(this.monitorData.ravelFlag){
 				return false
 			}
 			uni.navigateTo({
-				url:'/pages/views/removeAlarm/removeAlarm',
+				url:`/pages/views/removeAlarm/removeAlarm?id=${id}`,
 				// complete(data) {
 				// 	console.log(data)
 				// }
@@ -64,8 +64,7 @@ export default {
 	border-radius: 10rpx;
 	// box-shadow:  0 0 10rpx 10rpx rgba(0,0,0,.6);
 	padding: 20rpx 20rpx 0;
-	// margin: 36rpx 30rpx 0;
-	margin-bottom: 30rpx;
+	margin:0 30rpx 30rpx;
 	background: #FFFFFF;
 	.tit{
 		position: relative;
