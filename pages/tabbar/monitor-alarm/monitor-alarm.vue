@@ -29,7 +29,12 @@
 		  <view @click="enterSearch">搜索</view>
 	  </view>
 		<scroll-view scroll-y="true" :style="{height:curType == '报警列表'?'calc(100% - 690rpx)':'calc(100% - 540rpx)'}">
-			<monitor-item v-for='item in monitorData' :monitorData.sync='item' :key='item.alarmId'></monitor-item>
+			<template v-if="curType == '报警列表'">
+				<monitor-item v-for='item in monitorData' :monitorData.sync='item' :key='item.alarmId'></monitor-item>
+			</template>
+			<template v-else>
+				<realtime-monitor-item></realtime-monitor-item>
+			</template>
 		</scroll-view>
 	</view>
 </template>
@@ -93,7 +98,16 @@ export default {
 			level:'1,2,3',
 			ravelflag:"0,1",
 			recordsNum:0,
-			monitorData:null
+			monitorData:[
+				{
+					alarmId:'11',
+					alarmLevel:'22',
+					alarmDesc:'33',
+					monitorTimeStr:'44',
+					alarmDesc:'55',
+					ravelFlag:0 //1表示已解除 0表示未解除
+				}
+			]
 		};
 	},
 	onShow() {

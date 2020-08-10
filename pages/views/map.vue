@@ -1,18 +1,19 @@
 <template>
 	<view class="container">
+	<map class="map" id="map"
+	:longitude="longitude" 
+	:latitude="latitude" scale="16" 
+	:markers="markers">
+	</map> 
 	<uni-search-bar ></uni-search-bar>
 	<popup-layer ref="popupRef" :direction="'top'" v-model="boolShow">
 	  <view class="zidingyiBox">
 				   11
 	  </view>
 	</popup-layer>
-	  <map class="map" id="map" 
-	  :longitude="longitude" 
-	  :latitude="latitude" scale="16" 
-	  :markers="markers">
+	
+	<monitor-item-detail></monitor-item-detail>
 	  
-	     <cover-view class="controls-title">简单的自定义 controls</cover-view>
-	  </map> 
 	</view>
 </template>
 
@@ -31,22 +32,11 @@ export default {
 	},
 	onLoad() {
 		let vm = this;
-		var myAmapFun = new amapFile.AMapWX({ key: vm.key });
-		
-		myAmapFun.getRegeo({
-		  iconPath: "../../static/logo.png",
-		  iconWidth: 22,
-		  iconHeight: 32,
-		  success: function (data) {
-			vm.markers.push({
-			  id: data[0].id,
-			  latitude: data[0].latitude,
-			  longitude: data[0].longitude,
-			  iconPath: data[0].iconPath,
-			  width: data[0].width,
-			  height: data[0].height
-			})
-		  },
+		vm.initMap()
+	},
+	onShow(){
+		uni.$on('monitorDetail',(data)=>{
+			console.log(data)
 		})
 	},
 	methods: {
@@ -55,6 +45,26 @@ export default {
 		},
 		close(){
 			this.$refs.popupRef.close();// 或者 boolShow = false
+		},
+		initMap(){
+			let vm = this;
+			var myAmapFun = new amapFile.AMapWX({ key: vm.key });
+			
+			myAmapFun.getRegeo({
+			  iconPath: "../../static/logo.png",
+			  iconWidth: 22,
+			  iconHeight: 32,
+			  success: function (data) {
+				vm.markers.push({
+				  id: data[0].id,
+				  latitude: data[0].latitude,
+				  longitude: data[0].longitude,
+				  iconPath: data[0].iconPath,
+				  width: data[0].width,
+				  height: data[0].height
+				})
+			  },
+			})
 		}
 	}
 };

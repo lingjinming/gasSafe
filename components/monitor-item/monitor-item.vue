@@ -1,6 +1,6 @@
 <template>
 	<view class="item_box box_shadow">
-	  	<view class="info">
+	  	<view class="info" @click="enterMap(monitorData)">
 			<view class="tit">
 				<view class="alarm_level not_readed">{{monitorData.alarmLevel}}</view>
 				<view class="alarm_type">{{monitorData.alarmDesc}}</view>
@@ -31,17 +31,14 @@ export default {
 		monitorData:{
 			type:Object,
 			default:{
-				alarmId:'',
-				alarmLevel:'',
-				alarmDesc:'',
-				monitorTimeStr:'',
-				alarmDesc:'',
+				alarmId:'alarmId',
+				alarmLevel:'alarmLevel',
+				alarmDesc:'alarmDesc',
+				monitorTimeStr:'monitorTimeStr',
+				alarmDesc:'alarmDesc',
 				ravelFlag:0 //1表示已解除 0表示未解除
 			},
 		},
-	},
-	onLoad() {
-		let vm = this;
 	},
 	methods: {
 		removeAlarm(id){
@@ -54,6 +51,18 @@ export default {
 				// 	console.log(data)
 				// }
 			})
+		},
+		enterMap(data){
+			uni.setStorage({
+				key:'monitorDetail',
+				data,
+				success() {
+					uni.navigateTo({
+						url:'/pages/views/map'
+					})
+				}
+			})
+
 		}
 	}
 };

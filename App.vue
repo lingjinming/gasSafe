@@ -45,6 +45,12 @@ page,
 	justify-content: space-around;
 	align-items: center;
 }
+.flex_column{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
 .flex_around_column{
 	display: flex;
 	flex-direction: column;
