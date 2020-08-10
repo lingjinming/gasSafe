@@ -2,7 +2,7 @@
 	<view class="item_box box_shadow">
 	  	<view class="info" @click="enterMap(monitorData)">
 			<view class="tit">
-				<view class="alarm_level not_readed">{{monitorData.alarmLevel}}</view>
+				<view class="alarm_level" :class="{'not_readed':!monitorData.isRead}">{{monitorData.alarmLevel}}</view>
 				<view class="alarm_type">{{monitorData.alarmDesc}}</view>
 			</view>
 			<view class="info_box">
@@ -36,7 +36,8 @@ export default {
 				alarmDesc:'alarmDesc',
 				monitorTimeStr:'monitorTimeStr',
 				alarmDesc:'alarmDesc',
-				ravelFlag:0 //1表示已解除 0表示未解除
+				ravelFlag:0, //1表示已解除 0表示未解除
+				isRead:0 //1表示已读 0表示未读
 			},
 		},
 	},
@@ -53,6 +54,9 @@ export default {
 			})
 		},
 		enterMap(data){
+			this.$api.saveAlarmRead({
+				alarmId:data.alarmId
+			})
 			uni.setStorage({
 				key:'monitorDetail',
 				data,
