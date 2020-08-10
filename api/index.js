@@ -8,7 +8,9 @@ const api = {
 	// 报警信息 request.globalRequest(`/mini/getAlarmInfo`, 'GET',{}, 1)
 	getAlarmInfo:(params) => request.globalRequest(`/gas/mini/getAlarmInfo.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 	// /mini/relieveAlarm解除报警
-	relieveAlarm: (params) => request.globalRequest(`/gas/mini/alarmDetailInfo.mvc.mvc${formatGetUri(params)}`, 'GET',{}, 1),
+	relieveAlarm: (params) => request.globalRequest(`/gas/mini/alarmDetailInfo.mvc${formatGetUri(params)}`, 'GET',{}, 1),
+	// GET /mini/getEquipMonitor设备实时监测
+	getEquipMonitor:(params) => request.globalRequest(`/gas/mini/getEquipMonitor.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 }
 
 

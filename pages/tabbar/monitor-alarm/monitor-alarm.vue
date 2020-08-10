@@ -33,7 +33,7 @@
 				<monitor-item v-for='item in monitorData' :monitorData.sync='item' :key='item.alarmId'></monitor-item>
 			</template>
 			<template v-else>
-				<realtime-monitor-item></realtime-monitor-item>
+				<realtime-monitor-item v-for='item in equipMonitorData' :equipMonitorData.sync='item' :key='item.alarmid'></realtime-monitor-item>
 			</template>
 		</scroll-view>
 	</view>
@@ -85,33 +85,26 @@ export default {
 			],
 			installStatus:[
 				{
-					id:5,
+					id:0,
 					value:'未安装',
 					checked:true
 				},
 				{	
-					id:6,
+					id:1,
 					value:'已安装',
 					checked:true
 				}
 			],
 			level:'1,2,3',
 			ravelflag:"0,1",
+			install:"0,1",
 			recordsNum:0,
-			monitorData:[
-				{
-					alarmId:'11',
-					alarmLevel:'22',
-					alarmDesc:'33',
-					monitorTimeStr:'44',
-					alarmDesc:'55',
-					ravelFlag:0 //1表示已解除 0表示未解除
-				}
-			]
+			monitorData:[],
+			equipMonitorData:[]
 		};
 	},
 	onShow() {
-		this.getAlarmInfoFn()
+		this.changeType(this.curType)
 	},
 	watch:{
 		alarmTypes:{
@@ -141,6 +134,19 @@ export default {
 			},
 			deep:true
 		},
+		installStatus:{
+			handler(newVal){
+				let arr = []
+				 newVal.forEach(item => {
+					 if (item.checked) {
+						 arr.push(item.id)
+					 }
+				 })
+				this.install = arr.join(',')
+				this.getEquipMonitorFn()
+			},
+			deep:true
+		},
 	},
 	methods: {
 		enterMap(){
@@ -155,6 +161,11 @@ export default {
 		},
 		changeType(type){
 			this.curType = type
+			if(this.curType == '报警列表'){
+				this.getAlarmInfoFn()
+			}else{
+				this.getEquipMonitorFn()
+			}
 		},
 		getAlarmInfoFn(){
 			this.$api.getAlarmInfo({
@@ -163,6 +174,14 @@ export default {
 			}).then(res =>{
 				this.monitorData = res.data.data
 				this.recordsNum = res.data.data.length
+			})
+		},
+		getEquipMonitorFn(){
+			this.$api.getEquipMonitor({
+				install:this.install
+			}).then(res =>{
+				this.equipMonitorData = res.data
+				this.recordsNum = res.data.length
 			})
 		}
 	}

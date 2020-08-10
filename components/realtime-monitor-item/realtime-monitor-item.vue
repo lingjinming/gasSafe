@@ -2,23 +2,23 @@
 	<view class="item_box box_shadow">
 	  	<view class="info">
 			<view class="tit flex_between_row">
-				<view class="alarm_level">{{realtimeMonitorData.alarmLevel}}</view>
-				<view class="alarm_type">{{realtimeMonitorData.alarmData}}</view>
+				<view class="alarm_level">{{realtimeMonitorData.installDesc}}</view>
+				<view class="alarm_type">{{realtimeMonitorData.alarmTypeCode}}</view>
 			</view>
 			<view class="info_box">
 				<view class="label">数据时间</view>
-				<view class="value">{{realtimeMonitorData.monitorTimeStr}}</view>
+				<view class="value">{{realtimeMonitorData.monitorTime}}</view>
 			</view>
 			<view class="info_box">
 				<view class="label">具体位置</view>
-				<view class="value">{{realtimeMonitorData.alarmDesc}}</view>
+				<view class="value">{{realtimeMonitorData.installPos}}</view>
 			</view>
 			<view class="info_box">
 				<view class="label">安装位置</view>
-				<view class="value">{{realtimeMonitorData.alarmDesc}}</view>
+				<view class="value">{{realtimeMonitorData.installDesc}}</view>
 			</view>
 		</view>
-		<view @click="enterMonitorData(realtimeMonitorData.alarmId)" class="btn_box" >
+		<view @click="enterMonitorData(realtimeMonitorData.alarmid)" class="btn_box" >
 		监测曲线
 		</view>
 	</view>
@@ -34,12 +34,15 @@ export default {
 		realtimeMonitorData:{
 			type:Object,
 			default:{
-				alarmId:'11',
-				alarmLevel:'11',
-				alarmDesc:'11',
-				monitorTimeStr:'11',
-				alarmDesc:'11',
-				alarmData:'0.72%VOL'
+				installDesc: "排水井CC5WS3368|井壁",
+				alarmTypeCode: "排水",
+				monitorTime: "",
+				installPos: "华宝南路与季华二路交口东北向北40米马路上",
+				equipmentCode: "NDIR001911050372",
+				alarmid: "402894356f04ddaa016f464f67940036",
+				alarmPoint: "CC5WS3368",
+				monitorValue: "",
+				senorCode: "0_0"
 			},
 		},
 	},

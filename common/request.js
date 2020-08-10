@@ -9,7 +9,9 @@ request.globalRequest = (url, method, data, power) => {
     1 == 不通过access_token校验的接口
     2 == 文件下载接口列表
     3 == 验证码登录 */
-        
+	uni.showLoading({
+		title:'加载中'
+	})
     switch (power){
         case 1:
             headers['Authorization'] = 'Basic a3N1ZGk6a3N1ZGk='
@@ -35,12 +37,16 @@ request.globalRequest = (url, method, data, power) => {
         dataType: 'json',
         header: headers
     }).then(res => {
-        if (res[1].data.status =="success" && res[1].data.code == 200) {
+		uni.hideLoading()
+		debugger
+        if (res[1].statusCode ==200|| res[1].data.status =="success" || res[1].data.code == 200) {
             return res[1]
         } else {
             throw res[1].data
         }
+		
     }).catch(parmas => {
+		uni.hideLoading()
 		console.log(parmas)
 　　　　　　switch (parmas.code) {
 　　　　　　　　case 401:
