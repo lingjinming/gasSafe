@@ -149,6 +149,9 @@ export default {
 		},
 	},
 	methods: {
+		reset(){
+			this.recordsNum = 0
+		},
 		enterMap(){
 			uni.navigateTo({
 				url:'../../views/map'
@@ -160,12 +163,13 @@ export default {
 			})
 		},
 		changeType(type){
-			this.curType = type
+			
 			if(this.curType == '报警列表'){
 				this.getAlarmInfoFn()
 			}else{
 				this.getEquipMonitorFn()
 			}
+			this.curType = type
 		},
 		getAlarmInfoFn(){
 			this.$api.getAlarmInfo({
