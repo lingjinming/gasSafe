@@ -1,5 +1,5 @@
 <template>
-	<view class="tab_box">
+	<view class="tab_box" :class="{'isColumn':isColumn}">
 		<view class="tit">{{title}}</view>
 		<view class="tab_item_box">
 			<view v-for="item in tabs" :key='item.id'
@@ -22,6 +22,10 @@
 			title:{
 				type:String,
 				default:'tab标题'
+			},
+			isColumn:{
+				type:Boolean,
+				default:false
 			},
 			tabs:{
 				type: Array,
@@ -58,9 +62,8 @@
 	}
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .tab_box{
-	
 	.tit{
 		color: #999;
 		height: 40rpx;
@@ -82,8 +85,23 @@
 			}
 		}
 		.cur{
-			color: #428ee4;
+			color: $uni-color-primary;
 			background: #e9f1fb;
+		}
+	}
+}
+.isColumn{
+	.tit{
+		text-align: center;
+		margin: 50rpx 0;
+	}
+	.tab_item_box{
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		.tab_item{
+			margin-right: 0;
+			margin-bottom: 40rpx;
 		}
 	}
 }

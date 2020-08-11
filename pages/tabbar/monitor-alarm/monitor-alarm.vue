@@ -192,7 +192,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .container{
 	background-size: 100% 400rpx;
 	background-position: top center;
@@ -262,7 +262,7 @@ type-tab{
 	}
 	text{
 		font-size: 32rpx;
-		color: #428ee4;
+		color: $uni-color-primary;
 		margin: 0 6rpx;
 	}
 }

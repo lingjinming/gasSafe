@@ -9,9 +9,9 @@ request.globalRequest = (url, method, data, power) => {
     1 == 不通过access_token校验的接口
     2 == 文件下载接口列表
     3 == 验证码登录 */
-	uni.showLoading({
-		title:'加载中'
-	})
+	// uni.showLoading({
+	// 	title:'加载中'
+	// })
     switch (power){
         case 1:
             headers['Authorization'] = 'Basic a3N1ZGk6a3N1ZGk='
@@ -46,7 +46,7 @@ request.globalRequest = (url, method, data, power) => {
         }
 		
     }).catch(parmas => {
-		uni.hideLoading()
+		// uni.hideLoading()
 		console.log(parmas)
 　　　　　　switch (parmas.code) {
 　　　　　　　　case 401:

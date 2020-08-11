@@ -90,7 +90,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .item_detail_box{
 	position: absolute;
 	width: 100%;	

@@ -115,7 +115,7 @@
 </script>
 
 <style lang="scss" scoped>
-	$uni-searchbar-height: 36px;
+	$uni-searchbar-height: 66rpx;
 
 	.uni-searchbar {
 		/* #ifndef APP-NVUE */
@@ -125,6 +125,7 @@
 		position: relative;
 		padding: $uni-spacing-col-base;
 		background-color: $uni-bg-color;
+		border-radius: 10rpx;
 	}
 
 	.uni-searchbar__box {
@@ -139,7 +140,7 @@
 		flex-direction: row;
 		align-items: center;
 		height: $uni-searchbar-height;
-		padding: 5px 8px 5px 0px;
+		// padding: 5px 8px 5px 0px;
 		border-width: 0.5px;
 		border-style: solid;
 		border-color: $uni-border-color;

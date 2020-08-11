@@ -62,7 +62,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .item_box{
 	border-radius: 10rpx;
 	// box-shadow:  0 0 10rpx 10rpx rgba(0,0,0,.6);
@@ -87,7 +87,7 @@ export default {
 				position: absolute;
 				width: 4rpx;
 				height: 30rpx;
-				background: #428ee4;
+				background: $uni-color-primary;
 				left: -20rpx;
 				top: 6rpx;
 			}
@@ -126,7 +126,7 @@ export default {
 		height: 88rpx;
 		line-height: 88rpx;
 		text-align: center;
-		color: #428ee4;
+		color: $uni-color-primary;
 		border-top: 2rpx solid #dde0e4;
 	}
 }

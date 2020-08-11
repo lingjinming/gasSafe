@@ -47,7 +47,7 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="scss">
 .pull_up_btn{
 	position: absolute;
 	left: 50%;

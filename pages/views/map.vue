@@ -8,14 +8,10 @@
 	<view class="layer_box" @click='show'>
 			图层
 	</view>
-	<uni-search-bar ></uni-search-bar>
-	<popup-layer ref="popupRef" :direction="'left'">
-	  <view v-for="item in alarmTypes" 
-	  :key='item.id'
-	  :class="{'act':item.checked}"
-	  @click="item.checked = !item.checked">
-		item.value
-	  </view>
+	<uni-search-bar></uni-search-bar>
+	<popup-layer v-show='boolShow' ref="popupRef" :direction="'left'">
+	  <type-tab :title="'报警级别'" :isColumn=true :tabs.sync="alarmTypes">
+	  </type-tab>
 	</popup-layer>
 	
 	<monitor-item-detail></monitor-item-detail>
@@ -33,7 +29,7 @@ export default {
 			latitude: '',
 			longitude: '',
 			textData: {},
-			boolShow:true,
+			boolShow:false,
 			alarmTypes:[
 					{	
 						id:1,
@@ -80,6 +76,7 @@ export default {
 	},
 	methods: {
 		show(){
+			this.boolShow = true
 			this.$refs.popupRef.show(); // 或者 boolShow = rue
 		},
 		close(){
@@ -104,7 +101,14 @@ export default {
 				})
 			  },
 			})
-		}
+		},
+		getAlarmInfoFn(){
+			this.$api.getAlarmInfo({
+				level:this.level,
+			}).then(res =>{
+				console.log(res)
+			})
+		},
 	}
 };
 </script>
@@ -134,7 +138,7 @@ uni-search-bar{
 	right: 40rpx;
 	width: calc(100% - 80rpx);
 	border-radius: 10rpx;
-	box-shadow: 0 0 10rpx 10rpx #007AFF;
+	box-shadow: 0 0 10rpx 8rpx rgba(211, 211, 211, 0.2);
 }
 
 </style>
