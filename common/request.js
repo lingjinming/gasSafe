@@ -38,7 +38,7 @@ request.globalRequest = (url, method, data, power) => {
         header: headers
     }).then(res => {
 		uni.hideLoading()
-		debugger
+		// debugger
         if (res[1].statusCode ==200|| res[1].data.status =="success" || res[1].data.code == 200) {
             return res[1]
         } else {

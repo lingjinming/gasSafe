@@ -4,11 +4,17 @@
 	:longitude="longitude" 
 	:latitude="latitude" scale="16" 
 	:markers="markers">
-	</map> 
+	</map> 	
+	<view class="layer_box" @click='show'>
+			图层
+	</view>
 	<uni-search-bar ></uni-search-bar>
-	<popup-layer ref="popupRef" :direction="'top'" v-model="boolShow">
-	  <view class="zidingyiBox">
-				   11
+	<popup-layer ref="popupRef" :direction="'left'">
+	  <view v-for="item in alarmTypes" 
+	  :key='item.id'
+	  :class="{'act':item.checked}"
+	  @click="item.checked = !item.checked">
+		item.value
 	  </view>
 	</popup-layer>
 	
@@ -27,8 +33,41 @@ export default {
 			latitude: '',
 			longitude: '',
 			textData: {},
-			boolShow:true
+			boolShow:true,
+			alarmTypes:[
+					{	
+						id:1,
+						value:'一级报警',
+						checked:true
+					},
+					{	
+						id:2,
+						value:'二级报警',
+						checked:true
+					},
+					{
+						id:3,
+						value:'三级报警',
+						checked:true
+					}
+			],
 		};
+	},
+	watch:{
+		alarmTypes:{
+			handler(newVal){
+				// debugger
+				let arr = []
+				 newVal.forEach(item => {
+					 if (item.checked) {
+						 arr.push(item.id)
+					 }
+				 })
+				this.level = arr.join(',')
+				this.getAlarmInfoFn()
+			},
+			deep:true
+		},
 	},
 	onLoad() {
 		let vm = this;
@@ -75,9 +114,27 @@ export default {
   width: 100%;
   height: 100%;
 }
-.zidingyiBox{
+popup-layer view{
+	width: 40vw;
+}
+.layer_box{
+	position: absolute;
+	right: 40rpx;
+	top: 200rpx;
 	height: 100rpx;
-	width: 100%;
+	width: 100rpx;
+	background: #FFFFFF;
+	border-radius: 10rpx;
+
+}
+uni-search-bar{
+	position: absolute;
+	top: 40rpx;
+	left: 40rpx;
+	right: 40rpx;
+	width: calc(100% - 80rpx);
+	border-radius: 10rpx;
+	box-shadow: 0 0 10rpx 10rpx #007AFF;
 }
 
 </style>
