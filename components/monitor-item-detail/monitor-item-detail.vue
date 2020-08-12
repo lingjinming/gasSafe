@@ -79,7 +79,7 @@ export default {
 		uni.getStorage({
 		    key: 'monitorDetail',
 		    success(res) {
-		        console.log(res.data);
+		        // console.log(res.data);
 				vm.monitorDetail = res.data
 		    }
 		});

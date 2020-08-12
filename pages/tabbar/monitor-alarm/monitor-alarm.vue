@@ -104,7 +104,7 @@ export default {
 		};
 	},
 	onShow() {
-		// this.changeType(this.curType)
+		this.changeType(this.curType)
 	},
 	watch:{
 		alarmTypes:{
@@ -163,13 +163,13 @@ export default {
 			})
 		},
 		changeType(type){
-			
+			this.curType = type
 			if(this.curType == '报警列表'){
 				this.getAlarmInfoFn()
 			}else{
 				this.getEquipMonitorFn()
 			}
-			this.curType = type
+			
 		},
 		getAlarmInfoFn(){
 			this.$api.getAlarmInfo({

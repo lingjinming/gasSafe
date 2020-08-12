@@ -54,16 +54,11 @@
                 "geolocation" : {
                     "amap" : {
                         "__platform__" : [ "android" ],
-                        "appkey_ios" : "",
+                        "appkey_ios" : "6ba2bffe708e6c745b7f73f6a4ffcdcc",
                         "appkey_android" : "6ba2bffe708e6c745b7f73f6a4ffcdcc"
                     }
                 },
-                "maps" : {
-                    "amap" : {
-                        "appkey_ios" : "",
-                        "appkey_android" : "6ba2bffe708e6c745b7f73f6a4ffcdcc"
-                    }
-                }
+                "maps" : {}
             }
         }
     },
@@ -72,7 +67,7 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "wxdcb2eb3a1d4e85c7",
+        "appid" : "wxb86e11fa0d5e3061",
         "setting" : {
             "urlCheck" : false,
             "es6" : true,
