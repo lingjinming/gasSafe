@@ -2,7 +2,7 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/tabbar/monitor-alarm/monitor-alarm",
+			"path": "pages/index/index",
 			"style": {
 				"navigationStyle": "custom",
 				"enablePullDownRefresh":true
@@ -51,7 +51,7 @@
 		"color": "#999",
 		"selectedColor": "#428ee4",
 		"list": [{
-				"pagePath": "pages/tabbar/monitor-alarm/monitor-alarm",
+				"pagePath": "pages/index/index",
 				"iconPath": "static/img/tabbar/home.png",
 				"selectedIconPath": "static/img/tabbar/homeactive.png",
 				"text": "监测报警"

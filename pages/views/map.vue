@@ -8,7 +8,7 @@
 	<view class="layer_box" @click='show'>
 			图层
 	</view>
-	<uni-search-bar></uni-search-bar>
+	<uni-search-bar :placeholder="'搜地点,查设备,找窨井'"></uni-search-bar>
 	<popup-layer v-show='boolShow' ref="popupRef" :direction="'left'">
 	  <type-tab :title="'报警级别'" :isColumn=true :tabs.sync="alarmTypes">
 	  </type-tab>
@@ -65,15 +65,34 @@ export default {
 			deep:true
 		},
 	},
-	onLoad() {
+	onLoad(options) {
 		let vm = this;
 		vm.initMap()
-	},
-	onShow(){
-		uni.$on('monitorDetail',(data)=>{
-			console.log(data)
+		uni.getLocation({ // 默认定位到用户位置
+		    type: 'gcj02',
+		    success: function (res) {
+				vm.longitude = res.longitude
+				vm.latitude = res.latitude
+		    }
+		});
+		
+		uni.$on('alarmDetailPos',(data)=>{
+			vm.longitude = data.longitude
+			vm.latitude = data.latitude
+			vm.markers.push({
+			  latitude: data.latitude,
+			  longitude: data.longitude,
+			  iconPath: '../../static/logo.png',
+			  width: 30,
+			  height: 30
+			})
 		})
 	},
+	// onShow(){
+	// 	uni.$on('monitorDetail',(data)=>{
+	// 		console.log(data)
+	// 	})
+	// },
 	methods: {
 		show(){
 			this.boolShow = true

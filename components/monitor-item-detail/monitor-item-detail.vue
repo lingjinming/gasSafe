@@ -2,13 +2,14 @@
 	<view class="item_detail_box box_shadow" :style="!isUp?hide:show">
 		<pull-up :isUp.sync='isUp'></pull-up>
 		<view class="detail_head">
-			<view>{{monitorDetail.alarmDesc}}</view>
+			<view class="alarmDesc">{{monitorDetail.alarmDesc}}</view>
 			<view>
-				<text>1.6km</text>|<text>方兴大道与创新大道西北向</text>
+				<!-- <text>1.6km</text>|<text>{{monitorDetail.alarmRoad}}</text> -->
+				<text>{{monitorDetail.alarmRoad}}</text>
 			</view>
 			<view class="flex_between_row">
-				<view>5.4%VOL <text>2级</text></view>
-				<view>{{monitorDetail.monitorTimeStr}}</view>
+				<view class="monitorValue">{{monitorDetail.monitorValue}}<text>{{monitorDetail.alarmLevel}}</text></view>
+				<view>{{monitorDetail.monitorTime}}</view>
 			</view>
 		</view>
 		<scroll-view scroll-y="true" v-show="isUp">
@@ -18,14 +19,11 @@
 					<view>》</view>
 				</view>
 				<view class="con_box">
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
+					<view class="chart_info flex_between_row">
+						<view>最高值：{{monitorDetail.historyCurveData[0].maxValue}}%VOL</view>
+						<view>{{monitorDetail.historyCurveData[0].maxTime}}</view>
+					</view>
+					<view class="chartBox" ref='chart'></view>
 					
 				</view>
 			</view>
@@ -69,6 +67,7 @@ export default {
 	data() {
 		return {
 			monitorDetail:null,
+			alarmId:'',
 			isUp:false ,//默认收起状态
 			show:"height: 1000rpx;top:calc(100vh - 1000rpx)",
 			hide:"height: 260rpx;top:calc(100vh - 260rpx)",
@@ -79,13 +78,20 @@ export default {
 		uni.getStorage({
 		    key: 'monitorDetail',
 		    success(res) {
-		        // console.log(res.data);
-				vm.monitorDetail = res.data
+				vm.alarmId = res.data.alarmId
+				vm.alarmDetailInfoFn()
 		    }
 		});
 	},
 	methods: {
-
+		alarmDetailInfoFn(){
+			this.$api.alarmDetailInfo({
+				alarmId:this.alarmId
+			}).then(res => {
+				this.monitorDetail = res.data[0]
+				uni.$emit('alarmDetailPos',res.data)
+			})
+		}
 	}
 };
 </script>
@@ -101,6 +107,29 @@ export default {
 	transition: all .5s;
 	.detail_head{
 		height: 260rpx;
+		padding-top: 66rpx;
+		padding-bottom: 20rpx;
+		font-size: 24rpx;
+		color: $uni-text-color-grey;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		.alarmDesc{
+			font-size: 28rpx;
+			color: #333;
+			font-weight: 600;
+		}
+		.monitorValue{
+			color: $uni-color-warning;
+			font-size: 24rpx;
+			text{
+				font-size: 24rpx;
+				border-radius: 4rpx;
+				margin-left: 20rpx;
+				padding: 0 8rpx;
+				border: 2rpx solid $uni-color-warning;
+			}
+		}
 	}
 	.info_box{
 		display: flex;
@@ -134,9 +163,22 @@ scroll-view{
 			height: 90rpx;
 			line-height: 90rpx;
 			border-bottom: 2rpx solid #dde0e4;
+			font-size: 28rpx;
+			font-weight: 600;
 		}
 		.con_box{
 			padding: 20rpx 0;
+			width: 100%;
+			.chart_info{
+				padding: 0 20rpx;
+				background: #e5eefa;
+				color: $uni-color-primary;
+				height: 44rpx;
+				line-height: 44rpx;
+			}
+			.chartBox{
+				height: 600rpx;
+			}
 		}
 	}
 }

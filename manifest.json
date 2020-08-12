@@ -77,7 +77,7 @@
         "usingComponents" : true,
         "permission" : {
             "scope.userLocation" : {
-                "desc" : "需要地图功能"
+                "desc" : "展示报警点位"
             }
         }
     }
