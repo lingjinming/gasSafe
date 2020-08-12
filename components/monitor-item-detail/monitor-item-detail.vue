@@ -30,17 +30,40 @@
 			<view class="comm_box flex_column">
 				<view class="tit_box flex_between_row">
 					<view>当前设备</view>
-					<view>运行指标</view>
+					<view @click="showIndicators = !showIndicators">运行指标</view>
 				</view>
 				<view class="con_box">
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
+					<view class="device_info_row">
+						<text>设备名称</text>
+						<text>{{monitorDetail.equipmentName}}</text>
+					</view>
+					<view class="device_info_row">
+						<text>设备编码</text>
+						<text>{{monitorDetail.equipmentCode}}</text>
+					</view>
+					<view class="device_info_row">
+						<text>安装日期</text>
+						<text>{{monitorDetail.installTime}}</text>
+					</view>
+					<view class="device_info_row">
+						<text>设备厂商</text>
+						<text>{{monitorDetail.manufacturer}}</text>
+					</view>
+					<view class="device_info_row">
+						<text>所属对象</text>
+						<text>{{monitorDetail.equipObject}}</text>
+					</view>
+					<view class="device_info_row">
+						<text>所在节点</text>
+						<text>{{monitorDetail.equipNode}}</text>
+					</view>
+					<view class="device_info_row">
+						<text>安装位置</text>
+						<text>{{monitorDetail.installPos}}</text>
+					</view>
+					<view class="indicators" v-show="showIndicators">
+						<indicators-item :equipmentCode='monitorDetail.equipmentCode'></indicators-item>
+					</view>
 				</view>
 			</view>
 			<view class="comm_box flex_column">
@@ -48,14 +71,28 @@
 					<view>历史报警</view>
 				</view>
 				<view class="con_box">
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
-					<view>运行指标</view>
+					<view v-for="item in monitorDetail.historyAlarm" :key='item.alarmId'>
+						<view>{{item.alarmDesc}}</view>
+						<view class="device_info_row">
+							<text>报警开始时间</text>
+							<text>{{item.startTime}}</text>
+						</view>
+						<view class="device_info_row">
+							<text>报警结束时间</text>
+							<text>{{item.endTime}}</text>
+						</view>
+						<view class="device_info_row">
+							<text>最高报警级别</text>
+							<text>{{item.maxLevel}}级</text>
+						</view>
+						<view class="flex_between_row">
+							<view class="device_info_row">
+								<text>最高浓度报警</text>
+								<text>{{item.maxLevel}}级</text>
+							</view>
+							<text>{{item.maxTime}}</text>
+						</view>
+					</view>
 				</view>
 			</view>
 		</scroll-view>
@@ -71,6 +108,7 @@ export default {
 			isUp:false ,//默认收起状态
 			show:"height: 1000rpx;top:calc(100vh - 1000rpx)",
 			hide:"height: 260rpx;top:calc(100vh - 260rpx)",
+			showIndicators:false
 		};
 	},
 	mounted() {
@@ -147,6 +185,26 @@ export default {
 			display: flex;
 			flex-wrap: wrap;
 			align-items: center;
+		}
+	}
+}
+.device_info_row{
+	display: flex;
+	align-items: center;
+	height: 70rpx;
+	text{
+		font-size: 24rpx;
+		color: #666;
+		&:first-child{
+			display: block;
+			width: 200rpx;
+		}
+		&:last-child{
+			display: block;
+			width: calc(100% - 200rpx);
+			overflow: hidden;
+			text-overflow: hidden;
+			text-overflow: ellipsis;
 		}
 	}
 }

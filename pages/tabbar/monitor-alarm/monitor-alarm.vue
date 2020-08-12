@@ -184,7 +184,9 @@ export default {
 			this.$api.getEquipMonitor({
 				install:this.install
 			}).then(res =>{
+				this.equipMonitorData = []
 				this.equipMonitorData = res.data
+				debugger
 				this.recordsNum = res.data.length
 			})
 		}

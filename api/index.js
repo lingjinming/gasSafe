@@ -15,6 +15,8 @@ const api = {
 	relieveAlarm: (params) => request.globalRequest(`/gas/mini/alarmDetailInfo.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 	// GET /gas/mini/getEquipMonitor设备实时监测
 	getEquipMonitor:(params) => request.globalRequest(`/gas/mini/getEquipMonitor.mvc${formatGetUri(params)}`, 'GET',{}, 1),
+	// GET /gas/mini/equipMonitorIndex.mvc设备运行指标
+	equipMonitorIndex:(params) => request.globalRequest(`/gas/mini/equipMonitorIndex.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 }
 
 
