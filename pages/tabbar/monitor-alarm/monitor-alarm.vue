@@ -104,7 +104,7 @@ export default {
 		};
 	},
 	onShow() {
-		// this.changeType(this.curType)
+		this.changeType(this.curType)
 	},
 	watch:{
 		alarmTypes:{
