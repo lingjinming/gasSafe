@@ -1,5 +1,5 @@
 <template>
-	<view class="container"  :style="{'background-image': 'url(../../../static/img/tabbar/index_bg.png)'}">
+	<view class="container"  :style="{'background-image': `url(${urlConfig}/gas/mini/getLocalFile/bg)`}">
 	  <view class="header">
 		  <view class="title flex_center_row">燃气安全监测</view>
 		  <view class="flex_between_row">
@@ -9,7 +9,7 @@
 				  :class="{'cur':curType == item.type}"
 				  @click="changeType(item.type)">{{item.type}}</view>
 			  </view>
-			  <image src="../../../static/img/qa.png" mode="aspectFit" @click="enterMap"></image>
+			  <image src="../../static/img/map.png" mode="aspectFit" @click="enterMap"></image>
 		  </view>
 	  </view>
 	  <view class="filter_box box_shadow">
@@ -29,20 +29,25 @@
 		  <view @click="enterSearch">搜索</view>
 	  </view>
 		<scroll-view scroll-y="true" :style="{height:curType == '报警列表'?'calc(100% - 690rpx)':'calc(100% - 540rpx)'}">
+			<image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!recordsNum"></image>
 			<template v-if="curType == '报警列表'">
+				<!-- <image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!monitorData.length && !equipMonitorData.length"></image> -->
 				<monitor-item v-for='item in monitorData' :monitorData.sync='item' :key='item.alarmId'></monitor-item>
 			</template>
 			<template v-else>
-				<realtime-monitor-item v-for='item in equipMonitorData' :equipMonitorData.sync='item' :key='item.alarmid'></realtime-monitor-item>
+				<!-- <image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!equipMonitorData.length"></image> -->
+				<realtime-monitor-item v-for='item in equipMonitorData' :realtimeMonitorData.sync='item' :key='item.alarmid'></realtime-monitor-item>
 			</template>
 		</scroll-view>
 	</view>
 </template>
 
 <script>
+import urlConfig from '../../common/config.js'
 export default {
 	data() {
 		return {
+			urlConfig,
 			curType:'报警列表',
 			btns:[
 				{
@@ -151,19 +156,22 @@ export default {
 	methods: {
 		reset(){
 			this.recordsNum = 0
+			this.monitorData = []
+			this.equipMonitorData = []
 		},
 		enterMap(){
 			uni.navigateTo({
-				url:'../../views/map'
+				url:'../views/map'
 			})
 		},
 		enterSearch(){
 			uni.navigateTo({
-				url:'../../views/map'
+				url:'../views/map'
 			})
 		},
 		changeType(type){
 			this.curType = type
+			this.reset()
 			if(this.curType == '报警列表'){
 				this.getAlarmInfoFn()
 			}else{
@@ -177,17 +185,15 @@ export default {
 				ravelflag:this.ravelflag,
 			}).then(res =>{
 				this.monitorData = res.data.data
-				this.recordsNum = res.data.data.length
+				this.recordsNum = this.monitorData.length
 			})
 		},
 		getEquipMonitorFn(){
 			this.$api.getEquipMonitor({
 				install:this.install
 			}).then(res =>{
-				this.equipMonitorData = []
 				this.equipMonitorData = res.data
-				debugger
-				this.recordsNum = res.data.length
+				this.recordsNum = this.equipMonitorData.length
 			})
 		}
 	}
@@ -268,7 +274,9 @@ type-tab{
 		margin: 0 6rpx;
 	}
 }
-// scroll-view{
-// 	padding: 0 30rpx;
-// }
+scroll-view{
+	.no_alarm{
+		width: 100%;
+	}
+}
 </style>

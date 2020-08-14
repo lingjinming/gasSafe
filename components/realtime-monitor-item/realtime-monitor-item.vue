@@ -1,9 +1,9 @@
 <template>
 	<view class="item_box box_shadow">
-	  	<view class="info">
+	  	<view class="info" @click="enterEquipDetailInfo(realtimeMonitorData)">
 			<view class="tit flex_between_row">
-				<view class="alarm_level">{{realtimeMonitorData.installDesc}}</view>
-				<view class="alarm_type">{{realtimeMonitorData.alarmTypeCode}}</view>
+				<view class="alarm_level">{{realtimeMonitorData.alarmPoint}}</view>
+				<view class="alarm_type">{{realtimeMonitorData.monitorValue}}</view>
 			</view>
 			<view class="info_box">
 				<view class="label">数据时间</view>
@@ -34,14 +34,15 @@ export default {
 		realtimeMonitorData:{
 			type:Object,
 			default:{
-				installDesc: "排水井CC5WS3368|井壁",
-				alarmTypeCode: "排水",
-				monitorTime: "",
-				installPos: "华宝南路与季华二路交口东北向北40米马路上",
-				equipmentCode: "NDIR001911050372",
-				alarmid: "402894356f04ddaa016f464f67940036",
-				alarmPoint: "CC5WS3368",
-				monitorValue: "",
+				alarmPoint: "TQ0906220005",
+				alarmTypeCode: "燃气",
+				alarmid: "8ae4deb8668bde470166a43f33d50827",
+				equipId: "8ae4deb8668bde470166a43f33d50827",
+				equipmentCode: "NDIR001803101561",
+				installDesc: "燃气井TQ0906220005|井壁",
+				installPos: "珠江路与宿松路交叉口西南角，沿宿松路向南880米，绿化带里",
+				monitorTime: "2020-08-11 20:37:33",
+				monitorValue: "0.00%VOL",
 				senorCode: "0_0"
 			},
 		},
@@ -57,7 +58,18 @@ export default {
 				// 	console.log(data)
 				// }
 			})
-		}
+		},
+		enterEquipDetailInfo(data){
+			uni.setStorage({
+				key:'realtimeMonitorDetail',
+				data,
+				success() {
+					uni.navigateTo({
+						url:`/pages/views/map?realtimeMonitorDetail=true`
+					})
+				}
+			})
+		},
 	}
 };
 </script>
@@ -93,7 +105,7 @@ export default {
 			}
 		}
 		.alarm_type{
-			color: #ed9000;
+			color: $uni-color-warning;
 			background: #fbede1;
 			padding: 0 20rpx;
 			height: 40rpx;
