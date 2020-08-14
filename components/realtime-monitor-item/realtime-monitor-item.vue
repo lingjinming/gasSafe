@@ -1,6 +1,6 @@
 <template>
 	<view class="item_box box_shadow">
-	  	<view class="info">
+	  	<view class="info" @click="enterEquipDetailInfo(realtimeMonitorData)">
 			<view class="tit flex_between_row">
 				<view class="alarm_level">{{realtimeMonitorData.alarmPoint}}</view>
 				<view class="alarm_type">{{realtimeMonitorData.monitorValue}}</view>
@@ -58,7 +58,18 @@ export default {
 				// 	console.log(data)
 				// }
 			})
-		}
+		},
+		enterEquipDetailInfo(data){
+			uni.setStorage({
+				key:'realtimeMonitorDetail',
+				data,
+				success() {
+					uni.navigateTo({
+						url:`/pages/views/map?realtimeMonitorDetail=true`
+					})
+				}
+			})
+		},
 	}
 };
 </script>

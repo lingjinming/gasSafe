@@ -62,7 +62,7 @@ export default {
 				data,
 				success() {
 					uni.navigateTo({
-						url:`/pages/views/map`
+						url:`/pages/views/map?monitorDetail=true`
 					})
 				}
 			})

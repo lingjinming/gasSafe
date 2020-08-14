@@ -52,14 +52,14 @@
 		"selectedColor": "#428ee4",
 		"list": [{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/img/tabbar/home.png",
-				"selectedIconPath": "static/img/tabbar/homeactive.png",
+				"iconPath": "static/img/tabbar/alarm.png",
+				"selectedIconPath": "static/img/tabbar/alarm_act.png",
 				"text": "监测报警"
 			},
 			{
 				"pagePath": "pages/tabbar/user-center/user-center",
 				"iconPath": "static/img/tabbar/me.png",
-				"selectedIconPath": "static/img/tabbar/meactive.png",
+				"selectedIconPath": "static/img/tabbar/me_act.png",
 				"text": "个人中心"
 			}
 		]

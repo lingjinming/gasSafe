@@ -2,97 +2,51 @@
 	<view class="item_detail_box box_shadow" :style="!isUp?hide:show">
 		<pull-up :isUp.sync='isUp'></pull-up>
 		<view class="detail_head">
-			<view class="alarmDesc">{{monitorDetail.alarmDesc}}</view>
+			<view class="alarmDesc">{{realtimeMonitorDetail.equipmentCode}}</view>
 			<view>
-				<!-- <text>1.6km</text>|<text>{{monitorDetail.alarmRoad}}</text> -->
-				<text>{{monitorDetail.alarmRoad}}</text>
+				<!-- <text>1.6km</text>|<text>{{realtimeMonitorDetail.alarmRoad}}</text> -->
+				<text>{{realtimeMonitorDetail.installPos}}</text>
 			</view>
 			<view class="flex_between_row">
-				<view class="monitorValue">{{monitorDetail.monitorValue}}<text>{{monitorDetail.alarmLevel}}</text></view>
-				<view>{{monitorDetail.monitorTime}}</view>
+				<view class="monitorValue">{{realtimeMonitorDetail.monitorValue}}</view>
+				<view>{{realtimeMonitorDetail.monitorTime}}</view>
 			</view>
 		</view>
 		<scroll-view scroll-y="true" v-show="isUp">
 			<view class="comm_box flex_column">
-				<view class="tit_box flex_between_row">
-					<view>监测曲线</view>
-					<view>》</view>
-				</view>
 				<view class="con_box">
-					<view class="chart_info flex_between_row">
-						<view>最高值：{{monitorDetail.historyCurveData[0].maxValue}}%VOL</view>
-						<view>{{monitorDetail.historyCurveData[0].maxTime}}</view>
-					</view>
-					<view class="chartBox" ref='chart'></view>
-					
-				</view>
-			</view>
-			<view class="comm_box flex_column">
-				<view class="tit_box flex_between_row">
-					<view>当前设备</view>
-					<view @click="showIndicators = !showIndicators">运行指标</view>
-				</view>
-				<view class="con_box">
-					<view class="device_info_row">
-						<text>设备名称</text>
-						<text>{{monitorDetail.equipmentName}}</text>
+					<view class="indicators">
+						<indicators-item :equipmentCode='realtimeMonitorDetail.equipmentCode'></indicators-item>
 					</view>
 					<view class="device_info_row">
-						<text>设备编码</text>
-						<text>{{monitorDetail.equipmentCode}}</text>
+						<text>GPS位置</text>
+						<text>{{realtimeMonitorDetail.GPSposition}}</text>
 					</view>
+		<!-- 			<view class="device_info_row">
+						<text>数据时间</text>
+						<text>{{realtimeMonitorDetail.monitorIndex.datatime}}</text>
+					</view> -->
 					<view class="device_info_row">
-						<text>安装日期</text>
-						<text>{{monitorDetail.installTime}}</text>
-					</view>
-					<view class="device_info_row">
-						<text>设备厂商</text>
-						<text>{{monitorDetail.manufacturer}}</text>
+						<text>关联对象</text>
+						<text>{{realtimeMonitorDetail.relateObject}}</text>
 					</view>
 					<view class="device_info_row">
 						<text>所属对象</text>
-						<text>{{monitorDetail.equipObject}}</text>
+						<text>{{realtimeMonitorDetail.alarmPoint}}</text>
 					</view>
 					<view class="device_info_row">
 						<text>所在节点</text>
-						<text>{{monitorDetail.equipNode}}</text>
-					</view>
-					<view class="device_info_row">
-						<text>安装位置</text>
-						<text>{{monitorDetail.installPos}}</text>
-					</view>
-					<view class="indicators" v-show="showIndicators">
-						<indicators-item :equipmentCode='monitorDetail.equipmentCode'></indicators-item>
+						<text>{{realtimeMonitorDetail.equipNode}}</text>
 					</view>
 				</view>
 			</view>
 			<view class="comm_box flex_column">
 				<view class="tit_box flex_between_row">
-					<view>历史报警</view>
+					<view>井内照片</view>
 				</view>
 				<view class="con_box">
-					<view class="history_alarm_box" v-for="item in monitorDetail.historyAlarm" :key='item.alarmId'>
-						<view>{{item.alarmDesc}}</view>
-						<view class="device_info_row">
-							<text>报警开始时间</text>
-							<text>{{item.startTime}}</text>
-						</view>
-						<view class="device_info_row">
-							<text>报警结束时间</text>
-							<text>{{item.endTime}}</text>
-						</view>
-						<view class="device_info_row">
-							<text>最高报警级别</text>
-							<text>{{item.maxLevel}}级</text>
-						</view>
-						<view class="flex_between_row">
-							<view class="device_info_row">
-								<text>最高浓度报警</text>
-								<text>{{item.maxLevel}}级</text>
-							</view>
-							<text>{{item.maxTime}}</text>
-						</view>
-					</view>
+					<view class="flex_center_row" v-if="!realtimeMonitorDetail.filePath.length">暂无图片</view>
+					<image v-else v-for="(item,i) in realtimeMonitorDetail.filePath" :key='i' :src="item"></image>
 				</view>
 			</view>
 		</scroll-view>
@@ -103,8 +57,8 @@
 export default {
 	data() {
 		return {
-			monitorDetail:null,
-			alarmId:'',
+			realtimeMonitorDetail:null,
+			equipId:'',
 			isUp:false ,//默认收起状态
 			show:"height: 1000rpx;top:calc(100vh - 1000rpx)",
 			hide:"height: 260rpx;top:calc(100vh - 260rpx)",
@@ -114,20 +68,20 @@ export default {
 	mounted() {
 		let vm = this;
 		uni.getStorage({
-		    key: 'monitorDetail',
+		    key: 'realtimeMonitorDetail',
 		    success(res) {
-				vm.alarmId = res.data.alarmId
-				vm.alarmDetailInfoFn()
+				vm.equipId = res.data.equipId
+				vm.getEquipDetailInfoFn()
 		    }
 		});
 	},
 	methods: {
-		alarmDetailInfoFn(){
-			this.$api.alarmDetailInfo({
-				alarmId:this.alarmId
+		getEquipDetailInfoFn(){
+			this.$api.getEquipDetailInfo({
+				equipId:this.equipId
 			}).then(res => {
-				this.monitorDetail = res.data[0]
-				uni.$emit('alarmDetailPos',res.data)
+				this.realtimeMonitorDetail = res.data
+				uni.$emit('realtimeMonitorDetail',res.data)
 			})
 		}
 	}
@@ -246,6 +200,12 @@ scroll-view{
 			}
 			.chartBox{
 				height: 600rpx;
+			}
+			image{
+				width: 150rpx;
+				height: 150rpx;
+				margin-right: 25rpx;
+				margin-bottom: 25rpx;
 			}
 		}
 	}

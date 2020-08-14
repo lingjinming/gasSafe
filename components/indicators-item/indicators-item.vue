@@ -25,7 +25,7 @@
 			<text>防盗状态</text>
 		</view>
 		<view>
-			<text>{{equipMonitorData.datatime}}</text>
+			<text>数据时间 : {{equipMonitorData.datatime}}</text>
 		</view>
 	</view>
 </template>
@@ -76,6 +76,12 @@ export default {
 .item_box{
 	display: flex;
 	flex-wrap: wrap;
+	border-top:2rpx solid $uni-bg-color-grey;
+	padding-top: 20rpx;
+	view{
+		color: #999;
+		font-size: 24rpx;
+	}
 	.flex_around_column{
 		height: 130rpx;
 		padding: 15rpx;

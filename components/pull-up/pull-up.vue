@@ -1,5 +1,8 @@
 <template>
-	<view class="pull_up_btn" @touchstart.stop="start" @touchend.stop="end">详情</view>
+	<view class="pull_up_btn" @touchstart.stop="start" @touchend.stop="end">
+		<image v-if="isUp" src="../../static/img/pull_down.png" mode=""></image>
+		<image v-else src="../../static/img/pull_up.png" mode=""></image>
+	</view>
 </template>
 
 <script>
@@ -26,11 +29,9 @@
 				const subY=e.changedTouches[0].clientY - this.startData.clientY;
 				if(subY>50 || subY<-50){
 					if(subY>50){
-						console.log('下滑')
 						this.$emit('update:isUp',false)
 						
 					}else if(subY<-50){
-						console.log('上滑')
 						this.$emit('update:isUp',true)
 					}
 				}else{
@@ -58,5 +59,9 @@
 	color: #428ee4;
 	font-size: 24rpx;
 	text-align: center;
+	image{
+		width: 170rpx;
+		height: 40rpx;
+	}
 }
 </style>
