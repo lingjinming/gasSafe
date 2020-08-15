@@ -12,7 +12,7 @@ const api = {
 	// POST /gas/mini/saveAlarmRead保存已读状态
 	saveAlarmRead:(params) => request.globalRequest(`/gas/mini/saveAlarmRead.mvc${formatGetUri(params)}`, 'POST', {}, 1),
 	// /gas/mini/relieveAlarm解除报警
-	relieveAlarm: (params) => request.globalRequest(`/gas/mini/alarmDetailInfo.mvc${formatGetUri(params)}`, 'GET',{}, 1),
+	relieveAlarm: (params) => request.globalRequest(`/gas/mini/relieveAlarm.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 	// GET /gas/mini/getEquipMonitor设备实时监测
 	getEquipMonitor:(params) => request.globalRequest(`/gas/mini/getEquipMonitor.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 	// GET /gas/mini/equipMonitorIndex.mvc设备运行指标

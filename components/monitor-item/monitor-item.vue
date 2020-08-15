@@ -14,14 +14,15 @@
 				<view class="value">{{monitorData.alarmDesc}}</view>
 			</view>
 		</view>
-		<view @click="removeAlarm(monitorData.alarmId)" class="btn_box" 
-		:style="{'color':monitorData.ravelFlag?'#999':'#428ee4'}">
-		{{monitorData.ravelFlag?'报警已解除':'报警解除'}}
-		</view>
+		<button plain :style="{'color':monitorData.ravelFlag?'#999':'#428ee4'}" class="btn_box"  
+		@click="removeAlarm(monitorData.alarmId)" open-type="getUserInfo" >
+			{{monitorData.ravelFlag?'报警已解除':'报警解除'}}
+		</button>
 	</view>
 </template>
 
 <script>
+import {mapActions, mapState} from 'vuex'
 export default {
 	data() {
 		return {
@@ -42,16 +43,22 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions(['setUserInfo']),
 		removeAlarm(id){
+			let vm = this
 			if(this.monitorData.ravelFlag){
 				return false
 			}
-			uni.navigateTo({
-				url:`/pages/views/removeAlarm/removeAlarm?id=${id}`,
-				// complete(data) {
-				// 	console.log(data)
-				// }
+			uni.getUserInfo({
+			    success: (res) => {
+			        console.log(res)
+					vm.setUserInfo(res.userInfo)
+					uni.navigateTo({
+						url:`/pages/views/removeAlarm/removeAlarm?id=${id}`
+					})
+			    }
 			})
+
 		},
 		enterMap(data){
 			this.$api.saveAlarmRead({
@@ -141,8 +148,11 @@ export default {
 		line-height: 88rpx;
 		text-align: center;
 		color: $uni-color-primary;
+		background: transparent;
+		border: none;
 		border-top: 2rpx solid #dde0e4;
+		outline: none;
+		border-radius: 0;
 	}
 }
-
 </style>

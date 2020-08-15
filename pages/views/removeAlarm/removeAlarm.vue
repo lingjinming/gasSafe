@@ -13,19 +13,28 @@
 			</view>
 		</view>
 		
-		<button class="confirm_btn" type="primary">保存</button>
+		<button class="confirm_btn" type="primary" @click="relieveAlarmFn">保存</button>
 
 	</view>
 </template>
 
 <script>
+	import {mapActions, mapState} from 'vuex'
 export default {
 	data() {
 		return {
 			alarmId:'',
-			relieveTime:'',
-			operator:'张三'
+			relieveTime:''
 		};
+	},
+	computed: {
+		...mapState({
+			//这里可以通过这种方式引用相应模块的state数据，其中user是模块名。在代码的其他部分可以使用this.userInfo访问数据
+			userInfo: ({user}) => user.userInfo,
+		}),
+		operator(){
+			return this.userInfo.nickName
+		}
 	},
 	onLoad(option) {
 		this.alarmId = option.id
