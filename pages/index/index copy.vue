@@ -9,7 +9,7 @@
 				  :class="{'cur':curType == item.type}"
 				  @click="changeType(item.type)">{{item.type}}</view>
 			  </view>
-			  <image src="../../../static/img/map.png" mode="aspectFit" @click="enterMap"></image>
+			  <image src="../../static/img/map.png" mode="aspectFit" @click="enterMap"></image>
 		  </view>
 	  </view>
 	  <view class="filter_box box_shadow">
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import urlConfig from '../../../common/config.js'
+import urlConfig from '../../common/config.js'
 export default {
 	data() {
 		return {

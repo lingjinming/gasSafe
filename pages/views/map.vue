@@ -3,7 +3,8 @@
 	<map class="map" id="map"
 	:longitude="longitude" 
 	:latitude="latitude" scale="16" 
-	:markers="markers">
+	:markers="markers"
+	show-location>
 	</map> 	
 	<view class="layer_box" @click='show'>
 			<image src="../../static/img/layer.png"></image>
@@ -82,8 +83,6 @@ export default {
 			    success: function (res) {
 					vm.longitude = res.longitude
 					vm.latitude = res.latitude
-					console.log('longitude:',vm.longitude)
-					console.log('latitude:',vm.latitude)
 			    }
 			});
 		}
@@ -97,9 +96,9 @@ export default {
 			console.log('longitude:',vm.longitude)
 			console.log('latitude:',vm.latitude)
 			vm.markers.push({
-			  latitude: data.latitude,
-			  longitude: data.longitude,
-			  iconPath: '../../static/logo.png',
+			  latitude: vm.latitude,
+			  longitude: vm.longitude,
+			  iconPath: '../../static/img/alarm/gas_alarm.png',
 			  width: 30,
 			  height: 30,
 			  id:data.alarmid
@@ -111,9 +110,9 @@ export default {
 			console.log('longitude:',vm.longitude)
 			console.log('latitude:',vm.latitude)
 			vm.markers.push({
-			  latitude: data.latitude,
-			  longitude: data.longitude,
-			  iconPath: '../../static/logo.png',
+			  latitude: vm.latitude,
+			  longitude: vm.longitude,
+			  iconPath: '../../static/img/alarm/device_alarm.png',
 			  width: 30,
 			  height: 30,
 			  id:data.alarmId
