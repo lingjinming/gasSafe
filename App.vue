@@ -14,18 +14,18 @@ export default {
 
 <style>
 /*每个页面公共css */ 
-page,view,scroll-view,text{
+page,view,scroll-view,text,button{
 	font-family: 微软雅黑;
 	box-sizing: border-box !important;
+	font-size: 28rpx;
 }
 page,
-.container{
+button,.container{
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
   box-sizing: border-box;
-  font-size: 28rpx;
   font-family: 'Courier New', Courier, monospace;
   background: #f5f6f9;
 }

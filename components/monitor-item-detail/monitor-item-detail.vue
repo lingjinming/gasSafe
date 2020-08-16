@@ -23,8 +23,9 @@
 						<view>最高值：{{monitorDetail.historyCurveData[0].maxValue}}%VOL</view>
 						<view>{{monitorDetail.historyCurveData[0].maxTime}}</view>
 					</view>
-					<view class="chartBox" ref='chart'></view>
-					
+					<view class="chartBox" ref='chart'>
+						<monitor-chart :chartData='chartData' v-if='chartData !==null'></monitor-chart>
+					</view>
 				</view>
 			</view>
 			<view class="comm_box flex_column">
@@ -108,7 +109,8 @@ export default {
 			isUp:false ,//默认收起状态
 			show:"height: 1000rpx;top:calc(100vh - 1000rpx)",
 			hide:"height: 260rpx;top:calc(100vh - 260rpx)",
-			showIndicators:false
+			showIndicators:false,
+			chartData:null,
 		};
 	},
 	mounted() {
@@ -127,6 +129,21 @@ export default {
 				alarmId:this.alarmId
 			}).then(res => {
 				this.monitorDetail = res.data[0]
+				this.chartData = {
+					categories: this.monitorDetail.historyCurveData[0]['times'],
+					series: [
+						{
+							data:this.monitorDetail.historyCurveData[0]['values'],
+							name:'甲烷浓度',
+							index:0
+						},
+						{
+							data:this.monitorDetail.historyCurveData[0]['wendu'],
+							name:'温度',
+							index:1
+						},
+					]
+				}
 				uni.$emit('alarmDetailPos',res.data)
 			})
 		}
