@@ -14,7 +14,7 @@
 		</view>
 		<scroll-view scroll-y="true" v-show="isUp">
 			<view class="comm_box flex_column">
-				<view class="tit_box flex_between_row">
+				<view class="tit_box flex_between_row" @click="enterMonitor">
 					<view>监测曲线</view>
 					<view>》</view>
 				</view>
@@ -101,6 +101,7 @@
 </template>
 
 <script>
+	let vm = this
 export default {
 	data() {
 		return {
@@ -114,7 +115,7 @@ export default {
 		};
 	},
 	mounted() {
-		let vm = this;
+		vm = this;
 		uni.getStorage({
 		    key: 'monitorDetail',
 		    success(res) {
@@ -144,7 +145,16 @@ export default {
 						},
 					]
 				}
+				uni.setStorage({
+					key:'monitorDetailData',
+					data:this.chartData,
+				})
 				uni.$emit('alarmDetailPos',res.data)
+			})
+		},
+		enterMonitor(){
+			uni.navigateTo({
+				url:`/pages/views/monitorCurve/monitorCurve`,
 			})
 		}
 	}

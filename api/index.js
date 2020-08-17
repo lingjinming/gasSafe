@@ -19,6 +19,9 @@ const api = {
 	equipMonitorIndex:(params) => request.globalRequest(`/gas/mini/equipMonitorIndex.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 	// GET /gas/mini/getEquipDetailInfo.mvc设备监测详情
 	getEquipDetailInfo:(params) => request.globalRequest(`/gas/mini/getEquipDetailInfo.mvc${formatGetUri(params)}`, 'GET',{}, 1),
+	//GET /mini/equipCurveData设备监测曲线 pipepointid
+	equipCurveData:(params) => request.globalRequest(`/gas/mini/equipCurveData.mvc${formatGetUri(params)}`, 'GET',{}, 1),
+	
 }
 
 

@@ -37,6 +37,12 @@
 			"style": {
 				"navigationBarTitleText": "报警解除"
 			}
+		},
+		{
+			"path": "pages/views/monitorCurve/monitorCurve",
+			"style": {
+				"navigationBarTitleText": "监测曲线"
+			}
 		}
 	],
 	"globalStyle": {
