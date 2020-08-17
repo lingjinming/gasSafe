@@ -5,7 +5,7 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationStyle": "custom",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh":false
 			}
 		},
 		{
@@ -23,7 +23,8 @@
 		{
 			"path": "pages/tabbar/user-center/user-center",
 			"style": {
-				"navigationBarTitleText": "用户中心"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh":false
 			}
 		},
 		{
