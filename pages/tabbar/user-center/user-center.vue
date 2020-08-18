@@ -90,11 +90,12 @@ export default {
 		vm = this
 		if(!vm.userInfo.nickName){
 			vm.boolShow = true
-			this.$refs.popupRef.show(); // 或者 boolShow = rue
-			vm.getuserinfo()
+			vm.$refs.popupRef.show(); // 或者 boolShow = rue
+			vm.getUserInfoFn()
+			// vm.getuserinfo()
 		}else{
 			vm.boolShow = false
-			this.$refs.popupRef.close();
+			vm.$refs.popupRef.close();
 		}
 	},
 	methods: {
@@ -104,8 +105,16 @@ export default {
 			    complete: (res) => {
 					vm.setUserInfo(res.userInfo) 
 					vm.boolShow = false
-					this.$refs.popupRef.close();
+					vm.$refs.popupRef.close();
 			    }
+			})
+		},
+		getUserInfoFn(){
+			vm.$api.getUserInfo({
+				userName:'燃气'
+			}).then(res => {
+				console.log(res.data)
+		
 			})
 		}
 	}

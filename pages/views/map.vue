@@ -2,8 +2,9 @@
 	<view class="container">
 	<map class="map" id="map"
 	:longitude="longitude" 
-	:latitude="latitude" scale="16" 
+	:latitude="latitude" :scale="scale" 
 	:markers="markers"
+	@markertap='chooseMarker'
 	show-location>
 	</map> 	
 	<view class="layer_box" @click='show'>
@@ -23,9 +24,11 @@
 
 <script>
 let amapFile = require('../../libs/amap-wx.js');  //引入高德js
+let vm ;
 export default {
 	data() {
 		return {
+			scale:10,
 			showRealtimeMonitorDetail:false, // 默认不展示监测详情
 			monitorDetail:false,// 默认不展示设备详情
 			key:'9e794c3f3803c391c37b1a815f05a504',
@@ -64,13 +67,13 @@ export default {
 					 }
 				 })
 				this.level = arr.join(',')
-				this.getAlarmInfoFn()
+				this.initMap()
 			},
 			deep:true
 		},
 	},
 	onLoad(options) {
-		let vm = this;
+		vm = this;
 		vm.initMap()
 		
 		if(options.realtimeMonitorDetail){
@@ -85,12 +88,13 @@ export default {
 					vm.latitude = res.latitude
 			    }
 			});
+			vm.initMap()
 		}
 	},
 	mounted(){
-		let vm = this;
 		uni.$on('alarmDetailPos',(alarmDetailPos)=>{
 			let data = alarmDetailPos[0]
+			vm.scale = 16
 			vm.longitude = data.longtitude
 			vm.latitude = data.latitude
 			console.log('longitude:',vm.longitude)
@@ -107,6 +111,7 @@ export default {
 		uni.$on('realtimeMonitorDetail',(data)=>{
 			vm.longitude = data.longtitude
 			vm.latitude = data.latitude
+			vm.scale = 16
 			console.log('longitude:',vm.longitude)
 			console.log('latitude:',vm.latitude)
 			vm.markers.push({
@@ -131,31 +136,34 @@ export default {
 		close(){
 			this.$refs.popupRef.close();// 或者 boolShow = false
 		},
-		initMap(){
-			let vm = this;
-			// var myAmapFun = new amapFile.AMapWX({ key: vm.key });
-			
-			// myAmapFun.getRegeo({
-			//   iconPath: "../../static/logo.png",
-			//   iconWidth: 22,
-			//   iconHeight: 32,
-			//   success: function (data) {
-			// 	vm.markers.push({
-			// 	  id: data[0].id,
-			// 	  latitude: data[0].latitude,
-			// 	  longitude: data[0].longitude,
-			// 	  iconPath: data[0].iconPath,
-			// 	  width: data[0].width,
-			// 	  height: data[0].height
-			// 	})
-			//   },
-			// })
+		chooseMarker(e){
+			vm.scale = 16
+			let id = e.detail.markerId
+			debugger
 		},
-		getAlarmInfoFn(){
-			this.$api.getAlarmInfo({
-				level:this.level,
-			}).then(res =>{
-				console.log(res)
+		initMap(){
+			vm.scale = 10
+			vm.$api.getAlarmMapView({
+				level:vm.level
+			}).then(res => {
+				vm.markers = []
+				let markersArr = res.data.data
+				markersArr.forEach((item,index) => {
+					vm.markers.push({
+					  title:'报警',
+					  id:index,
+					  latitude: item.latitude || '',
+					  longitude: item.longtitude || '',
+					  iconPath: '../../static/img/alarm/device_alarm.png',
+					  width: 30,
+					  height: 30,
+					  alarmid:item.alarmid || '',
+					  equipid:item.equipid || '',
+					  alarmLevel:item.alarmLevel || ''
+					})
+				})
+				
+				console.log(vm.markers)
 			})
 		},
 	}

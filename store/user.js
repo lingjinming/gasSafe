@@ -21,7 +21,8 @@ const actions = {
 //真正的缓存数据改变的地方
 const mutations={
     setUserInfo(state,data){
-        state.userInfo = Object.assign({},state.userInfo,data);
+        state.userInfo = Object.assign(state.userInfo,state.userInfo,data);
+		console.log(state.userInfo)
     },
 }
 //导出
