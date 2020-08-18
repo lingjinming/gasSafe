@@ -5,59 +5,64 @@
 			<image :src="userInfo.avatarUrl" class="box_shadow"></image>
 			<view class="flex_around_column">
 				<view>{{userInfo.nickName}}</view>
-				<view>{{userInfo.city}}</view>
+				<view>
+					{{userInfo.city}}
+				<!-- 	<button type="default" open-type="getPhoneNumber" getPhoneNumber='getPhoneNumber' @click="getPhoneNumber">
+						{{phoneNumber?phoneNumber:'点击获取手机号'}}
+					</button> -->
+				</view>
 			</view>
 		</view>
 		
 		<view class="box_shadow user_info_box">
 			<view class="flex_between_row">
 				<view>
-					<image src="../../../static/img/alarm/device_alarm.png" mode=""></image>
+					<image src="../../../static/img/name.png" mode=""></image>
 					<text>姓名</text>
 				</view>
 				<view >
-					<input class="uni-input" v-model="userInfo.nickName" />
+					<input class="uni-input" v-model="userInfoByApi.userName" />
 				</view>
 			</view>
 			<view class="flex_between_row">
 				<view>
-					<image src="../../../static/img/alarm/device_alarm.png" mode=""></image>
+					<image src="../../../static/img/company.png" mode=""></image>
 					<text>所在单位</text>
 				</view>
 				<view >
-					<input class="uni-input" v-model="userInfo.nickName" />
+					<input class="uni-input" disabled v-model="userInfoByApi.orgName" />
 				</view>
 			</view>
 			<view class="flex_between_row">
 				<view>
-					<image src="../../../static/img/alarm/device_alarm.png" mode=""></image>
+					<image src="../../../static/img/role.png" mode=""></image>
 					<text>所属角色</text>
 				</view>
 				<view >
-					<input class="uni-input" v-model="userInfo.nickName" />
+					<input class="uni-input" disabled v-model="userInfoByApi.roleName" />
 				</view>
 			</view>
 			<view class="flex_between_row">
 				<view>
-					<image src="../../../static/img/alarm/device_alarm.png" mode=""></image>
+					<image src="../../../static/img/about.png" mode=""></image>
 					<text>关于</text>
 				</view>
 				<view >
-					<input class="uni-input" v-model="userInfo.nickName" />
+					<input class="uni-input" disabled v-model="about" />
 				</view>
 			</view>
 			<view class="flex_between_row">
 				<view>
-					<image src="../../../static/img/alarm/device_alarm.png" mode=""></image>
+					<image src="../../../static/img/psd.png" mode=""></image>
 					<text>修改密码</text>
 				</view>
 				<view >
-					<input class="uni-input" v-model="userInfo.nickName" />
+					<input class="uni-input" v-model="pwd" />
 				</view>
 			</view>
 		</view>
 		
-		<view class="sign_out_btn">退出</view>
+		<navigator class="sign_out_btn" hover-class="none" target="miniProgram" open-type="exit"> 退出</navigator>
 		<popup-layer v-show='boolShow' ref="popupRef" :direction="'top'">
 		  <view>
 			  <button @click="getuserinfo" @getuserinfo='getuserinfo' class="btn_box" open-type="getUserInfo" >
@@ -76,7 +81,16 @@ export default {
 	data() {
 		return {
 			urlConfig,
-			boolShow:false
+			boolShow:false,
+			userInfoByApi:{
+				orgName: "",
+				roleName: "",
+				userId: "",
+				userName: "燃气"
+			},
+			about:'系统版本 v1.0.0',
+			pwd:'******',
+			phoneNumber:''
 		};
 	},
 	computed: {
@@ -86,13 +100,16 @@ export default {
 		})
 	},
 	watch:{},
-	onShow() {
+	onLoad() {
 		vm = this
+		vm.getUserInfoFn()
+	},
+	onShow() {
 		if(!vm.userInfo.nickName){
 			vm.boolShow = true
 			vm.$refs.popupRef.show(); // 或者 boolShow = rue
-			vm.getUserInfoFn()
-			// vm.getuserinfo()
+			
+			vm.getuserinfo()
 		}else{
 			vm.boolShow = false
 			vm.$refs.popupRef.close();
@@ -111,11 +128,13 @@ export default {
 		},
 		getUserInfoFn(){
 			vm.$api.getUserInfo({
-				userName:'燃气'
+				userName:vm.userInfoByApi.userName
 			}).then(res => {
-				console.log(res.data)
-		
+				vm.userInfoByApi = res.data
 			})
+		},
+		getPhoneNumber(e){
+			console.log(JSON.stringify(e));  
 		}
 	}
 };
@@ -156,7 +175,7 @@ export default {
 	left: 26rpx;
 	right: 26rpx;
 	top: 300rpx;
-	padding: 40rpx;
+	padding: 40rpx 25rpx;
 	background: #fff;
 	.flex_between_row{
 		height: 80rpx;
@@ -164,14 +183,15 @@ export default {
 		view:first-child{
 			display: flex;
 			align-items: center;
-			width: 200rpx;
+			width: 220rpx;
 			image{
 				width: 72rpx;
 				height: 72rpx;
+				margin-right: 20rpx;
 			}
 		}
 		view:last-child{
-			width: calc(100% - 200rpx);
+			width: calc(100% - 220rpx);
 			flex-shrink: 0;
 			input{
 				height: 100%;

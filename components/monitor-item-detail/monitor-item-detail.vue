@@ -119,7 +119,7 @@ export default {
 		uni.getStorage({
 		    key: 'monitorDetail',
 		    success(res) {
-				vm.alarmId = res.data.alarmId
+				vm.alarmId = res.data.alarmId || res.data.alarmid
 				vm.alarmDetailInfoFn()
 		    }
 		});

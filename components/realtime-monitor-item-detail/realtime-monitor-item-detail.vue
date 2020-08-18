@@ -70,7 +70,7 @@ export default {
 		uni.getStorage({
 		    key: 'realtimeMonitorDetail',
 		    success(res) {
-				vm.equipId = res.data.equipId
+				vm.equipId = res.data.equipId || res.data.equipid
 				vm.getEquipDetailInfoFn()
 		    }
 		});

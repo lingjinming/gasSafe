@@ -59,6 +59,7 @@ export default {
 	watch:{
 		alarmTypes:{
 			handler(newVal){
+				vm = this
 				// debugger
 				let arr = []
 				 newVal.forEach(item => {
@@ -69,13 +70,12 @@ export default {
 				this.level = arr.join(',')
 				this.initMap()
 			},
-			deep:true
+			deep:true,
+			immediate:true,
 		},
 	},
 	onLoad(options) {
 		vm = this;
-		vm.initMap()
-		
 		if(options.realtimeMonitorDetail){
 			this.showRealtimeMonitorDetail = true
 		}else if(options.monitorDetail){
@@ -88,7 +88,6 @@ export default {
 					vm.latitude = res.latitude
 			    }
 			});
-			vm.initMap()
 		}
 	},
 	mounted(){
@@ -99,13 +98,13 @@ export default {
 			vm.latitude = data.latitude
 			console.log('longitude:',vm.longitude)
 			console.log('latitude:',vm.latitude)
+			let alarmLevel = data.alarmLevel.substr(0, data.alarmLevel.length - 1)
 			vm.markers.push({
 			  latitude: vm.latitude,
 			  longitude: vm.longitude,
-			  iconPath: '../../static/img/alarm/gas_alarm.png',
+			  iconPath: `../../static/img/alarm/alarm_level${alarmLevel}.png`,
 			  width: 30,
 			  height: 30,
-			  id:data.alarmid
 			})
 		})
 		uni.$on('realtimeMonitorDetail',(data)=>{
@@ -120,7 +119,6 @@ export default {
 			  iconPath: '../../static/img/alarm/device_alarm.png',
 			  width: 30,
 			  height: 30,
-			  id:data.alarmId
 			})
 		})
 	},
@@ -137,9 +135,29 @@ export default {
 			this.$refs.popupRef.close();// 或者 boolShow = false
 		},
 		chooseMarker(e){
+			debugger
+			
+			if(!e.detail.markerId && e.detail.markerId!=0){
+				return false
+			}
 			vm.scale = 16
 			let id = e.detail.markerId
-			debugger
+			let curMarker = vm.markers.filter(item => item.id == id)
+			if(curMarker.alarmid == ''){ // 设备点位
+				vm.monitorDetail = true
+				uni.setStorage({
+					key:'monitorDetail',
+					data:curMarker[0]
+				})
+			}else{
+				vm.showRealtimeMonitorDetail = true
+				uni.setStorage({
+					key:'realtimeMonitorDetail',
+					data:curMarker[0]
+				})
+		
+			}
+
 		},
 		initMap(){
 			vm.scale = 10
@@ -149,12 +167,14 @@ export default {
 				vm.markers = []
 				let markersArr = res.data.data
 				markersArr.forEach((item,index) => {
+					let iconPath = item.alarmid ? `../../static/img/alarm/alarm_level${item.alarmLevel}.png`:
+					`../../static/img/alarm/device_alarm.png`
 					vm.markers.push({
 					  title:'报警',
 					  id:index,
 					  latitude: item.latitude || '',
 					  longitude: item.longtitude || '',
-					  iconPath: '../../static/img/alarm/device_alarm.png',
+					  iconPath,
 					  width: 30,
 					  height: 30,
 					  alarmid:item.alarmid || '',

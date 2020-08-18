@@ -186,6 +186,10 @@ export default {
 			}).then(res =>{
 				this.monitorData = res.data.data
 				this.recordsNum = this.monitorData.length
+				// uni.setStorage({
+				// 	key:'monitorData',
+				// 	data:this.monitorData
+				// })
 			})
 		},
 		getEquipMonitorFn(){
@@ -194,6 +198,10 @@ export default {
 			}).then(res =>{
 				this.equipMonitorData = res.data
 				this.recordsNum = this.equipMonitorData.length
+				// uni.setStorage({
+				// 	key:'equipMonitorData',
+				// 	data:this.equipMonitorData
+				// })
 			})
 		}
 	}
