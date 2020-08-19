@@ -35,6 +35,9 @@ const api = {
 	//GET /mini/equipCurveData设备监测曲线 pipepointid
 	equipCurveData:(params) => request.globalRequest(`/gas/mini/equipCurveData.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 	
+	//GET /mini/getGlobalSearchInfo 全局搜索
+	getGlobalSearchInfo:(params) => request.globalRequest(`/gas/mini/getGlobalSearchInfo.mvc${formatGetUri(params)}`, 'GET',{}, 1),
+	
 }
 
 
