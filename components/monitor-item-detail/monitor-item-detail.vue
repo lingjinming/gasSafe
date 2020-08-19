@@ -31,7 +31,7 @@
 			<view class="comm_box flex_column">
 				<view class="tit_box flex_between_row">
 					<view>当前设备</view>
-					<view @click="showIndicators = !showIndicators">运行指标</view>
+					<view class="indicators" :class="{cur:showIndicators}" @click="showIndicators = !showIndicators">运行指标</view>
 				</view>
 				<view class="con_box">
 					<view class="device_info_row">
@@ -260,6 +260,22 @@ scroll-view{
 			border-bottom: 2rpx solid #dde0e4;
 			font-size: 28rpx;
 			font-weight: 600;
+			.indicators{
+				height: 50rpx;
+				line-height: 50rpx;
+				border-radius: 4rpx;
+				text-align: center;
+				padding: 0 10rpx;
+				font-size: 24rpx;
+				color: $uni-color-primary;
+				border:2rpx solid $uni-color-primary;
+			}
+			.cur{
+				border: none;
+				background: $uni-color-primary;
+				color: #fff;
+				
+			}
 		}
 		.con_box{
 			padding: 20rpx 0;

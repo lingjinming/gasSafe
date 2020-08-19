@@ -51,7 +51,6 @@ export default {
 			}
 			uni.getUserInfo({
 			    success: (res) => {
-			        console.log(res)
 					vm.setUserInfo(res.userInfo)
 					uni.navigateTo({
 						url:`/pages/views/removeAlarm/removeAlarm?id=${id}`

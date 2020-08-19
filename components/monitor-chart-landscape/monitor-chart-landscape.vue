@@ -76,7 +76,7 @@ export default {
 					showTitle:true,
 					data:[
 						{
-							title:'甲烷浓度（VOL）',
+							title:'甲烷浓度（%VOL）',
 							position: 'left',
 							axisLine:false
 						},

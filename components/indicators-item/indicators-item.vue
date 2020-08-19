@@ -9,12 +9,24 @@
 			<text>电池电压</text>
 		</view>
 		<view class="flex_around_column">
-			{{equipMonitorData.humidity}}
-			<text>气压（KP）</text>
+			{{equipMonitorData.datalength}}
+			<text>液位（cm）</text>
 		</view>
 		<view class="flex_around_column">
 			{{equipMonitorData.temperature}}
 			<text>温度℃</text>
+		</view>
+		<view class="flex_around_column">
+			{{equipMonitorData.humidity}}
+			<text>湿度%RH</text>
+		</view>
+		<view class="flex_around_column">
+			{{equipMonitorData.signal}}
+			<text>流量（m3/h）</text>
+		</view>
+		<view class="flex_around_column">
+			{{equipMonitorData.temperature}}
+			<text>CSQ</text>
 		</view>
 		<view class="flex_around_column">
 			{{equipMonitorData.water}}
@@ -38,14 +50,14 @@ export default {
 			  "msg": "success",
 			  "datalength": 0,
 			  "datatime": "2020-08-11 20:37:33",
-			  "guard": "否",
-			  "temperature": "27.0",
-			  "humidity": "84.0",
-			  "realdata": "0.00%VOL",
+			  // "guard": "否",
+			  // "temperature": "27.0",
+			  // "humidity": "84.0",
+			  // "realdata": "0.00%VOL",
 			  "signal": "10.0",
-			  "water": "是",
-			  "speed": "0.0",
-			  "voltage": "3.7"
+			  // "water": "是",
+			  // "speed": "0.0",
+			  // "voltage": "3.7"
 			}
 		};
 	},

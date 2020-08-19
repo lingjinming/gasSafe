@@ -65,7 +65,7 @@
 		<navigator class="sign_out_btn" hover-class="none" target="miniProgram" open-type="exit"> 退出</navigator>
 		<popup-layer v-show='boolShow' ref="popupRef" :direction="'top'">
 		  <view>
-			  <button @click="getuserinfo" @getuserinfo='getuserinfo' class="btn_box" open-type="getUserInfo" >
+			  <button @getuserinfo='getuserinfo' class="btn_box" open-type="getUserInfo" >
 				  请授权获取用户信息
 			  </button>
 		  </view>
@@ -99,13 +99,17 @@ export default {
 			userInfo: ({user}) => user.userInfo,
 		})
 	},
-	watch:{},
+	watch:{
+		userInfo(newVal){
+			console.log(newVal)
+		}
+	},
 	onLoad() {
 		vm = this
 		vm.getUserInfoFn()
 	},
 	onShow() {
-		if(!vm.userInfo.nickName){
+		if(!vm.userInfo || !vm.userInfo.nickName){
 			vm.boolShow = true
 			vm.$refs.popupRef.show(); // 或者 boolShow = rue
 			

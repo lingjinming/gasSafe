@@ -52,6 +52,11 @@ export default {
 						id:3,
 						value:'三级报警',
 						checked:true
+					},
+					{
+						id:0,
+						value:'无报警',
+						checked:true
 					}
 			],
 		};
@@ -68,6 +73,9 @@ export default {
 					 }
 				 })
 				this.level = arr.join(',')
+				if(arr.length == vm.alarmTypes.length){
+					this.level = ''		 
+				}
 				this.initMap()
 			},
 			deep:true,
@@ -135,24 +143,24 @@ export default {
 			this.$refs.popupRef.close();// 或者 boolShow = false
 		},
 		chooseMarker(e){
-			debugger
-			
-			if(!e.detail.markerId && e.detail.markerId!=0){
-				return false
-			}
+			// debugger
+			// if(!e.detail.markerId && e.detail.markerId!=0){
+			// 	return false
+			// }
 			vm.scale = 16
 			let id = e.detail.markerId
 			let curMarker = vm.markers.filter(item => item.id == id)
-			if(curMarker.alarmid == ''){ // 设备点位
+			if(curMarker[0].alarmid == ''){ // 设备点位
+			vm.showRealtimeMonitorDetail = true
+				uni.setStorage({
+					key:'realtimeMonitorDetail',
+					data:curMarker[0]
+				})
+				
+			}else{
 				vm.monitorDetail = true
 				uni.setStorage({
 					key:'monitorDetail',
-					data:curMarker[0]
-				})
-			}else{
-				vm.showRealtimeMonitorDetail = true
-				uni.setStorage({
-					key:'realtimeMonitorDetail',
 					data:curMarker[0]
 				})
 		
@@ -169,8 +177,9 @@ export default {
 				markersArr.forEach((item,index) => {
 					let iconPath = item.alarmid ? `../../static/img/alarm/alarm_level${item.alarmLevel}.png`:
 					`../../static/img/alarm/device_alarm.png`
+					let title = item.alarmid ? '甲烷浓度超标报警':''
 					vm.markers.push({
-					  title:'报警',
+					  title,
 					  id:index,
 					  latitude: item.latitude || '',
 					  longitude: item.longtitude || '',
