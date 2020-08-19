@@ -152,6 +152,8 @@ export default {
 			let curMarker = vm.markers.filter(item => item.id == id)
 			if(curMarker[0].alarmid == ''){ // 设备点位
 			vm.showRealtimeMonitorDetail = true
+			vm.monitorDetail = false
+			
 				uni.setStorage({
 					key:'realtimeMonitorDetail',
 					data:curMarker[0]
@@ -159,6 +161,8 @@ export default {
 				
 			}else{
 				vm.monitorDetail = true
+				vm.showRealtimeMonitorDetail = false
+				
 				uni.setStorage({
 					key:'monitorDetail',
 					data:curMarker[0]

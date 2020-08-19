@@ -20,6 +20,10 @@
 			};
 		},
 		methods: {
+			handleClick(){
+				this.isUp = !this.isUp
+				this.$emit('update:isUp',this.isUp)
+			},
 			start(e){
 				this.startData.clientX=e.changedTouches[0].clientX;
 				this.startData.clientY=e.changedTouches[0].clientY;
@@ -30,7 +34,6 @@
 				if(subY>50 || subY<-50){
 					if(subY>50){
 						this.$emit('update:isUp',false)
-						
 					}else if(subY<-50){
 						this.$emit('update:isUp',true)
 					}

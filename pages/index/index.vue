@@ -85,7 +85,7 @@ export default {
 					{	
 						id:1,
 						value:'已解除',
-						checked:true
+						checked:false
 					}
 			],
 			installStatus:[

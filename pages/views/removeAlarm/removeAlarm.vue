@@ -81,5 +81,6 @@ export default {
 	height: 90rpx;
 	line-height: 90rpx;
 	font-size: 32rpx;
+	width: calc(100% - 100rpx);
 }
 </style>
