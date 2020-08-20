@@ -84,6 +84,9 @@
 			},
 			clear() {
 				this.searchVal = ""
+				this.$emit("confirm", {
+					value: this.searchVal
+				})
 			},
 			cancel() {
 				this.$emit("cancel", {

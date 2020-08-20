@@ -51,7 +51,7 @@
 					<input class="uni-input" disabled v-model="about" />
 				</view>
 			</view>
-			<view class="flex_between_row">
+<!-- 			<view class="flex_between_row">
 				<view>
 					<image src="../../../static/img/psd.png" mode=""></image>
 					<text>修改密码</text>
@@ -59,7 +59,7 @@
 				<view >
 					<input class="uni-input" v-model="pwd" />
 				</view>
-			</view>
+			</view> -->
 		</view>
 		
 		<navigator class="sign_out_btn" hover-class="none" target="miniProgram" open-type="exit"> 退出</navigator>

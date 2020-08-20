@@ -60,4 +60,23 @@ button,.container{
 .box_shadow{
 	box-shadow: 0 0 10rpx 8rpx rgba(211, 211, 211, 0.2);
 }
+.fixed_box{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 999;
+	width: 100%;
+	background: #fff;
+}
+.padding_right150{
+	padding-right: 150rpx;
+}
+.openLocation_btn{
+	position: absolute;
+	z-index: 999;
+	width: 100rpx;
+	height: 100rpx;
+	right: 40rpx;
+	top: 60rpx;
+}
 </style>

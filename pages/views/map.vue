@@ -10,7 +10,7 @@
 	<view class="layer_box" @click='show'>
 			<image src="../../static/img/layer.png"></image>
 	</view>
-	<uni-search-bar :placeholder="'搜地点,查设备,找窨井'"></uni-search-bar>
+	<uni-search-bar :placeholder="'搜地点,查设备,找窨井'" @confirm='getkeyword' @clear='getkeyword'></uni-search-bar>
 	<popup-layer v-show='boolShow' ref="popupRef" :direction="'left'">
 	  <type-tab :title="'报警级别'" :isColumn=true :tabs.sync="alarmTypes">
 	  </type-tab>
@@ -133,6 +133,17 @@ export default {
 		uni.$off('realtimeMonitorDetail')
 	},
 	methods: {
+		getkeyword(data){
+			vm.scale = 10
+			vm.markers = []
+			vm.monitorDetail = false
+			vm.showRealtimeMonitorDetail = false
+			vm.$api.getGlobalSearchInfo({
+				name:data.value
+			}).then(res=>{
+				vm.showMarkers(res.data.data)
+			})
+		},
 		show(){
 			this.boolShow = true
 			this.$refs.popupRef.show(); // 或者 boolShow = rue
@@ -174,29 +185,31 @@ export default {
 			vm.$api.getAlarmMapView({
 				level:vm.level
 			}).then(res => {
-				vm.markers = []
-				let markersArr = res.data.data
-				markersArr.forEach((item,index) => {
-					let iconPath = item.alarmid ? `../../static/img/alarm/alarm_level${item.alarmLevel}.png`:
-					`../../static/img/alarm/device_alarm.png`
-					let title = item.alarmid ? '甲烷浓度超标报警':''
-					vm.markers.push({
-					  title,
-					  id:item.longtitude,
-					  latitude: item.latitude || '',
-					  longitude: item.longtitude || '',
-					  iconPath,
-					  width: 30,
-					  height: 30,
-					  alarmid:item.alarmid || '',
-					  equipid:item.equipid || '',
-					  alarmLevel:item.alarmLevel || ''
-					})
-				})
-				
-				console.log(vm.markers)
+				vm.showMarkers(res.data.data)
 			})
 		},
+		showMarkers(markersArr){
+			console.log(JSON.stringify(markersArr))
+			vm.markers = []
+			markersArr.forEach((item,index) => {
+				let iconPath = item.alarmid ? `../../static/img/alarm/alarm_level${item.alarmLevel}.png`:
+				`../../static/img/alarm/device_alarm.png`
+				let title = item.alarmid ? '甲烷浓度超标报警':''
+				vm.markers.push({
+				  title,
+				  id:item.longtitude,
+				  latitude: item.latitude || '',
+				  longitude: item.longtitude || '',
+				  iconPath,
+				  width: 30,
+				  height: 30,
+				  alarmid:item.alarmid || '',
+				  equipid:item.equipid || '',
+				  alarmLevel:item.alarmLevel || ''
+				})
+			})
+			
+		}
 	}
 };
 </script>

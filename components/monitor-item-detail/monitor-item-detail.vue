@@ -1,9 +1,13 @@
 <template>
 	<view class="item_detail_box box_shadow" :style="!isUp?hide:show">
 		<pull-up :isUp.sync='isUp'></pull-up>
+		<view class="fixed_box removeAlarm_btn_box">
+			<view class="btn_removeAlarm" @click="removeAlarm">报警处置</view>
+		</view>
+		<image @click="openLocation" class="openLocation_btn" src="../../static/img/open_location.png" mode=""></image>
 		<view class="detail_head">
-			<view class="alarmDesc">{{monitorDetail.alarmDesc}}</view>
-			<view>
+			<view class="alarmDesc padding_right150">{{monitorDetail.alarmDesc}}</view>
+			<view class="padding_right150">
 				<!-- <text>1.6km</text>|<text>{{monitorDetail.alarmRoad}}</text> -->
 				<text>{{monitorDetail.alarmRoad}}</text>
 			</view>
@@ -109,7 +113,7 @@ export default {
 			alarmId:'',
 			isUp:false ,//默认收起状态
 			show:"height: 1000rpx;top:calc(100vh - 1000rpx)",
-			hide:"height: 260rpx;top:calc(100vh - 260rpx)",
+			hide:"height: 340rpx;top:calc(100vh - 340rpx)",
 			showIndicators:false,
 			chartData:null,
 		};
@@ -125,6 +129,20 @@ export default {
 		});
 	},
 	methods: {
+		openLocation(){
+			uni.openLocation({
+				latitude:this.monitorDetail.latitude,
+				longitude:this.monitorDetail.longtitude,
+				name:this.monitorDetail.alarmPoint,
+				address:this.monitorDetail.alarmRoad
+			})
+		},
+		removeAlarm(){
+			let id = vm.alarmId
+			uni.navigateTo({
+				url:`/pages/views/removeAlarm/removeAlarm?id=${id}`
+			})
+		},
 		alarmDetailInfoFn(){
 			this.$api.alarmDetailInfo({
 				alarmId:this.alarmId
@@ -167,7 +185,7 @@ export default {
 	width: 100%;	
 	border-top-left-radius: 10rpx;
 	border-top-right-radius: 10rpx;
-	padding: 0 20rpx;
+	padding: 0 20rpx 80rpx;
 	background: #FFFFFF;
 	transition: all .5s;
 	.detail_head{
@@ -293,5 +311,20 @@ scroll-view{
 		}
 	}
 }
-
+.removeAlarm_btn_box{
+	height: 90rpx;
+	line-height: 90rpx;
+	display: flex;
+	align-items: center;
+	padding: 0 40rpx;
+	box-shadow: 0 0 10rpx 8rpx rgba(211, 211, 211, 0.2);
+	.btn_removeAlarm{
+		height: 60rpx;
+		line-height: 60rpx;
+		color: $uni-color-primary;
+		border: 2rpx solid $uni-color-primary;
+		border-radius: 10rpx;
+		padding: 0 30rpx;
+	}
+}
 </style>

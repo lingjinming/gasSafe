@@ -1,9 +1,10 @@
 <template>
 	<view class="item_detail_box box_shadow" :style="!isUp?hide:show">
 		<pull-up :isUp.sync='isUp'></pull-up>
+		<image @click="openLocation" class="openLocation_btn" src="../../static/img/open_location.png" mode=""></image>
 		<view class="detail_head">
-			<view class="alarmDesc">{{realtimeMonitorDetail.equipmentCode}}</view>
-			<view>
+			<view class="alarmDesc padding_right150">{{realtimeMonitorDetail.equipmentCode}}</view>
+			<view class="padding_right150">
 				<!-- <text>1.6km</text>|<text>{{realtimeMonitorDetail.alarmRoad}}</text> -->
 				<text>{{realtimeMonitorDetail.installPos}}</text>
 			</view>
@@ -76,6 +77,14 @@ export default {
 		});
 	},
 	methods: {
+		openLocation(){
+			uni.openLocation({
+				latitude:this.realtimeMonitorDetail.latitude,
+				longitude:this.realtimeMonitorDetail.longtitude,
+				name:this.realtimeMonitorDetail.alarmPoint,
+				address:this.realtimeMonitorDetail.alarmRoad
+			})
+		},
 		getEquipDetailInfoFn(){
 			this.$api.getEquipDetailInfo({
 				equipId:this.equipId
