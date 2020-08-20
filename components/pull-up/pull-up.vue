@@ -57,7 +57,7 @@
 	left: 50%;
 	transform: translateX(-50%);
 	top: 0;
-	height: 80rpx;
+	height: 100%;
 	width: 100%;
 	color: #428ee4;
 	font-size: 24rpx;

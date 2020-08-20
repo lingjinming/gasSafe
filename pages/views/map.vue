@@ -104,8 +104,6 @@ export default {
 			vm.scale = 16
 			vm.longitude = data.longtitude
 			vm.latitude = data.latitude
-			console.log('longitude:',vm.longitude)
-			console.log('latitude:',vm.latitude)
 			let alarmLevel = data.alarmLevel.substr(0, data.alarmLevel.length - 1)
 			vm.markers.push({
 			  latitude: vm.latitude,
@@ -113,20 +111,20 @@ export default {
 			  iconPath: `../../static/img/alarm/alarm_level${alarmLevel}.png`,
 			  width: 30,
 			  height: 30,
+			  id:vm.longitude
 			})
 		})
 		uni.$on('realtimeMonitorDetail',(data)=>{
 			vm.longitude = data.longtitude
 			vm.latitude = data.latitude
 			vm.scale = 16
-			console.log('longitude:',vm.longitude)
-			console.log('latitude:',vm.latitude)
 			vm.markers.push({
 			  latitude: vm.latitude,
 			  longitude: vm.longitude,
 			  iconPath: '../../static/img/alarm/device_alarm.png',
 			  width: 30,
 			  height: 30,
+			  id:vm.longitude
 			})
 		})
 	},
@@ -184,7 +182,7 @@ export default {
 					let title = item.alarmid ? '甲烷浓度超标报警':''
 					vm.markers.push({
 					  title,
-					  id:index,
+					  id:item.longtitude,
 					  latitude: item.latitude || '',
 					  longitude: item.longtitude || '',
 					  iconPath,

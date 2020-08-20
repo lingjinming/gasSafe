@@ -101,7 +101,7 @@ export default {
 				}
 			],
 			level:'1,2,3',
-			ravelflag:"0,1",
+			ravelflag:"0",
 			install:"0,1",
 			recordsNum:0,
 			monitorData:[],
