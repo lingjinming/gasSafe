@@ -2,7 +2,7 @@
 	<view class="item_detail_box box_shadow" :style="!isUp?hide:show">
 		<pull-up :isUp.sync='isUp'></pull-up>
 		<view class="fixed_box removeAlarm_btn_box">
-			<view class="btn_removeAlarm" @click="removeAlarm">报警处置</view>
+			<view class="btn_removeAlarm" :class="{alarm_removed:!monitorDetail.ravelFlag}" @click="removeAlarm">{{!monitorDetail.ravelFlag?'报警已解除':'报警解除'}}</view>
 		</view>
 		<image @click="openLocation" class="openLocation_btn" src="../../static/img/open_location.png" mode=""></image>
 		<view class="detail_head">
@@ -120,15 +120,18 @@ export default {
 	},
 	mounted() {
 		vm = this;
-		uni.getStorage({
-		    key: 'monitorDetail',
-		    success(res) {
-				vm.alarmId = res.data.alarmId || res.data.alarmid
-				vm.alarmDetailInfoFn()
-		    }
-		});
+		vm.init()
 	},
 	methods: {
+		init(){
+			uni.getStorage({
+			    key: 'monitorDetail',
+			    success(res) {
+					vm.alarmId = res.data.alarmId || res.data.alarmid
+					vm.alarmDetailInfoFn()
+			    }
+			});
+		},
 		openLocation(){
 			uni.openLocation({
 				latitude:this.monitorDetail.latitude,
@@ -138,6 +141,9 @@ export default {
 			})
 		},
 		removeAlarm(){
+			if(!vm.monitorDetail.ravelFlag){
+				return false
+			}
 			let id = vm.alarmId
 			uni.navigateTo({
 				url:`/pages/views/removeAlarm/removeAlarm?id=${id}`
@@ -325,6 +331,10 @@ scroll-view{
 		border: 2rpx solid $uni-color-primary;
 		border-radius: 10rpx;
 		padding: 0 30rpx;
+	}
+	.alarm_removed{
+		color: $uni-bg-color-grey;
+		border: 2rpx solid $uni-bg-color-grey;
 	}
 }
 </style>

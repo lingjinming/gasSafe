@@ -55,6 +55,7 @@
 </template>
 
 <script>
+	let vm
 export default {
 	data() {
 		return {
@@ -67,29 +68,32 @@ export default {
 		};
 	},
 	mounted() {
-		let vm = this;
-		uni.getStorage({
-		    key: 'realtimeMonitorDetail',
-		    success(res) {
-				vm.equipId = res.data.equipId || res.data.equipid
-				vm.getEquipDetailInfoFn()
-		    }
-		});
+		vm = this;
+		vm.init()
 	},
 	methods: {
+		init(){
+			uni.getStorage({
+			    key: 'realtimeMonitorDetail',
+			    success(res) {
+					vm.equipId = res.data.equipId || res.data.equipid
+					vm.getEquipDetailInfoFn()
+			    }
+			});
+		},
 		openLocation(){
 			uni.openLocation({
 				latitude:this.realtimeMonitorDetail.latitude,
 				longitude:this.realtimeMonitorDetail.longtitude,
-				name:this.realtimeMonitorDetail.alarmPoint,
-				address:this.realtimeMonitorDetail.alarmRoad
+				name:this.realtimeMonitorDetail.equipmentCode,
+				address:this.realtimeMonitorDetail.installPos
 			})
 		},
 		getEquipDetailInfoFn(){
 			this.$api.getEquipDetailInfo({
-				equipId:this.equipId
+				equipId:vm.equipId
 			}).then(res => {
-				this.realtimeMonitorDetail = res.data
+				vm.realtimeMonitorDetail = res.data
 				uni.$emit('realtimeMonitorDetail',res.data)
 			})
 		}

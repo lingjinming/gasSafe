@@ -36,7 +36,7 @@ export default {
 			default:{
 				alarmPoint: "TQ0906220005",
 				alarmTypeCode: "燃气",
-				alarmid: "8ae4deb8668bde470166a43f33d50827",
+				alarmId: "8ae4deb8668bde470166a43f33d50827",
 				equipId: "8ae4deb8668bde470166a43f33d50827",
 				equipmentCode: "NDIR001803101561",
 				installDesc: "燃气井TQ0906220005|井壁",

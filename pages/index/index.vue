@@ -1,5 +1,10 @@
 <template>
 	<view class="container"  :style="{'background-image': `url(${urlConfig}/gas/mini/getLocalFile/bg)`}">
+	<popup-layer v-show='boolShow' ref="popupRef" :direction="'top'">
+		  <button plain @getuserinfo='getuserinfo' class="btn_getuserinfo" open-type="getUserInfo" >
+			  请授权获取用户信息
+		  </button>
+	</popup-layer>
 	  <view class="header">
 		  <view class="title flex_center_row">燃气安全监测</view>
 		  <view class="flex_between_row">
@@ -36,7 +41,7 @@
 			</template>
 			<template v-else>
 				<!-- <image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!equipMonitorData.length"></image> -->
-				<realtime-monitor-item v-for='item in equipMonitorData' :realtimeMonitorData.sync='item' :key='item.alarmid'></realtime-monitor-item>
+				<realtime-monitor-item v-for='item in equipMonitorData' :realtimeMonitorData.sync='item' :key='item.alarmId'></realtime-monitor-item>
 			</template>
 		</scroll-view>
 	</view>
@@ -44,6 +49,8 @@
 
 <script>
 import urlConfig from '../../common/config.js'
+import {mapActions, mapState} from 'vuex'
+let vm ;
 export default {
 	data() {
 		return {
@@ -108,8 +115,33 @@ export default {
 			equipMonitorData:[]
 		};
 	},
+	onLoad() {
+		setTimeout(()=>{
+			this.changeType(this.curType)
+		},30)
+	},
 	onShow() {
-		this.changeType(this.curType)
+		vm = this
+		if(!vm.userInfo || !vm.userInfo.nickName){
+			vm.boolShow = true
+			vm.$refs.popupRef.show(); // 或者 boolShow = rue
+			
+			vm.getuserinfo()
+		}else{
+			vm.boolShow = false
+			vm.$refs.popupRef.close();
+		}
+	},
+	mounted() {
+		uni.$on('relieveAlarmSuccess',()=>{
+			vm.changeType(this.curType)
+		})
+	},
+	computed: {
+		...mapState({
+			//这里可以通过这种方式引用相应模块的state数据，其中user是模块名。在代码的其他部分可以使用this.userInfo访问数据
+			userInfo: ({user}) => user.userInfo,
+		})
 	},
 	watch:{
 		alarmTypes:{
@@ -154,6 +186,27 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions(['setUserInfo']),
+		getuserinfo(){
+			uni.getUserInfo({
+			    success: (res) => {
+					vm.setUserInfo(res.userInfo) 
+					vm.getUserInfoFn(res.userInfo.nickName)
+			    }
+			})
+		},
+		getUserInfoFn(userName){
+			vm.$api.getUserInfo({
+				userName
+			}).then(res => {
+				vm.boolShow = false
+				vm.$refs.popupRef.close();
+				uni.setStorage({
+					key:'userInfoByApi',
+					data:res.data
+				})
+			})
+		},
 		reset(){
 			this.recordsNum = 0
 			this.monitorData = []
@@ -183,6 +236,7 @@ export default {
 			this.$api.getAlarmInfo({
 				level:this.level,
 				ravelflag:this.ravelflag,
+				userName:vm.userInfo.nickName
 			}).then(res =>{
 				this.monitorData = res.data.data
 				this.recordsNum = this.monitorData.length
@@ -194,7 +248,8 @@ export default {
 		},
 		getEquipMonitorFn(){
 			this.$api.getEquipMonitor({
-				install:this.install
+				install:this.install,
+				userName:vm.userInfo.nickName
 			}).then(res =>{
 				this.equipMonitorData = res.data
 				this.recordsNum = this.equipMonitorData.length
@@ -286,5 +341,9 @@ scroll-view{
 	.no_alarm{
 		width: 100%;
 	}
+}
+.btn_getuserinfo{
+	height: 100rpx;
+	line-height: 100rpx;
 }
 </style>

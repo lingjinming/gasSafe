@@ -48,6 +48,7 @@ export default {
 				alarmId:this.alarmId,
 				operator:this.operator
 			}).then(res => {
+				uni.$emit('relieveAlarmSuccess')
 				uni.navigateBack()
 			})
 		},

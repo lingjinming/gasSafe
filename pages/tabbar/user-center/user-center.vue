@@ -21,7 +21,7 @@
 					<text>姓名</text>
 				</view>
 				<view >
-					<input class="uni-input" v-model="userInfoByApi.userName" />
+					<input class="uni-input" disabled v-model="userInfoByApi.userName" />
 				</view>
 			</view>
 			<view class="flex_between_row">
@@ -63,13 +63,7 @@
 		</view>
 		
 		<navigator class="sign_out_btn" hover-class="none" target="miniProgram" open-type="exit"> 退出</navigator>
-		<popup-layer v-show='boolShow' ref="popupRef" :direction="'top'">
-		  <view>
-			  <button @getuserinfo='getuserinfo' class="btn_box" open-type="getUserInfo" >
-				  请授权获取用户信息
-			  </button>
-		  </view>
-		</popup-layer>
+
 	</view>
 </template>
 
@@ -86,7 +80,7 @@ export default {
 				orgName: "",
 				roleName: "",
 				userId: "",
-				userName: "燃气"
+				userName: ""
 			},
 			about:'系统版本 v1.0.0',
 			pwd:'******',
@@ -99,42 +93,26 @@ export default {
 			userInfo: ({user}) => user.userInfo,
 		})
 	},
-	watch:{
-		userInfo(newVal){
-			console.log(newVal)
-		}
-	},
-	onLoad() {
+	onShow() {
 		vm = this
 		vm.getUserInfoFn()
-	},
-	onShow() {
-		if(!vm.userInfo || !vm.userInfo.nickName){
-			vm.boolShow = true
-			vm.$refs.popupRef.show(); // 或者 boolShow = rue
+		// if(!vm.userInfo || !vm.userInfo.nickName){
+		// 	vm.boolShow = true
+		// 	vm.$refs.popupRef.show(); // 或者 boolShow = rue
 			
-			vm.getuserinfo()
-		}else{
-			vm.boolShow = false
-			vm.$refs.popupRef.close();
-		}
+		// 	vm.getuserinfo()
+		// }else{
+		// 	vm.boolShow = false
+		// 	vm.$refs.popupRef.close();
+		// }
 	},
 	methods: {
-		...mapActions(['setUserInfo']),
-		getuserinfo(){
-			uni.getUserInfo({
-			    complete: (res) => {
-					vm.setUserInfo(res.userInfo) 
-					vm.boolShow = false
-					vm.$refs.popupRef.close();
-			    }
-			})
-		},
 		getUserInfoFn(){
-			vm.$api.getUserInfo({
-				userName:vm.userInfoByApi.userName
-			}).then(res => {
-				vm.userInfoByApi = res.data
+			uni.getStorage({
+				key:'userInfoByApi',
+				success(data){
+					vm.userInfoByApi = data.data
+				}
 			})
 		},
 		getPhoneNumber(e){

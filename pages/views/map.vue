@@ -16,8 +16,8 @@
 	  </type-tab>
 	</popup-layer>
 	
-	<monitor-item-detail v-if='monitorDetail'></monitor-item-detail>
-	<realtime-monitor-item-detail v-if='showRealtimeMonitorDetail'></realtime-monitor-item-detail>
+	<monitor-item-detail v-if='monitorDetail' ref='monitorDetail'></monitor-item-detail>
+	<realtime-monitor-item-detail v-if='showRealtimeMonitorDetail' ref='showRealtimeMonitorDetail'></realtime-monitor-item-detail>
 	  
 	</view>
 </template>
@@ -65,7 +65,6 @@ export default {
 		alarmTypes:{
 			handler(newVal){
 				vm = this
-				// debugger
 				let arr = []
 				 newVal.forEach(item => {
 					 if (item.checked) {
@@ -104,28 +103,11 @@ export default {
 			vm.scale = 16
 			vm.longitude = data.longtitude
 			vm.latitude = data.latitude
-			let alarmLevel = data.alarmLevel.substr(0, data.alarmLevel.length - 1)
-			vm.markers.push({
-			  latitude: vm.latitude,
-			  longitude: vm.longitude,
-			  iconPath: `../../static/img/alarm/alarm_level${alarmLevel}.png`,
-			  width: 30,
-			  height: 30,
-			  id:vm.longitude
-			})
 		})
 		uni.$on('realtimeMonitorDetail',(data)=>{
 			vm.longitude = data.longtitude
 			vm.latitude = data.latitude
 			vm.scale = 16
-			vm.markers.push({
-			  latitude: vm.latitude,
-			  longitude: vm.longitude,
-			  iconPath: '../../static/img/alarm/device_alarm.png',
-			  width: 30,
-			  height: 30,
-			  id:vm.longitude
-			})
 		})
 	},
 	beforeDestroy() {
@@ -135,11 +117,11 @@ export default {
 	methods: {
 		getkeyword(data){
 			vm.scale = 10
-			vm.markers = []
 			vm.monitorDetail = false
 			vm.showRealtimeMonitorDetail = false
 			vm.$api.getGlobalSearchInfo({
-				name:data.value
+				name:data.value,
+				userName:vm.$store.state.user.userInfo.nickName
 			}).then(res=>{
 				vm.showMarkers(res.data.data)
 			})
@@ -152,20 +134,23 @@ export default {
 			this.$refs.popupRef.close();// 或者 boolShow = false
 		},
 		chooseMarker(e){
-			// debugger
+			
 			// if(!e.detail.markerId && e.detail.markerId!=0){
 			// 	return false
 			// }
 			vm.scale = 16
-			let id = e.detail.markerId
-			let curMarker = vm.markers.filter(item => item.id == id)
+			let curMarker = vm.markers.filter(item => item.id == e.detail.markerId)
+			debugger
 			if(curMarker[0].alarmid == ''){ // 设备点位
-			vm.showRealtimeMonitorDetail = true
-			vm.monitorDetail = false
+				vm.showRealtimeMonitorDetail = true
+				vm.monitorDetail = false
 			
 				uni.setStorage({
 					key:'realtimeMonitorDetail',
-					data:curMarker[0]
+					data:curMarker[0],
+					success() {
+						vm.$refs.showRealtimeMonitorDetail.init()
+					}
 				})
 				
 			}else{
@@ -174,7 +159,10 @@ export default {
 				
 				uni.setStorage({
 					key:'monitorDetail',
-					data:curMarker[0]
+					data:curMarker[0],
+					success() {
+						vm.$refs.monitorDetail.init()
+					}
 				})
 		
 			}
@@ -183,13 +171,13 @@ export default {
 		initMap(){
 			vm.scale = 10
 			vm.$api.getAlarmMapView({
-				level:vm.level
+				level:vm.level,
+				userName:vm.$store.state.user.userInfo.nickName
 			}).then(res => {
 				vm.showMarkers(res.data.data)
 			})
 		},
 		showMarkers(markersArr){
-			console.log(JSON.stringify(markersArr))
 			vm.markers = []
 			markersArr.forEach((item,index) => {
 				let iconPath = item.alarmid ? `../../static/img/alarm/alarm_level${item.alarmLevel}.png`:
@@ -197,7 +185,7 @@ export default {
 				let title = item.alarmid ? '甲烷浓度超标报警':''
 				vm.markers.push({
 				  title,
-				  id:item.longtitude,
+				  id:item.markerId,
 				  latitude: item.latitude || '',
 				  longitude: item.longtitude || '',
 				  iconPath,
