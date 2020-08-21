@@ -18,7 +18,7 @@
 				<view class="value">{{realtimeMonitorData.installDesc}}</view>
 			</view>
 		</view>
-		<view @click="enterMonitorData(realtimeMonitorData.alarmPoint)" class="btn_box" >
+		<view @click="enterMonitorData(realtimeMonitorData.alarmInspect)" class="btn_box" >
 		监测曲线
 		</view>
 	</view>
@@ -39,10 +39,10 @@ export default {
 		let vm = this;
 	},
 	methods: {
-		enterMonitorData(alarmPoint){
+		enterMonitorData(alarmInspect){
 			debugger
 			uni.navigateTo({
-				url:`/pages/views/monitorCurve/monitorCurve?alarmPoint=${alarmPoint}`,
+				url:`/pages/views/monitorCurve/monitorCurve?alarmInspect=${alarmInspect}`,
 				// complete(data) {
 				// 	console.log(data)
 				// }

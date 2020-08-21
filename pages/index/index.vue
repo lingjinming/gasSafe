@@ -116,9 +116,9 @@ export default {
 		};
 	},
 	onLoad() {
-		setTimeout(()=>{
-			this.changeType(this.curType)
-		},30)
+		// setTimeout(()=>{
+		// 	this.changeType(this.curType)
+		// },30)
 	},
 	onShow() {
 		vm = this
@@ -199,12 +199,16 @@ export default {
 			vm.$api.getUserInfo({
 				userName
 			}).then(res => {
-				vm.boolShow = false
-				vm.$refs.popupRef.close();
+
 				uni.setStorage({
 					key:'userInfoByApi',
-					data:res.data
+					data:res.data,
+					success() {
+						vm.changeType(vm.curType)
+					}
 				})
+				vm.boolShow = false
+				vm.$refs.popupRef.close();
 			})
 		},
 		reset(){

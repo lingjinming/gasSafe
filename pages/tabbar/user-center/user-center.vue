@@ -51,15 +51,6 @@
 					<input class="uni-input" disabled v-model="about" />
 				</view>
 			</view>
-<!-- 			<view class="flex_between_row">
-				<view>
-					<image src="../../../static/img/psd.png" mode=""></image>
-					<text>修改密码</text>
-				</view>
-				<view >
-					<input class="uni-input" v-model="pwd" />
-				</view>
-			</view> -->
 		</view>
 		
 		<navigator class="sign_out_btn" hover-class="none" target="miniProgram" open-type="exit"> 退出</navigator>
@@ -96,15 +87,6 @@ export default {
 	onShow() {
 		vm = this
 		vm.getUserInfoFn()
-		// if(!vm.userInfo || !vm.userInfo.nickName){
-		// 	vm.boolShow = true
-		// 	vm.$refs.popupRef.show(); // 或者 boolShow = rue
-			
-		// 	vm.getuserinfo()
-		// }else{
-		// 	vm.boolShow = false
-		// 	vm.$refs.popupRef.close();
-		// }
 	},
 	methods: {
 		getUserInfoFn(){

@@ -2,7 +2,7 @@
 	<view class="item_detail_box box_shadow" :style="!isUp?hide:show">
 		<pull-up :isUp.sync='isUp'></pull-up>
 		<view class="fixed_box removeAlarm_btn_box">
-			<view class="btn_removeAlarm" :class="{alarm_removed:!monitorDetail.ravelFlag}" @click="removeAlarm">{{!monitorDetail.ravelFlag?'报警已解除':'报警解除'}}</view>
+			<view class="btn_removeAlarm" :class="{alarm_removed:monitorDetail.ravelFlag}" @click="removeAlarm">{{monitorData.ravelFlag?'报警已解除':'报警解除'}}</view>
 		</view>
 		<image @click="openLocation" class="openLocation_btn" src="../../static/img/open_location.png" mode=""></image>
 		<view class="detail_head">
@@ -141,7 +141,7 @@ export default {
 			})
 		},
 		removeAlarm(){
-			if(!vm.monitorDetail.ravelFlag){
+			if(vm.monitorDetail.ravelFlag){
 				return false
 			}
 			let id = vm.alarmId
@@ -333,8 +333,8 @@ scroll-view{
 		padding: 0 30rpx;
 	}
 	.alarm_removed{
-		color: $uni-bg-color-grey;
-		border: 2rpx solid $uni-bg-color-grey;
+		color: $uni-text-color-disable;
+		border: 2rpx solid $uni-text-color-disable;
 	}
 }
 </style>

@@ -14,8 +14,8 @@ export default {
 	},
 	onLoad(options) {
 		vm = this
-		if(options.alarmPoint){
-			vm.equipCurveDataFn(options.alarmPoint)
+		if(options.alarmInspect){
+			vm.equipCurveDataFn(options.alarmInspect)
 		}else{
 			uni.getStorage({
 				key:'monitorDetailData',
@@ -26,11 +26,12 @@ export default {
 		}
 	},
 	methods: {
-		equipCurveDataFn(pipepointid){
+		equipCurveDataFn(alarmInspect){
 			vm.$api.equipCurveData({
-				pipepointid
+				pipepointid:alarmInspect
 			}).then(res => {
 				let data = res.data
+				debugger
 				vm.chartData = {
 					categories: data['times'],
 					series: [
