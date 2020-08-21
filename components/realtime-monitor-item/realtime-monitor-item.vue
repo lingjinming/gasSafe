@@ -32,19 +32,7 @@ export default {
 	},
 	props:{
 		realtimeMonitorData:{
-			type:Object,
-			default:{
-				alarmPoint: "TQ0906220005",
-				alarmTypeCode: "燃气",
-				alarmId: "8ae4deb8668bde470166a43f33d50827",
-				equipId: "8ae4deb8668bde470166a43f33d50827",
-				equipmentCode: "NDIR001803101561",
-				installDesc: "燃气井TQ0906220005|井壁",
-				installPos: "珠江路与宿松路交叉口西南角，沿宿松路向南880米，绿化带里",
-				monitorTime: "2020-08-11 20:37:33",
-				monitorValue: "0.00%VOL",
-				senorCode: "0_0"
-			},
+			type:Object
 		},
 	},
 	onLoad() {
@@ -52,6 +40,7 @@ export default {
 	},
 	methods: {
 		enterMonitorData(alarmPoint){
+			debugger
 			uni.navigateTo({
 				url:`/pages/views/monitorCurve/monitorCurve?alarmPoint=${alarmPoint}`,
 				// complete(data) {

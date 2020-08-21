@@ -140,7 +140,7 @@ export default {
 			// }
 			vm.scale = 16
 			let curMarker = vm.markers.filter(item => item.id == e.detail.markerId)
-			debugger
+			// debugger
 			if(curMarker[0].alarmid == ''){ // 设备点位
 				vm.showRealtimeMonitorDetail = true
 				vm.monitorDetail = false
@@ -191,12 +191,12 @@ export default {
 				  iconPath,
 				  width: 30,
 				  height: 30,
-				  alarmid:item.alarmid || '',
-				  equipid:item.equipid || '',
+				  alarmid:item.alarmId || '',
+				  equipid:item.equipId || '',
 				  alarmLevel:item.alarmLevel || ''
 				})
 			})
-			
+			console.log(vm.markers)
 		}
 	}
 };

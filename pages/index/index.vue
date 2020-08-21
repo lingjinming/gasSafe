@@ -253,6 +253,7 @@ export default {
 			}).then(res =>{
 				this.equipMonitorData = res.data
 				this.recordsNum = this.equipMonitorData.length
+				// debugger
 				// uni.setStorage({
 				// 	key:'equipMonitorData',
 				// 	data:this.equipMonitorData
