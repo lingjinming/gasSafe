@@ -2,7 +2,7 @@
 	<view class="item_box box_shadow">
 	  	<view class="info" @click="enterEquipDetailInfo(realtimeMonitorData)">
 			<view class="tit flex_between_row">
-				<view class="alarm_level">{{realtimeMonitorData.alarmPoint}}</view>
+				<view class="alarm_level">{{realtimeMonitorData.equipmentCode}}</view>
 				<view class="alarm_type">{{realtimeMonitorData.monitorValue}}</view>
 			</view>
 			<view class="info_box">
@@ -40,7 +40,6 @@ export default {
 	},
 	methods: {
 		enterMonitorData(alarmInspect){
-			debugger
 			uni.navigateTo({
 				url:`/pages/views/monitorCurve/monitorCurve?alarmInspect=${alarmInspect}`,
 				// complete(data) {

@@ -11,7 +11,7 @@
 			</view>
 			<view class="info_box">
 				<view class="label">具体位置</view>
-				<view class="value">{{monitorData.alarmDesc}}</view>
+				<view class="value">{{monitorData.alarmRoad}}</view>
 			</view>
 		</view>
 		<button plain :style="{'color':monitorData.ravelFlag?'#999':'#428ee4'}" class="btn_box"  

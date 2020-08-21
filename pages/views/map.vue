@@ -100,9 +100,9 @@ export default {
 	mounted(){
 		uni.$on('alarmDetailPos',(alarmDetailPos)=>{
 			let data = alarmDetailPos[0]
-			vm.scale = 16
 			vm.longitude = data.longtitude
 			vm.latitude = data.latitude
+			vm.scale = 16
 		})
 		uni.$on('realtimeMonitorDetail',(data)=>{
 			vm.longitude = data.longtitude
@@ -141,6 +141,12 @@ export default {
 			vm.scale = 16
 			let curMarker = vm.markers.filter(item => item.id == e.detail.markerId)
 			// debugger
+			vm.markers.forEach(item =>{
+				item['width'] = 30
+				item['height'] = 30
+			})
+			curMarker[0]['width'] = 40
+			curMarker[0]['height'] = 40
 			if(curMarker[0].alarmid == ''){ // 设备点位
 				vm.showRealtimeMonitorDetail = true
 				vm.monitorDetail = false
@@ -182,18 +188,19 @@ export default {
 			markersArr.forEach((item,index) => {
 				let iconPath = item.alarmid ? `../../static/img/alarm/alarm_level${item.alarmLevel}.png`:
 				`../../static/img/alarm/device_alarm.png`
-				let title = item.alarmid ? '甲烷浓度超标报警':''
+				// let title = '甲烷浓度超标报警'
+				// debugger
 				vm.markers.push({
-				  title,
+				  // title,
 				  id:item.markerId,
 				  latitude: item.latitude || '',
 				  longitude: item.longtitude || '',
 				  iconPath,
 				  width: 30,
 				  height: 30,
-				  alarmid:item.alarmId || '',
-				  equipid:item.equipId || '',
-				  alarmLevel:item.alarmLevel || ''
+				  alarmId:item.alarmId || '',
+				  equipId:item.equipId || '',
+				  alarmLevel:item.alarmLevel || '',
 				})
 			})
 			console.log(vm.markers)
