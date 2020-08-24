@@ -67,7 +67,7 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "wxb86e11fa0d5e3061",
+        "appid" : "wxd75688a7fb569bc1",
         "setting" : {
             "urlCheck" : false,
             "es6" : true,
