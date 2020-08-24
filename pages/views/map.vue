@@ -28,6 +28,7 @@ let vm ;
 export default {
 	data() {
 		return {
+			fromMapEnter:false,//默认从列表进入的地图
 			scale:10,
 			showRealtimeMonitorDetail:false, // 默认不展示监测详情
 			monitorDetail:false,// 默认不展示设备详情
@@ -85,9 +86,12 @@ export default {
 		vm = this;
 		if(options.realtimeMonitorDetail){
 			this.showRealtimeMonitorDetail = true
+			this.fromMapEnter = false
 		}else if(options.monitorDetail){
 			this.monitorDetail = true
+			this.fromMapEnter = false
 		}else{
+			this.fromMapEnter = true
 			uni.getLocation({ // 默认定位到用户位置
 			    type: 'gcj02',
 			    success: function (res) {
@@ -103,11 +107,42 @@ export default {
 			vm.longitude = data.longtitude
 			vm.latitude = data.latitude
 			vm.scale = 16
+			if(!vm.fromMapEnter){
+				vm.markers = []
+			}
+			
+			let iconPath = `../../static/img/alarm/alarm_level${data.alarmLevel.substring(0,1)}.png`
+			vm.markers.push({
+				id:data.markerId,
+				latitude: data.latitude || '',
+				longitude: data.longtitude || '',
+				iconPath,
+				width: 40,
+				height: 40,
+				alarmId:data.alarmId || '',
+				equipId:data.equipId || '',
+				alarmLevel:data.alarmLevel || '',
+			})
 		})
 		uni.$on('realtimeMonitorDetail',(data)=>{
 			vm.longitude = data.longtitude
 			vm.latitude = data.latitude
 			vm.scale = 16
+			if(!vm.fromMapEnter){
+				vm.markers = []
+			}
+			let iconPath = `../../static/img/alarm/device_alarm.png`
+			vm.markers.push({
+				id:data.markerId,
+				latitude: data.latitude || '',
+				longitude: data.longtitude || '',
+				iconPath,
+				width: 40,
+				height: 40,
+				alarmId:data.alarmId || '',
+				equipId:data.equipId || '',
+				alarmLevel:data.alarmLevel || '',
+			})
 		})
 	},
 	beforeDestroy() {
@@ -123,6 +158,7 @@ export default {
 				name:data.value,
 				userName:vm.$store.state.user.userInfo.nickName
 			}).then(res=>{
+				vm.fromMapEnter = true
 				vm.showMarkers(res.data.data)
 			})
 		},
@@ -134,7 +170,7 @@ export default {
 			this.$refs.popupRef.close();// 或者 boolShow = false
 		},
 		chooseMarker(e){
-			
+			debugger
 			// if(!e.detail.markerId && e.detail.markerId!=0){
 			// 	return false
 			// }
@@ -147,7 +183,7 @@ export default {
 			})
 			curMarker[0]['width'] = 40
 			curMarker[0]['height'] = 40
-			if(curMarker[0].alarmid == ''){ // 设备点位
+			if(curMarker[0].alarmId == ''){ // 设备点位
 				vm.showRealtimeMonitorDetail = true
 				vm.monitorDetail = false
 			

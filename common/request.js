@@ -42,19 +42,19 @@ request.globalRequest = (url, method, data, power) => {
         if (res[1].statusCode ==200|| res[1].data.status =="success" || res[1].data.code == 200) {
             return res[1]
         } else {
-            throw res[1].data
+            console.log(res[1].data) 
         }
 		
     }).catch(parmas => {
 		// uni.hideLoading()
-		console.log(parmas)
+		console.log(parmas.message)
 　　　　　　switch (parmas.code) {
 　　　　　　　　case 401:
 　　　　　　　　　　uni.clearStorageSync()
 　　　　　　　　　　break
 　　　　　　　　default:
 　　　　　　　　　　uni.showToast({
-　　　　　　　　　　　　title: parmas.message,
+　　　　　　　　　　　　title: '请求出错，请退出重试',
 　　　　　　　　　　　　icon: 'none'
 　　　　　　　　　　})
 　　　　　　　　　　return Promise.reject()
