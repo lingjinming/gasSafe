@@ -1,6 +1,7 @@
 <template>
 	<view class="container">
 		<monitor-chart-landscape :chartData='chartData' v-if='chartData!==null'></monitor-chart-landscape>
+		<!-- <monitor-chart-landscape2 :landscape='landscape' :chartData='chartData' v-if='chartData!==null'></monitor-chart-landscape2> -->
 	</view>
 </template>
 
@@ -9,7 +10,8 @@
 export default {
 	data() {
 		return {
-			chartData:null
+			chartData:null,
+			landscape:true
 		};
 	},
 	onLoad(options) {
@@ -31,7 +33,7 @@ export default {
 				pipepointid:alarmInspect
 			}).then(res => {
 				let data = res.data
-				debugger
+				// debugger
 				vm.chartData = {
 					categories: data['times'],
 					series: [

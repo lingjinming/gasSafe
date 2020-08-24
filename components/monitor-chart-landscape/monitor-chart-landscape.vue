@@ -107,8 +107,8 @@ export default {
 						]
 					},
 					line:{
-						type:'curve',
-						width:'1px'
+						// type:'curve',
+						width:'2px'
 					}
 				}
 			});

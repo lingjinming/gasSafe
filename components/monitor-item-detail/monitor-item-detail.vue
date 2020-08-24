@@ -28,6 +28,8 @@
 						<view>{{monitorDetail.historyCurveData[0].maxTime}}</view>
 					</view>
 					<view class="chartBox" ref='chart'>
+						<!-- <monitor-chart-landscape2 :chartData='chartData' v-if='chartData!==null'></monitor-chart-landscape2> -->
+						
 						<monitor-chart :chartData='chartData' v-if='chartData !==null'></monitor-chart>
 					</view>
 				</view>
@@ -122,6 +124,18 @@ export default {
 		vm = this;
 		vm.init()
 	},
+	watch:{
+		isUp(newVal){
+			if(newVal){
+				uni.getStorage({
+					key:'monitorDetailData',
+					success(res){
+						vm.chartData = res.data
+					}
+				})
+			}
+		}
+	},
 	methods: {
 		init(){
 			uni.getStorage({
@@ -154,7 +168,7 @@ export default {
 				alarmId:this.alarmId
 			}).then(res => {
 				this.monitorDetail = res.data[0]
-				this.chartData = {
+				let tempchartData = {
 					categories: this.monitorDetail.historyCurveData[0]['times'],
 					series: [
 						{
@@ -171,7 +185,7 @@ export default {
 				}
 				uni.setStorage({
 					key:'monitorDetailData',
-					data:this.chartData,
+					data:tempchartData,
 				})
 				uni.$emit('alarmDetailPos',res.data)
 			})
