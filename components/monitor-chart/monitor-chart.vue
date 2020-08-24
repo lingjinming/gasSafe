@@ -55,30 +55,32 @@ export default {
 			lineChart=new uCharts({
 				$this:_self,
 				canvasId: canvasId,
-				// padding:[10,15,4,5],
+				padding:[10,20,10,20],
 				type: 'line',
 				legend:true,
 				fontSize:12,
 				categories: chartData.categories,
 				series: chartData.series,
+				animation: true,
+				colors:['red','black'],
 				xAxis: {
 					disableGrid:true,
-					itemCount:5,
-					scrollShow:true,
-					gridColor:'red',
-					gridType:'dash',
-					axisLine:false
+					itemCount:3,
+					scrollShow:false,
+					
 				},
 				yAxis: {
+					gridColor:'#666',
+					gridType:'dash',
 					showTitle:true,
 					data:[
 						{
-							title:'甲烷浓度（VOL）',
+							title:'甲烷浓度(%VOL)',
 							position: 'left',
 							axisLine:false
 						},
 						{
-							title:'温度（°C）',
+							title:'温度(°C)',
 							position: 'right',
 							axisLine:false
 						}
@@ -104,7 +106,7 @@ export default {
 						]
 					},
 					line:{
-						// type:'curve',
+						type:'curve',
 						width:'2px'
 					}
 				}

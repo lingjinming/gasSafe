@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
-		<monitor-chart-landscape :chartData='chartData' v-if='chartData!==null'></monitor-chart-landscape>
-		<!-- <monitor-chart-landscape2 :landscape='landscape' :chartData='chartData' v-if='chartData!==null'></monitor-chart-landscape2> -->
+		<!-- <monitor-chart-landscape :chartData='chartData' v-if='chartData!==null'></monitor-chart-landscape> -->
+		<monitor-chart-landscape2 :chartData='chartData' v-if='chartData!==null'></monitor-chart-landscape2>
 	</view>
 </template>
 

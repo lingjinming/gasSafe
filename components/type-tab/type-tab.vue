@@ -6,6 +6,7 @@
 			:class="['tab_item flex_center_row',{'cur':item.checked}]"
 			@click="changeType(item)">
 				{{item.value}}
+				<image v-if="item.checked" src="../../static/img/checked.png" mode=""></image>
 			</view>
 		</view>
 	</view>
@@ -74,6 +75,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		.tab_item{
+			position: relative;
 			width: 194rpx;
 			height: 72rpx;
 			border-radius: 10rpx;
@@ -82,6 +84,13 @@
 			margin-right: 20rpx;
 			&:nth-child(3n){
 				margin-right: 0;
+			}
+			image{
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				width: 40rpx;
+				height: 36rpx;
 			}
 		}
 		.cur{

@@ -3,7 +3,7 @@
 	<map class="map" id="map"
 	:longitude="longitude" 
 	:latitude="latitude" :scale="scale" 
-	:markers="markers"
+	:markers="newMarkers"
 	@markertap='chooseMarker'
 	show-location>
 	</map> 	
@@ -34,6 +34,7 @@ export default {
 			monitorDetail:false,// 默认不展示设备详情
 			key:'9e794c3f3803c391c37b1a815f05a504',
 			markers: [],
+			newMarkers: [],
 			latitude: '',
 			longitude: '',
 			textData: {},
@@ -63,6 +64,11 @@ export default {
 		};
 	},
 	watch:{
+		markers(newVal){
+			console.log(newVal)
+			console.log(this.unique(newVal,'id'))
+			this.newMarkers = this.unique(newVal,'id')
+		},
 		alarmTypes:{
 			handler(newVal){
 				vm = this
@@ -150,6 +156,10 @@ export default {
 		uni.$off('realtimeMonitorDetail')
 	},
 	methods: {
+		unique(arr, attrName) {
+			const res = new Map();
+			return arr.filter((a) => !res.has(a[attrName]) && res.set(a[attrName], 1));
+		},
 		getkeyword(data){
 			vm.scale = 10
 			vm.monitorDetail = false
@@ -239,7 +249,7 @@ export default {
 				  alarmLevel:item.alarmLevel || '',
 				})
 			})
-			console.log(vm.markers)
+			// console.log(vm.markers)
 		}
 	}
 };
@@ -255,7 +265,7 @@ popup-layer view{
 }
 .layer_box{
 	position: absolute;
-	right: 40rpx;
+	right: 26rpx;
 	top: 200rpx;
 	height: 100rpx;
 	width: 100rpx;

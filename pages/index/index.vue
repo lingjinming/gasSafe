@@ -31,7 +31,9 @@
 	  </view>
 	  <view class="search_box flex_between_row">
 		  <view>共<text>{{recordsNum}}</text>条记录</view>
-		  <view @click="enterSearch">搜索</view>
+		  <view @click="enterSearch">
+			<image src="../../static/img/search.png" mode=""></image>
+		  </view>
 	  </view>
 		<scroll-view scroll-y="true" :style="{height:curType == '报警列表'?'calc(100% - 690rpx)':'calc(100% - 540rpx)'}">
 			<image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!recordsNum"></image>
@@ -334,17 +336,28 @@ type-tab{
 		font-size: 24rpx;
 	}
 	view:last-child{
-		color: #333;
+		color: $uni-color-primary;
+		color:#666;
+		display: flex;
+		align-items: center;
 	}
 	text{
 		font-size: 32rpx;
 		color: $uni-color-primary;
 		margin: 0 6rpx;
 	}
+	image{
+		width: 30rpx;
+		height: 30rpx;
+		margin:0 10rpx;
+	}
 }
 scroll-view{
 	.no_alarm{
-		width: 100%;
+		width: 64%;
+		height: 330rpx;
+		margin-left: 14%;
+		margin-top: 100rpx;
 	}
 }
 .btn_getuserinfo{

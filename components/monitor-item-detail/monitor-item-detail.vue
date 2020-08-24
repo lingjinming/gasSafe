@@ -28,9 +28,9 @@
 						<view>{{monitorDetail.historyCurveData[0].maxTime}}</view>
 					</view>
 					<view class="chartBox" ref='chart'>
-						<!-- <monitor-chart-landscape2 :chartData='chartData' v-if='chartData!==null'></monitor-chart-landscape2> -->
+						<monitor-chart-landscape2 :chartData='chartData' v-if='chartData!==null'></monitor-chart-landscape2>
 						
-						<monitor-chart :chartData='chartData' v-if='chartData !==null'></monitor-chart>
+						<!-- <monitor-chart :chartData='chartData' v-if='chartData !==null'></monitor-chart> -->
 					</view>
 				</view>
 			</view>
@@ -174,12 +174,12 @@ export default {
 						{
 							data:this.monitorDetail.historyCurveData[0]['values'],
 							name:'甲烷浓度',
-							index:0
+							index:0,
 						},
 						{
 							data:this.monitorDetail.historyCurveData[0]['wendu'],
 							name:'温度',
-							index:1
+							index:1,
 						},
 					]
 				}
