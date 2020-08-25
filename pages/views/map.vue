@@ -137,7 +137,8 @@ export default {
 			if(!vm.fromMapEnter){
 				vm.markers = []
 			}
-			let iconPath = `../../static/img/alarm/device_alarm.png`
+			// let iconPath = `../../static/img/alarm/device_alarm.png`
+			let iconPath = `../../static/img/alarm/device_checked.png`
 			vm.markers.push({
 				id:data.markerId,
 				latitude: data.latitude || '',
@@ -180,7 +181,7 @@ export default {
 			this.$refs.popupRef.close();// 或者 boolShow = false
 		},
 		chooseMarker(e){
-			debugger
+			// debugger
 			// if(!e.detail.markerId && e.detail.markerId!=0){
 			// 	return false
 			// }

@@ -26,9 +26,9 @@ export default{
 				        dataZoom: [{
 								  // 'type':'inside',
 				                  "show": true,
-				                  "height": 20,
+				                  "height": 25,
 				                  "xAxisIndex": 0,
-				                  'bottom':'5%',
+				                  'bottom':'2%',
 				                  "start": 10,
 				                  "end": 80,
 				                  'borderColor':"#90979c"
@@ -37,7 +37,7 @@ export default{
 					        left: '15',
 				            right: '15',
 				            top:'20%',
-					        bottom: '14%',
+					        bottom: '15%',
 					        containLabel: true
 						},
 						tooltip : {
@@ -80,7 +80,7 @@ export default{
 								type : 'value',
 								name : '甲烷浓度（%VOL）',
 								min:0,
-								max:1000,
+								max:100,
 								axisLine:{
 									lineStyle:{
 										color:'#999',
@@ -94,7 +94,7 @@ export default{
 								type : 'value',
 								name : '温度（°C）',
 								min:0,
-								max:100,
+								max:50,
 								axisLine:{
 									lineStyle:{
 										color:'#999'
