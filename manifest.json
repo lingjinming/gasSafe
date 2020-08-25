@@ -77,7 +77,7 @@
         "usingComponents" : true,
         "permission" : {
             "scope.userLocation" : {
-                "desc" : "展示报警点位"
+                "desc" : "设备位置和报警位置"
             }
         }
     }

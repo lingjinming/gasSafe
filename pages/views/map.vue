@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-	<map class="map" id="map"
+	<map class="map" id="map" ref="map"
 	:longitude="longitude" 
 	:latitude="latitude" :scale="scale" 
 	:markers="newMarkers"
@@ -25,6 +25,9 @@
 <script>
 let amapFile = require('../../libs/amap-wx.js');  //引入高德js
 let vm ;
+let mapContext ;
+const deviceCheckedIconPath = `../../static/img/alarm/device_checked.png` //设备选中后图标
+const deviceIconPath = `../../static/img/alarm/device_alarm.png`
 export default {
 	data() {
 		return {
@@ -65,8 +68,6 @@ export default {
 	},
 	watch:{
 		markers(newVal){
-			console.log(newVal)
-			console.log(this.unique(newVal,'id'))
 			this.newMarkers = this.unique(newVal,'id')
 		},
 		alarmTypes:{
@@ -108,11 +109,15 @@ export default {
 		}
 	},
 	mounted(){
+		mapContext = uni.createMapContext('map', this)
+		
 		uni.$on('alarmDetailPos',(alarmDetailPos)=>{
 			let data = alarmDetailPos[0]
-			vm.longitude = data.longtitude
-			vm.latitude = data.latitude
 			vm.scale = 16
+			mapContext.moveToLocation({
+				longitude: data.longtitude,
+				latitude: data.latitude
+			})
 			if(!vm.fromMapEnter){
 				vm.markers = []
 			}
@@ -131,19 +136,20 @@ export default {
 			})
 		})
 		uni.$on('realtimeMonitorDetail',(data)=>{
-			vm.longitude = data.longtitude
-			vm.latitude = data.latitude
 			vm.scale = 16
+			mapContext.moveToLocation({
+				longitude: data.longtitude,
+				latitude: data.latitude
+			})
+			
 			if(!vm.fromMapEnter){
 				vm.markers = []
 			}
-			// let iconPath = `../../static/img/alarm/device_alarm.png`
-			let iconPath = `../../static/img/alarm/device_checked.png`
 			vm.markers.push({
 				id:data.markerId,
 				latitude: data.latitude || '',
 				longitude: data.longtitude || '',
-				iconPath,
+				iconPath:deviceCheckedIconPath,
 				width: 40,
 				height: 40,
 				alarmId:data.alarmId || '',
@@ -181,23 +187,25 @@ export default {
 			this.$refs.popupRef.close();// 或者 boolShow = false
 		},
 		chooseMarker(e){
-			// debugger
-			// if(!e.detail.markerId && e.detail.markerId!=0){
-			// 	return false
-			// }
+
 			vm.scale = 16
 			let curMarker = vm.markers.filter(item => item.id == e.detail.markerId)
-			// debugger
-			vm.markers.forEach(item =>{
+			if(this.markers.length == 1){
+				return false
+			}
+			this.markers.forEach(item =>{
 				item['width'] = 30
 				item['height'] = 30
+				if(item.alarmId == ''){
+					item['iconPath'] = deviceIconPath
+				}
 			})
 			curMarker[0]['width'] = 40
 			curMarker[0]['height'] = 40
 			if(curMarker[0].alarmId == ''){ // 设备点位
-				vm.showRealtimeMonitorDetail = true
-				vm.monitorDetail = false
-			
+				this.showRealtimeMonitorDetail = true
+				this.monitorDetail = false
+				curMarker[0]['iconPath'] = deviceCheckedIconPath
 				uni.setStorage({
 					key:'realtimeMonitorDetail',
 					data:curMarker[0],
@@ -207,8 +215,8 @@ export default {
 				})
 				
 			}else{
-				vm.monitorDetail = true
-				vm.showRealtimeMonitorDetail = false
+				this.monitorDetail = true
+				this.showRealtimeMonitorDetail = false
 				
 				uni.setStorage({
 					key:'monitorDetail',

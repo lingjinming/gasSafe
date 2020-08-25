@@ -142,6 +142,9 @@ export default {
 			    key: 'monitorDetail',
 			    success(res) {
 					vm.alarmId = res.data.alarmId || res.data.alarmid
+					if(!vm.alarmId){
+						return false
+					}
 					vm.alarmDetailInfoFn()
 			    }
 			});

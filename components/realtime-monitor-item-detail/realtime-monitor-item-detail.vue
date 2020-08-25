@@ -76,7 +76,6 @@ export default {
 			uni.getStorage({
 			    key: 'realtimeMonitorDetail',
 			    success(res) {
-					debugger
 					vm.equipId = res.data.equipId || res.data.equipid
 					vm.getEquipDetailInfoFn()
 			    }
@@ -94,7 +93,6 @@ export default {
 			this.$api.getEquipDetailInfo({
 				equipId:vm.equipId
 			}).then(res => {
-				debugger
 				vm.realtimeMonitorDetail = res.data
 				uni.$emit('realtimeMonitorDetail',res.data)
 			})
