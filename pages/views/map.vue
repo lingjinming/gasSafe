@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-	<map class="map" id="map"
+	<map class="map" id="map" ref="map"
 	:longitude="longitude" 
 	:latitude="latitude" :scale="scale" 
 	:markers="newMarkers"
@@ -25,6 +25,7 @@
 <script>
 let amapFile = require('../../libs/amap-wx.js');  //引入高德js
 let vm ;
+let mapContext ;
 export default {
 	data() {
 		return {
@@ -65,8 +66,6 @@ export default {
 	},
 	watch:{
 		markers(newVal){
-			console.log(newVal)
-			console.log(this.unique(newVal,'id'))
 			this.newMarkers = this.unique(newVal,'id')
 		},
 		alarmTypes:{
@@ -101,6 +100,10 @@ export default {
 			uni.getLocation({ // 默认定位到用户位置
 			    type: 'gcj02',
 			    success: function (res) {
+					// mapContext.moveToLocation({
+					// 	longitude: res.longitude,
+					// 	latitude: res.latitude
+					// })
 					vm.longitude = res.longitude
 					vm.latitude = res.latitude
 			    }
@@ -108,11 +111,17 @@ export default {
 		}
 	},
 	mounted(){
+		mapContext = uni.createMapContext('map', this)
+		
 		uni.$on('alarmDetailPos',(alarmDetailPos)=>{
 			let data = alarmDetailPos[0]
-			vm.longitude = data.longtitude
-			vm.latitude = data.latitude
+			// vm.longitude = data.longtitude
+			// vm.latitude = data.latitude
 			vm.scale = 16
+			mapContext.moveToLocation({
+				longitude: data.longtitude,
+				latitude: data.latitude
+			})
 			if(!vm.fromMapEnter){
 				vm.markers = []
 			}
@@ -131,9 +140,14 @@ export default {
 			})
 		})
 		uni.$on('realtimeMonitorDetail',(data)=>{
-			vm.longitude = data.longtitude
-			vm.latitude = data.latitude
+			// vm.longitude = data.longtitude
+			// vm.latitude = data.latitude
 			vm.scale = 16
+			mapContext.moveToLocation({
+				longitude: data.longtitude,
+				latitude: data.latitude
+			})
+			
 			if(!vm.fromMapEnter){
 				vm.markers = []
 			}
@@ -180,22 +194,23 @@ export default {
 			this.$refs.popupRef.close();// 或者 boolShow = false
 		},
 		chooseMarker(e){
-			debugger
-			// if(!e.detail.markerId && e.detail.markerId!=0){
-			// 	return false
-			// }
-			vm.scale = 16
-			let curMarker = vm.markers.filter(item => item.id == e.detail.markerId)
+			if(this.markers.length == 1){
+				debugger
+				return false
+			}
+			this.scale = 16
+			let curMarker = this.markers.filter(item => item.id == e.detail.markerId)
+			
 			// debugger
-			vm.markers.forEach(item =>{
+			this.markers.forEach(item =>{
 				item['width'] = 30
 				item['height'] = 30
 			})
 			curMarker[0]['width'] = 40
 			curMarker[0]['height'] = 40
 			if(curMarker[0].alarmId == ''){ // 设备点位
-				vm.showRealtimeMonitorDetail = true
-				vm.monitorDetail = false
+				this.showRealtimeMonitorDetail = true
+				this.monitorDetail = false
 			
 				uni.setStorage({
 					key:'realtimeMonitorDetail',
@@ -206,8 +221,8 @@ export default {
 				})
 				
 			}else{
-				vm.monitorDetail = true
-				vm.showRealtimeMonitorDetail = false
+				this.monitorDetail = true
+				this.showRealtimeMonitorDetail = false
 				
 				uni.setStorage({
 					key:'monitorDetail',
