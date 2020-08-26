@@ -30,10 +30,11 @@
 		  </template>
 	  </view>
 	  <view class="search_box flex_between_row">
-		  <view>共<text>{{recordsNum}}</text>条记录</view>
-		  <view @click="enterSearch">
+		  <view>共<text>{{recordsNum}}</text>{{curType == '报警列表'?'起报警':'台设备'}}</view>
+		  <!-- 暂时隐藏搜索功能 -->
+		  <!-- <view @click="enterSearch">
 			<image src="../../static/img/search.png" mode=""></image>
-		  </view>
+		  </view> -->
 	  </view>
 		<scroll-view scroll-y="true" :style="{height:curType == '报警列表'?'calc(100% - 690rpx)':'calc(100% - 540rpx)'}">
 			<image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!recordsNum"></image>

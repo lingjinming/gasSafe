@@ -13,9 +13,12 @@
 				<view class="label">具体位置</view>
 				<view class="value">{{realtimeMonitorData.installPos}}</view>
 			</view>
-			<view class="info_box">
+			<!-- <view class="info_box">
 				<view class="label">安装位置</view>
 				<view class="value">{{realtimeMonitorData.installDesc}}</view>
+			</view> -->
+			<view>
+				<!-- <view>{{realtimeMonitorData.monitorIndex.}}</view> -->
 			</view>
 		</view>
 		<view @click="enterMonitorData(realtimeMonitorData.alarmInspect)" class="btn_box" >
@@ -35,8 +38,8 @@ export default {
 			type:Object
 		},
 	},
-	onLoad() {
-		let vm = this;
+	mounted() {
+		this.getEquipDetailInfoFn(this.realtimeMonitorData.equipId)
 	},
 	methods: {
 		enterMonitorData(alarmInspect){
@@ -58,6 +61,13 @@ export default {
 				}
 			})
 		},
+		getEquipDetailInfoFn(equipId){
+			this.$api.getEquipDetailInfo({
+				equipId
+			}).then(res => {
+				this.realtimeMonitorDetail = res.data
+			})
+		}
 	}
 };
 </script>
