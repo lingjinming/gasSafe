@@ -27,6 +27,8 @@
 		  <template v-else>
 			  <type-tab :title="'是否安装'" :tabs.sync="installStatus">
 			  </type-tab>
+			  <type-tab :title="'运行状态'" :tabs.sync="runStatus">
+			  </type-tab>
 		  </template>
 	  </view>
 	  <view class="search_box flex_between_row">
@@ -36,7 +38,7 @@
 			<image src="../../static/img/search.png" mode=""></image>
 		  </view> -->
 	  </view>
-		<scroll-view scroll-y="true" :style="{height:curType == '报警列表'?'calc(100% - 690rpx)':'calc(100% - 540rpx)'}">
+		<scroll-view scroll-y="true" :style="{height:curType == '报警列表'?'calc(100% - 690rpx)':'calc(100% - 690rpx)'}">
 			<image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!recordsNum"></image>
 			<template v-if="curType == '报警列表'">
 				<!-- <image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!monitorData.length && !equipMonitorData.length"></image> -->
@@ -110,9 +112,22 @@ export default {
 					checked:true
 				}
 			],
+			runStatus:[
+				{
+					id:0,
+					value:'设备异常',
+					checked:true
+				},
+				{	
+					id:1,
+					value:'正常运行',
+					checked:true
+				}
+			],
 			level:'1,2,3',
 			ravelflag:"0",
 			install:"0,1",
+			status:"0,1",
 			recordsNum:0,
 			monitorData:[],
 			equipMonitorData:[]
@@ -187,6 +202,19 @@ export default {
 			},
 			deep:true
 		},
+		runStatus:{
+			handler(newVal){
+				let arr = []
+				 newVal.forEach(item => {
+					 if (item.checked) {
+						 arr.push(item.id)
+					 }
+				 })
+				this.status = arr.join(',')
+				this.getEquipMonitorFn()
+			},
+			deep:true
+		}
 	},
 	methods: {
 		...mapActions(['setUserInfo']),
@@ -256,7 +284,8 @@ export default {
 		getEquipMonitorFn(){
 			this.$api.getEquipMonitor({
 				install:this.install,
-				userName:vm.userInfo.nickName
+				userName:vm.userInfo.nickName,
+				runStatus:this.status
 			}).then(res =>{
 				this.equipMonitorData = res.data
 				this.recordsNum = this.equipMonitorData.length

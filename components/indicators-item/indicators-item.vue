@@ -1,40 +1,42 @@
 <template>
-	<view class="item_box">
-	  	<view class="flex_around_column">
-			{{equipMonitorData.speed}}
-			<text>泵转速（r/s）</text>
-		</view>
-		<view class="flex_around_column">
-			{{equipMonitorData.voltage}}
-			<text>电池电压</text>
-		</view>
-		<view class="flex_around_column">
-			{{equipMonitorData.datalength}}
-			<text>液位（cm）</text>
-		</view>
-		<view class="flex_around_column">
-			{{equipMonitorData.temperature}}
-			<text>温度℃</text>
-		</view>
-		<view class="flex_around_column">
-			{{equipMonitorData.humidity}}
-			<text>湿度%RH</text>
-		</view>
-		<view class="flex_around_column">
-			{{equipMonitorData.signal}}
-			<text>流量（m3/h）</text>
-		</view>
-		<view class="flex_around_column">
-			{{equipMonitorData.temperature}}
-			<text>CSQ</text>
-		</view>
-		<view class="flex_around_column">
-			{{equipMonitorData.water}}
-			<text>浸水状态</text>
-		</view>
-		<view class="flex_around_column">
-			{{equipMonitorData.guard}}
-			<text>防盗状态</text>
+	<view>
+		<view class="item_box">
+		  	<view class="flex_around_column">
+				{{equipMonitorData.speed}}
+				<text>泵转速（r/s）</text>
+			</view>
+			<view class="flex_around_column">
+				{{equipMonitorData.voltage}}
+				<text>电池电压</text>
+			</view>
+			<view class="flex_around_column" v-if="equipMonitorData.liquid">
+				{{equipMonitorData.liquid}}
+				<text>液位（cm）</text>
+			</view>
+			<view class="flex_around_column">
+				{{equipMonitorData.temperature}}
+				<text>温度℃</text>
+			</view>
+			<view class="flex_around_column">
+				{{equipMonitorData.humidity}}
+				<text>湿度%RH</text>
+			</view>
+			<view class="flex_around_column" v-if="equipMonitorData.flow">
+				{{equipMonitorData.flow}}
+				<text>流量（m3/h）</text>
+			</view>
+			<view class="flex_around_column">
+				{{equipMonitorData.signal}}
+				<text>CSQ</text>
+			</view>
+			<view class="flex_around_column">
+				{{equipMonitorData.water}}
+				<text>浸水状态</text>
+			</view>
+			<view class="flex_around_column">
+				{{equipMonitorData.guard}}
+				<text>防盗状态</text>
+			</view>
 		</view>
 		<view>
 			<text>数据时间 : {{equipMonitorData.datatime}}</text>
@@ -85,6 +87,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+text{
+	color: #666;
+	font-size: 24rpx;
+}
 .item_box{
 	display: flex;
 	flex-wrap: wrap;
@@ -104,10 +110,6 @@ export default {
 		width: calc((100% - 40rpx) / 3);
 		color: $uni-color-primary;
 		font-size: 32rpx;
-		text{
-			color: #666;
-			font-size: 24rpx;
-		}
 		&:nth-child(3n){
 			margin-right: 0;
 		}

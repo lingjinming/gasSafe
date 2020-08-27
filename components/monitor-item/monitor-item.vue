@@ -134,7 +134,7 @@ export default {
 			color: #666;
 		}
 		.value{
-			color: #666;
+			color: #333;
 			flex: 1;
 			flex-shrink: 0;
 			display: flex;

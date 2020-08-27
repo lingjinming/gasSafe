@@ -1,10 +1,23 @@
 <template>
 	<view class="item_box box_shadow">
-	  	<view class="info" @click="enterEquipDetailInfo(realtimeMonitorData)">
+	  	<view class="info" @click.stop="enterEquipDetailInfo(realtimeMonitorData)">
 			<view class="tit flex_between_row">
 				<view class="alarm_level">{{realtimeMonitorData.equipmentCode}}</view>
-				<view class="alarm_type">{{realtimeMonitorData.monitorValue}}</view>
+				<view class="alarm_type" @click.stop="enterMonitorData(realtimeMonitorData.alarmInspect)" >
+					<image src="../../static/img/chart.png" mode=""></image>
+					<text>监测曲线</text>
+				</view>
 			</view>
+				
+			<view class="status_box">
+				<view class="normal" v-if="realtimeMonitorData.status == 'normal'">正常运行</view>
+				<template v-else>
+					<view v-if="realtimeMonitorDetailInfo.guard == '否'" >移动</view>
+					<view v-if="realtimeMonitorDetailInfo.laser == '否'" >激光超时</view>
+					<view v-if="realtimeMonitorDetailInfo.water == '否'" >浸水</view>
+				</template>
+			</view>
+			
 			<view class="info_box">
 				<view class="label">数据时间</view>
 				<view class="value">{{realtimeMonitorData.monitorTime}}</view>
@@ -13,17 +26,35 @@
 				<view class="label">具体位置</view>
 				<view class="value">{{realtimeMonitorData.installPos}}</view>
 			</view>
+			<view class="flex_around_row device_status_box">
+				<view class="flex_around_column">
+					<text>{{realtimeMonitorDetailInfo.realdata}}</text>
+					<text>甲烷(%VOL)</text>
+				</view>
+				<view class="flex_around_column">
+					<text>{{realtimeMonitorDetailInfo.voltage}}</text>
+					<text>电压(V)</text>
+				</view>
+				<view class="flex_around_column">
+					<text>{{realtimeMonitorDetailInfo.signal}}</text>
+					<text>CSQ(dbm)</text>
+				</view>
+				<view class="flex_around_column">
+					<text>{{realtimeMonitorDetailInfo.temperature}}</text>
+					<text>温度(℃)</text>
+				</view>
+			</view>
 			<!-- <view class="info_box">
 				<view class="label">安装位置</view>
 				<view class="value">{{realtimeMonitorData.installDesc}}</view>
 			</view> -->
-			<view>
+			<!-- <view> -->
 				<!-- <view>{{realtimeMonitorData.monitorIndex.}}</view> -->
-			</view>
+			<!-- </view> -->
 		</view>
-		<view @click="enterMonitorData(realtimeMonitorData.alarmInspect)" class="btn_box" >
+	<!-- 	<view @click="enterMonitorData(realtimeMonitorData.alarmInspect)" class="btn_box" >
 		监测曲线
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -31,6 +62,7 @@
 export default {
 	data() {
 		return {
+			realtimeMonitorDetailInfo:null
 		};
 	},
 	props:{
@@ -65,7 +97,8 @@ export default {
 			this.$api.getEquipDetailInfo({
 				equipId
 			}).then(res => {
-				this.realtimeMonitorDetail = res.data
+				// this.realtimeMonitorDetail = res.data
+				this.realtimeMonitorDetailInfo = res.data.monitorIndex
 			})
 		}
 	}
@@ -76,7 +109,7 @@ export default {
 .item_box{
 	border-radius: 10rpx;
 	// box-shadow:  0 0 10rpx 10rpx rgba(0,0,0,.6);
-	padding: 20rpx 20rpx 0;
+	padding: 20rpx 20rpx 40rpx;
 	margin:0 30rpx 30rpx;
 	background: #FFFFFF;
 	.tit{
@@ -104,13 +137,18 @@ export default {
 		}
 		.alarm_type{
 			color: $uni-color-warning;
-			background: #fbede1;
+			// background: #fbede1;
 			padding: 0 20rpx;
 			height: 40rpx;
 			line-height: 40rpx;
-			border-top-left-radius: 40rpx;
-			border-top-right-radius: 40rpx;
-			border-bottom-right-radius: 40rpx;
+			// border-top-left-radius: 40rpx;
+			// border-top-right-radius: 40rpx;
+			// border-bottom-right-radius: 40rpx;
+			image{
+				width: 25rpx;
+				height: 25rpx;
+				margin-right: 10rpx;
+			}
 		}
 	
 	}
@@ -124,7 +162,7 @@ export default {
 			color: #666;
 		}
 		.value{
-			color: #666;
+			color: #333;
 			flex: 1;
 			flex-shrink: 0;
 			display: flex;
@@ -140,5 +178,39 @@ export default {
 		border-top: 2rpx solid #dde0e4;
 	}
 }
-
+.status_box{
+	display: flex;
+	height: 40rpx;
+	view{
+		height: 30rpx;
+		line-height: 30rpx;
+		font-size: 24rpx;
+		padding: 0 10rpx;
+		border-radius: 30rpx;
+		background: rgb(255,231,231);
+		color: rgb(255,96,92);
+		margin-right: 20rpx;
+	}
+	.normal{
+		background: rgb(228,245,236);
+		color: rgb(85,191,135);
+	}
+}
+.device_status_box{
+	height: 150rpx;
+	margin: 0 20rpx;
+	background: rgb(245,246,250);
+	border-radius: 10rpx;
+	view{
+		height: 100%;
+		text{
+			color: #999;
+		}
+		text:first-child{
+			color: $uni-color-primary;
+			font-size: 30rpx;
+			font-weight: 500;
+		}
+	}
+}
 </style>

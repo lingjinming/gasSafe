@@ -29,20 +29,27 @@ export default{
 				                  "height": 25,
 				                  "xAxisIndex": 0,
 				                  'bottom':'2%',
+				                  'left':'20%',
+				                  'right':'20%',
 				                  "start": 10,
 				                  "end": 80,
-				                  'borderColor':"#90979c"
+				                  'borderColor':"#dcdcdc"
 				                }],
 						grid: {
-					        left: '15',
+					        left: 25,
 				            right: '15',
 				            top:'20%',
 					        bottom: '15%',
 					        containLabel: true
 						},
 						tooltip : {
-							show: true,
-							trigger: 'axis'
+							trigger: "axis",
+							axisPointer: {
+								type: "shadow",
+							},
+							formatter(params){
+								console.log(params)
+							}
 						},
 						legend: {
 							show:true,
@@ -80,7 +87,7 @@ export default{
 								type : 'value',
 								name : '甲烷浓度（%VOL）',
 								min:0,
-								max:100,
+								max:25,
 								axisLine:{
 									lineStyle:{
 										color:'#999',
@@ -93,18 +100,19 @@ export default{
 							{
 								type : 'value',
 								name : '温度（°C）',
-								min:0,
-								max:50,
+								min:-10,
+								max:60,
 								axisLine:{
 									lineStyle:{
 										color:'#999'
 									}
 								},
+								position: "right",
 								axisTick:{
 					            	show:false,
 					            },
 								splitLine:{
-									show:true,
+									show:false,
 									
 									lineStyle:{
 									    type:'dashed',
@@ -135,6 +143,7 @@ export default{
 								type:'line',
 								symbol:'none',
 								smooth:true,
+								yAxisIndex: 1,
 					            itemStyle: {
 							        normal: {
 							            color:'#428ee4',
