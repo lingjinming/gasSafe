@@ -12,9 +12,10 @@
 			<view class="status_box">
 				<view class="normal" v-if="realtimeMonitorData.status == 'normal'">正常运行</view>
 				<template v-else>
-					<view v-if="realtimeMonitorDetailInfo.guard == '否'" >移动</view>
-					<view v-if="realtimeMonitorDetailInfo.laser == '否'" >激光超时</view>
-					<view v-if="realtimeMonitorDetailInfo.water == '否'" >浸水</view>
+					<view v-if="realtimeMonitorDetailInfo.guard == '是'" >移动</view>
+					<view v-if="realtimeMonitorDetailInfo.laserTimeout == '是'" >激光超时</view>
+					<view v-if="realtimeMonitorDetailInfo.laseraAnomaly == '是'" >激光异常</view>
+					<view v-if="realtimeMonitorDetailInfo.water == '是'" >浸水</view>
 				</template>
 			</view>
 			
