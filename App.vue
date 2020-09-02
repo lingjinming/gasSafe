@@ -2,6 +2,24 @@
 export default {
 	onLaunch: function() {
 		console.log('App Launch');
+		uni.login({
+			success(res) {
+				if(res.code){
+					uniCloud.callFunction({
+					    name: 'gaslogin',
+					    data: {
+							  code:res.code
+						  },
+						  success(res) {
+							  uni.setStorage({
+								key:'openid',
+								data:res.result.res.data.openid
+							  })
+						  }
+					  })
+				}
+			},
+		})
 	},
 	onShow: function() {
 		console.log('App Show');

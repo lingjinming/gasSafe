@@ -32,7 +32,10 @@
 		  </template>
 	  </view>
 	  <view class="search_box flex_between_row">
-		  <view>共<text>{{recordsNum}}</text>{{curType == '报警列表'?'起报警':'台设备'}}</view>
+		  <view>共<text>{{recordsNum}}</text>
+			{{curType == '报警列表'?'起报警':'台设备'}}
+		  </view>
+		  <view @click="requestSubscribeMessageFn" class="subscribe_btn">报警推送<switch checked='isSubscribeD' /></view>
 		  <!-- 暂时隐藏搜索功能 -->
 		  <!-- <view @click="enterSearch">
 			<image src="../../static/img/search.png" mode=""></image>
@@ -41,11 +44,9 @@
 		<scroll-view scroll-y="true" :style="{height:curType == '报警列表'?'calc(100% - 690rpx)':'calc(100% - 690rpx)'}">
 			<image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!recordsNum"></image>
 			<template v-if="curType == '报警列表'">
-				<!-- <image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!monitorData.length && !equipMonitorData.length"></image> -->
 				<monitor-item v-for='item in monitorData' :monitorData.sync='item' :key='item.alarmId'></monitor-item>
 			</template>
 			<template v-else>
-				<!-- <image class="no_alarm" :src='`${urlConfig}/gas/mini/getLocalFile/no_alarm`' v-if="!equipMonitorData.length"></image> -->
 				<realtime-monitor-item v-for='item in equipMonitorData' :realtimeMonitorData.sync='item' :key='item.alarmId'></realtime-monitor-item>
 			</template>
 		</scroll-view>
@@ -134,16 +135,16 @@ export default {
 		};
 	},
 	onLoad() {
-		// setTimeout(()=>{
-		// 	this.changeType(this.curType)
-		// },30)
+		// uni.setTabBarBadge({
+		// 	index: 0,
+		// 	text: '0'
+		// })
 	},
 	onShow() {
 		vm = this
 		if(!vm.userInfo || !vm.userInfo.nickName){
 			vm.boolShow = true
 			vm.$refs.popupRef.show(); // 或者 boolShow = rue
-			
 			vm.getuserinfo()
 		}else{
 			vm.boolShow = false
@@ -157,14 +158,13 @@ export default {
 	},
 	computed: {
 		...mapState({
-			//这里可以通过这种方式引用相应模块的state数据，其中user是模块名。在代码的其他部分可以使用this.userInfo访问数据
 			userInfo: ({user}) => user.userInfo,
+			tmplIds: ({tmplIds}) => tmplIds.tmplIds,
 		})
 	},
 	watch:{
 		alarmTypes:{
 			handler(newVal){
-				// debugger
 				let arr = []
 				 newVal.forEach(item => {
 					 if (item.checked) {
@@ -295,12 +295,60 @@ export default {
 				// 	data:this.equipMonitorData
 				// })
 			})
+		},
+		requestSubscribeMessageFn(){
+			// uni.getSetting({
+			//   withSubscriptions: true,
+			//   success (res) {
+			//     console.log(res.authSetting)
+			//     // res.authSetting = {
+			//     //   "scope.userInfo": true,
+			//     //   "scope.userLocation": true
+			//     // }
+			//     console.log(res.subscriptionsSetting)
+			//     // res.subscriptionsSetting = {
+			//     //   mainSwitch: true, // 订阅消息总开关
+			//     //   itemSettings: {   // 每一项开关
+			//     //     SYS_MSG_TYPE_INTERACTIVE: 'accept', // 小游戏系统订阅消息
+			//     //     SYS_MSG_TYPE_RANK: 'accept'
+			//     //     zun-LzcQyW-edafCVvzPkK4de2Rllr1fFpw2A_x0oXE: 'reject', // 普通一次性订阅消息
+			//     //     ke_OZC_66gZxALLcsuI7ilCJSP2OJ2vWo2ooUPpkWrw: 'ban',
+			//     //   }
+			//     // }
+			//   }
+			// })
+			uni.requestSubscribeMessage({
+			  tmplIds: this.tmplIds,
+			  success (res) {
+				  uni.showToast({
+				  	icon:"success",
+				  	title:'订阅成功'
+				  })
+				  uni.getStorage({
+				  	key:'openid',
+					success(res){
+						uniCloud.callFunction({
+							name:'gasnotice',
+							data:{
+								openid:res.data
+							},
+							success(res) {
+								console.log('已调用发送订阅消息-->',res)
+							}
+						})
+					}
+				  }) 
+			  },
+			})
 		}
 	}
 };
 </script>
 
 <style lang="scss" scoped>
+	switch{
+		transform: scale(0.6);
+	}
 .container{
 	background-size: 100% 400rpx;
 	background-position: top center;
@@ -314,6 +362,7 @@ export default {
 		height: 70rpx;
 	}
 	.title{
+		position: relative;
 		height: 50px;
 		font-size: 20px;
 		margin-top: 60rpx;
@@ -358,6 +407,7 @@ type-tab{
 	margin-bottom: 30rpx;
 }
 .search_box{
+	position: relative;
 	margin: 0 30rpx;
 	height: 80rpx;
 	flex-shrink: 0;
@@ -380,6 +430,16 @@ type-tab{
 		width: 30rpx;
 		height: 30rpx;
 		margin:0 10rpx;
+	}
+	.subscribe_btn{
+		// background: $uni-color-warning;
+		margin-left: 20rpx;
+		border-radius: 10rpx;
+		height: 40rpx;
+		line-height: 40rpx;
+		padding: 0 10rpx;
+		font-size: 24rpx;
+		// color: #fff !important;
 	}
 }
 scroll-view{

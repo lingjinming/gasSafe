@@ -6,7 +6,6 @@ const state = {
     userInfo : uni.getStorageSync(USER_KEY) || {},
 }
 
-//actions可以支持异步操作，这里使用异步存储，存储成功后再commit
 const actions = {
     setUserInfo({commit},payload) {
         uni.setStorage({
@@ -18,7 +17,6 @@ const actions = {
         })
     },
 };
-//真正的缓存数据改变的地方
 const mutations={
     setUserInfo(state,data){
         state.userInfo = data;
