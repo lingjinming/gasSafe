@@ -20,7 +20,9 @@
 
 <script>
 	import {mapActions, mapState} from 'vuex'
+	import {mixin} from '../../../common/mixins.js'
 export default {
+	mixins:[mixin],
 	data() {
 		return {
 			alarmId:'',
@@ -49,7 +51,7 @@ export default {
 				operator:this.operator
 			}).then(res => {
 				uni.$emit('relieveAlarmSuccess')
-				uni.navigateBack()
+				// uni.navigateBack()
 			})
 		},
 		getDate(e) {
