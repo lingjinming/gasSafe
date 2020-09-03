@@ -1,21 +1,23 @@
-import {mapActions, mapState} from 'vuex'
+import {mapState,mapMutations} from 'vuex'
+let vm;
 export const mixin = {
 	created(){
 		console.log('from mixins..')
 	},
 	mounted() {
+		vm = this
 		uni.$on('relieveAlarmSuccess',()=>{
-			this.requestSubscribeMessageFn()
-			uni.navigateBack()
+			this.requestSubscribeMessageFn(true)
 		})
 	},
 	computed: {
 		...mapState({
-			tmplIds: ({tmplIds}) => tmplIds.tmplIds
+			tmplIds: ({tmplate}) => tmplate.tmplIds
 		})
 	},
     methods: {
-		requestSubscribeMessageFn(){
+		...mapMutations('tmplate',['setSubscribed']),
+		requestSubscribeMessageFn(back=false){
 			// uni.getSetting({
 			//   withSubscriptions: true,
 			//   success (res) {
@@ -43,6 +45,9 @@ export const mixin = {
 				  	icon:"success",
 				  	title:'订阅成功'
 				  })
+				  console.log(vm.$store)
+				  // vm.setSubscribed(true)
+				  vm.$store.commit('tmplate/setSubscribed',true)
 				  uni.getStorage({
 				  	key:'openid',
 					success(res){
@@ -53,12 +58,18 @@ export const mixin = {
 							},
 							success(res) {
 								console.log('已调用发送订阅消息-->',res)
+							},
+							complete() {
+								if(back){
+									uni.navigateBack()
+								}
 							}
 						})
 					}
 				  }) 
 			  },
 			})
-		}
+		},
+		
     }
 };

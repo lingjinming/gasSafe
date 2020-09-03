@@ -35,7 +35,7 @@
 		  <view>共<text>{{recordsNum}}</text>
 			{{curType == '报警列表'?'起报警':'台设备'}}
 		  </view>
-		  <view @click="requestSubscribeMessageFn" class="subscribe_btn">报警推送<switch checked='isSubscribeD' /></view>
+		  <view @click="requestSubscribeMessageFn" class="subscribe_btn">报警推送<switch :checked='isSubscribed' disabled="true"/></view>
 		  <!-- 暂时隐藏搜索功能 -->
 		  <!-- <view @click="enterSearch">
 			<image src="../../static/img/search.png" mode=""></image>
@@ -149,6 +149,7 @@ export default {
 			vm.$refs.popupRef.show(); // 或者 boolShow = rue
 			vm.getuserinfo()
 		}else{
+			vm.changeType(vm.curType)
 			vm.boolShow = false
 			vm.$refs.popupRef.close();
 		}
@@ -161,7 +162,8 @@ export default {
 	computed: {
 		...mapState({
 			userInfo: ({user}) => user.userInfo,
-			tmplIds: ({tmplIds}) => tmplIds.tmplIds,
+			tmplIds: ({tmplate}) => tmplate.tmplIds,
+			isSubscribed: ({tmplate}) => tmplate.isSubscribed,
 		})
 	},
 	watch:{
@@ -232,7 +234,6 @@ export default {
 			vm.$api.getUserInfo({
 				userName
 			}).then(res => {
-
 				uni.setStorage({
 					key:'userInfoByApi',
 					data:res.data,
@@ -389,12 +390,11 @@ type-tab{
 		margin:0 10rpx;
 	}
 	.subscribe_btn{
-		// background: $uni-color-warning;
-		margin-left: 20rpx;
+		position: relative;
+		right: -20rpx;
 		border-radius: 10rpx;
 		height: 40rpx;
 		line-height: 40rpx;
-		padding: 0 10rpx;
 		font-size: 24rpx;
 		// color: #fff !important;
 	}

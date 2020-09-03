@@ -13,7 +13,7 @@
 			</view>
 		</view>
 		
-		<button class="confirm_btn" type="primary" @click="relieveAlarmFn">保存</button>
+		<button class="confirm_btn" type="primary" @click="relieveAlarmFn">提交</button>
 
 	</view>
 </template>
