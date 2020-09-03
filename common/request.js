@@ -2,7 +2,6 @@ import urlConfig from './config.js'
 
 const request = {}
 const headers = {}
-// const PORT1 = '/baseinfo'
     
 request.globalRequest = (url, method, data, power) => {
 	/*   权限判断 因为有的接口请求头可能需要添加的参数不一样，所以这里做了区分
@@ -23,10 +22,7 @@ request.globalRequest = (url, method, data, power) => {
             responseType = 'blob'
             break;
         default:
-            headers['Authorization'] = `Bearer ${
-                this.$store.getters.userInfo
-            }`
-            headers['TENANT-ID'] = this.$store.getters.userInfo.tenant_id
+            headers['Authorization'] = 'Basic'
             break;
     }
             
@@ -39,10 +35,14 @@ request.globalRequest = (url, method, data, power) => {
     }).then(res => {
 		uni.hideLoading()
 		// debugger
-        if (res[1].statusCode ==200|| res[1].data.status =="success" || res[1].data.code == 200) {
+        if (res[1].statusCode ==200 || res[1].data.status =="success" || res[1].data.code == 200) {
             return res[1]
         } else {
             console.log(res[1].data) 
+			uni.showToast({
+　　　　　　　　title: '请求出错，请退出重试',
+　　　　　　　　icon: 'none'
+　　　　　　})
         }
 		
     }).catch(parmas => {

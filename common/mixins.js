@@ -21,11 +21,6 @@ export const mixin = {
 			// uni.getSetting({
 			//   withSubscriptions: true,
 			//   success (res) {
-			//     console.log(res.authSetting)
-			//     // res.authSetting = {
-			//     //   "scope.userInfo": true,
-			//     //   "scope.userLocation": true
-			//     // }
 			//     console.log(res.subscriptionsSetting)
 			//     // res.subscriptionsSetting = {
 			//     //   mainSwitch: true, // 订阅消息总开关
@@ -70,6 +65,21 @@ export const mixin = {
 			  },
 			})
 		},
-		
+		/**
+		 * 将传入的数组根据条件筛选并转为字符串
+		 * @param {Array} arr - 待拼接的数组
+		 * @param {string} str - data中的实际字符串
+		 **/
+		transformArrToStr(arr,str){
+			let temparr = []
+			 if(arr.length){
+				 arr.forEach(item => {
+					 if (item.checked) {
+						temparr.push(item.id)
+					 }
+				 })
+			}
+			this[str] = temparr.join(',')
+		}
     }
 };

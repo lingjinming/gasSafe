@@ -169,52 +169,28 @@ export default {
 	watch:{
 		alarmTypes:{
 			handler(newVal){
-				let arr = []
-				 newVal.forEach(item => {
-					 if (item.checked) {
-						 arr.push(item.id)
-					 }
-				 })
-				this.level = arr.join(',')
+				this.transformArrToStr(newVal,'level')
 				this.getAlarmInfoFn()
 			},
 			deep:true
 		},
 		alarmStatus:{
 			handler(newVal){
-				let arr = []
-				 newVal.forEach(item => {
-					 if (item.checked) {
-						 arr.push(item.id)
-					 }
-				 })
-				this.ravelflag = arr.join(',')
+				this.transformArrToStr(newVal,'ravelflag')
 				this.getAlarmInfoFn()
 			},
 			deep:true
 		},
 		installStatus:{
 			handler(newVal){
-				let arr = []
-				 newVal.forEach(item => {
-					 if (item.checked) {
-						 arr.push(item.id)
-					 }
-				 })
-				this.install = arr.join(',')
+				this.transformArrToStr(newVal,'install')
 				this.getEquipMonitorFn()
 			},
 			deep:true
 		},
 		runStatus:{
 			handler(newVal){
-				let arr = []
-				 newVal.forEach(item => {
-					 if (item.checked) {
-						 arr.push(item.id)
-					 }
-				 })
-				this.status = arr.join(',')
+				this.transformArrToStr(newVal,'status')
 				this.getEquipMonitorFn()
 			},
 			deep:true
@@ -299,6 +275,17 @@ export default {
 				// })
 			})
 		},
+		// transformArrToStr(arr,str){
+		// 	let temparr = []
+		// 	 if(arr.length){
+		// 		 arr.forEach(item => {
+		// 			 if (item.checked) {
+		// 				temparr.push(item.id)
+		// 			 }
+		// 		 })
+		// 	}
+		// 	this[str] = temparr.join(',')
+		// }
 	}
 };
 </script>

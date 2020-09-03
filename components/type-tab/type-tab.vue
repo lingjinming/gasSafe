@@ -40,11 +40,6 @@
 						id:1,
 						value:'类型2',
 						checked:false
-					},
-					{
-						id:2,
-						value:'类型3',
-						checked:true
 					}
 				]
 			}
