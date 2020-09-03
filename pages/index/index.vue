@@ -136,12 +136,6 @@ export default {
 		};
 	},
 	mixins:[mixin],
-	onLoad() {
-		// uni.setTabBarBadge({
-		// 	index: 0,
-		// 	text: '0'
-		// })
-	},
 	onShow() {
 		vm = this
 		if(!vm.userInfo || !vm.userInfo.nickName){
@@ -198,7 +192,7 @@ export default {
 	},
 	methods: {
 		...mapActions(['setUserInfo']),
-		getuserinfo(){
+		getuserinfo(){// 小程序获取用户昵称头像等信息
 			uni.getUserInfo({
 			    success: (res) => {
 					vm.setUserInfo(res.userInfo) 
@@ -206,7 +200,7 @@ export default {
 			    }
 			})
 		},
-		getUserInfoFn(userName){
+		getUserInfoFn(userName){// 接口获取用户信息
 			vm.$api.getUserInfo({
 				userName
 			}).then(res => {
@@ -236,7 +230,7 @@ export default {
 				url:'../views/map'
 			})
 		},
-		changeType(type){
+		changeType(type){ // 判断当前是属于 报警列表还是实时监测
 			this.curType = type
 			this.reset()
 			if(this.curType == '报警列表'){
@@ -246,7 +240,7 @@ export default {
 			}
 			
 		},
-		getAlarmInfoFn(){
+		getAlarmInfoFn(){ // 接口获取报警列表信息
 			this.$api.getAlarmInfo({
 				level:this.level,
 				ravelflag:this.ravelflag,
@@ -254,13 +248,9 @@ export default {
 			}).then(res =>{
 				this.monitorData = res.data.data
 				this.recordsNum = this.monitorData.length
-				// uni.setStorage({
-				// 	key:'monitorData',
-				// 	data:this.monitorData
-				// })
 			})
 		},
-		getEquipMonitorFn(){
+		getEquipMonitorFn(){// 接口获取设备列表信息
 			this.$api.getEquipMonitor({
 				install:this.install,
 				userName:vm.userInfo.nickName,
@@ -268,24 +258,8 @@ export default {
 			}).then(res =>{
 				this.equipMonitorData = res.data
 				this.recordsNum = this.equipMonitorData.length
-				// debugger
-				// uni.setStorage({
-				// 	key:'equipMonitorData',
-				// 	data:this.equipMonitorData
-				// })
 			})
 		},
-		// transformArrToStr(arr,str){
-		// 	let temparr = []
-		// 	 if(arr.length){
-		// 		 arr.forEach(item => {
-		// 			 if (item.checked) {
-		// 				temparr.push(item.id)
-		// 			 }
-		// 		 })
-		// 	}
-		// 	this[str] = temparr.join(',')
-		// }
 	}
 };
 </script>
