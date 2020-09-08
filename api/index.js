@@ -36,6 +36,9 @@ const api = {
 	
 	//PUT http://172.19.0.46:8086/gas/mini/saveUserOpenId.mvc?userName=as&openId=as 
 	saveUserOpenId:(params) => request.globalRequest(`/gas/mini/saveUserOpenId.mvc${formatGetUri(params)}`, 'PUT',{}, 1),
+	
+	//DELETE http://10.5.4.136:8080/gas/mini/deteleUserOpenId.mvc?userName=as
+	deteleUserOpenId:(params) => request.globalRequest(`/gas/mini/deteleUserOpenId.mvc${formatGetUri(params)}`, 'DELETE',{}, 1),
 }
 
 

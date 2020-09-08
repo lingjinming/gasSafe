@@ -138,7 +138,7 @@ export default {
 	mixins:[mixin],
 	onShow() {
 		vm = this
-		vm.isAcceptedFn()  //判断当前是否打开了订阅功能
+		// vm.isAcceptedFn()  //判断当前是否打开了订阅功能
 		
 		if(!vm.userInfo || !vm.userInfo.nickName){
 			vm.boolShow = true
@@ -195,7 +195,7 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions(['setUserInfo']),
+		...mapActions('user',['setUserInfo']),
 		getuserinfo(){// 小程序获取用户昵称头像等信息
 			uni.getUserInfo({
 			    success: (res) => {

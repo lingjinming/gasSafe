@@ -43,7 +43,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions(['setUserInfo']),
+		...mapActions('user',['setUserInfo']),
 		removeAlarm(id){
 			let vm = this
 			if(this.monitorData.ravelFlag){

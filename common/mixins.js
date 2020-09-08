@@ -7,10 +7,10 @@ export const mixin = {
 		}
 	},
 	created(){
+		vm = this
 		console.log('from mixins..')
 	},
 	mounted() {
-		vm = this
 		uni.$on('relieveAlarmSuccess',()=>{
 			this.requestSubscribeMessageFn(true)
 		})
@@ -48,7 +48,18 @@ export const mixin = {
 
 		},
 		requestSubscribeMessageFn(back=false){
-			if(vm.isAccepted){
+				
+				uni.getSetting({
+				  withSubscriptions: true,
+				  success (res) {
+				    console.log('subscriptionsSetting-->',res.subscriptionsSetting)
+					if(!res.subscriptionsSetting.mainSwitch){
+						vm.openConfirm('检测到您没打开信息推送，是否去设置打开？')
+					}
+				  }
+				})
+			
+			// if(vm.isAccepted){
 				// uni.showToast({
 				// 	icon:'none',
 				// 	title:'当前已订阅，请勿重复订阅'
@@ -56,41 +67,62 @@ export const mixin = {
 				uni.requestSubscribeMessage({
 				  tmplIds: vm.tmplIds,
 				  success (res) {
-					  uni.getStorage({
-					  	key:'openid',
-						success(res){
-							if(back){
-								uni.navigateBack()
-							}
-							vm.saveUserOpenIdFn(res.data)
+					  let isAccepted = res[vm.tmplIds[0]] == 'accept' || res[vm.tmplIds[1]] == 'accept'
+						// let isAccepted = vm.tmplIds.some(item => {//只要有一个信息模板订阅了则表示已订阅
+						// 	if(res[item]){
+						// 		console.log('res[item]->',res[item])
+						// 		res[item] == 'accept'
+						// 	}
+						// }) //用户选择了
+						console.log('isAccepted-->',isAccepted)
+						if(!isAccepted){ //用户选择了取消订阅
+							// vm.openConfirm('检测到您没打开信息推送，是否去设置打开？')
+							vm.$api.deteleUserOpenId({
+								userName:vm.userInfo.nickName
+							})
+							.then(res => {
+								debugger
+								if(res){
+									vm.$store.commit('tmplate/setSubscribed',false)
+								}
+							})
+							return
 						}
-					  }) 
+						  uni.getStorage({
+							key:'openid',
+							success(res){
+								if(back){
+									uni.navigateBack()
+								}
+								vm.saveUserOpenIdFn(res.data)
+							}
+						  }) 
 				  }
 				})
-			}else{
-				vm.openConfirm('检测到您没打开推送权限，是否去设置打开？')
-			}
+			// }else{
+			// 	vm.openConfirm('检测到您没打开推送权限，是否去设置打开？')
+			// }
 
 		},
 		isAcceptedFn(){
-			uni.getSetting({
-			  withSubscriptions: true,
-			  success (res) {
-			    console.log('subscriptionsSetting-->',res.subscriptionsSetting)
-				// vm.isAccepted = vm.tmplIds.some(item => {//只有有一个信息模板订阅了则表示已订阅
-				// 	res[item] == 'accept'
-				// })
-				// console.log('isAccepted->',vm.isAccepted)
-				// if(res.subscriptionsSetting.mainSwitch && vm.isAccepted){ //订阅打开并且每个模板信息状态都是 ‘accept’ 的时候
-				if(res.subscriptionsSetting.mainSwitch){
-					vm.isAccepted = true
-					vm.$store.commit('tmplate/setSubscribed',true)
-				}else{ //订阅关闭的时候
-					vm.isAccepted = false
-					vm.$store.commit('tmplate/setSubscribed',false)
-				}
-			  },
-			})
+			// uni.getSetting({
+			//   withSubscriptions: true,
+			//   success (res) {
+			//     console.log('subscriptionsSetting-->',res.subscriptionsSetting)
+			// 	// vm.isAccepted = vm.tmplIds.some(item => {//只有有一个信息模板订阅了则表示已订阅
+			// 	// 	res[item] == 'accept'
+			// 	// })
+			// 	// console.log('isAccepted->',vm.isAccepted)
+			// 	// if(res.subscriptionsSetting.mainSwitch && vm.isAccepted){ //订阅打开并且每个模板信息状态都是 ‘accept’ 的时候
+			// 	if(res.subscriptionsSetting.mainSwitch){
+			// 		vm.isAccepted = true
+			// 		vm.$store.commit('tmplate/setSubscribed',true)
+			// 	}else{ //订阅关闭的时候
+			// 		vm.isAccepted = false
+			// 		vm.$store.commit('tmplate/setSubscribed',false)
+			// 	}
+			//   },
+			// })
 		},
 		//打开设置
 		openConfirm(message) {
