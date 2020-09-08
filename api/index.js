@@ -34,6 +34,8 @@ const api = {
 	//GET /mini/getGlobalSearchInfo 全局搜索
 	getGlobalSearchInfo:(params) => request.globalRequest(`/gas/mini/getGlobalSearchInfo.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 	
+	//PUT http://172.19.0.46:8086/gas/mini/saveUserOpenId.mvc?userName=as&openId=as 
+	saveUserOpenId:(params) => request.globalRequest(`/gas/mini/saveUserOpenId.mvc${formatGetUri(params)}`, 'PUT',{}, 1),
 }
 
 

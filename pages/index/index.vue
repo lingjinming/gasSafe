@@ -138,6 +138,8 @@ export default {
 	mixins:[mixin],
 	onShow() {
 		vm = this
+		vm.isAcceptedFn()  //判断当前是否打开了订阅功能
+		
 		if(!vm.userInfo || !vm.userInfo.nickName){
 			vm.boolShow = true
 			vm.$refs.popupRef.show(); // 或者 boolShow = rue
@@ -147,8 +149,10 @@ export default {
 			vm.boolShow = false
 			vm.$refs.popupRef.close();
 		}
+		
 	},
 	mounted() {
+		// 监听 报警解除成功事件
 		uni.$on('relieveAlarmSuccess',()=>{
 			vm.changeType(this.curType)
 		})

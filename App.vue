@@ -1,7 +1,10 @@
 <script>
+let vm;
 export default {
 	onLaunch: function() {
 		console.log('App Launch');
+		console.log(this.userInfo)
+		vm = this
 		uni.login({
 			success(res) {
 				if(res.code){
