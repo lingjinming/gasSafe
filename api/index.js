@@ -39,6 +39,9 @@ const api = {
 	
 	//DELETE http://10.5.4.136:8080/gas/mini/deteleUserOpenId.mvc?userName=as
 	deteleUserOpenId:(params) => request.globalRequest(`/gas/mini/deteleUserOpenId.mvc${formatGetUri(params)}`, 'DELETE',{}, 1),
+	
+	//GET http://10.5.4.136:8080/gas/mini/getUserIsSub.mvc?userName=
+	getUserIsSub:(params) => request.globalRequest(`/gas/mini/getUserIsSub.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 }
 
 

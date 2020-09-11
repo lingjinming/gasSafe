@@ -7,7 +7,10 @@
 			<view class="title flex_center_row">燃气安全监测</view>
 			<view class="flex_between_row">
 				<view class="tab_box flex_between_row">
-					<view class="act" v-for="item in btns" :key="item.id" :class="{ cur: curType == item.type }" @click="changeType(item.type)">{{ item.type }}</view>
+					<view class="act" v-for="item in btns" :key="item.id" :class="{ cur: curType == item.type }" @click="changeType(item.type)">
+						{{ item.type }}
+						<text v-if="item.num">{{ item.num }}</text>
+					</view>
 				</view>
 				<image src="../../static/img/map.png" mode="aspectFit" @click="enterMap"></image>
 			</view>
@@ -59,16 +62,18 @@ export default {
 		return {
 			urlConfig,
 			curType: '报警列表',
-			btns: [
-				{
-					id: 0,
-					type: '报警列表'
-				},
-				{
-					id: 1,
-					type: '实时监测'
-				}
-			],
+			// btns: [
+			// 	{
+			// 		id: 0,
+			// 		type: '报警列表',
+			// 		num: 1
+			// 	},
+			// 	{
+			// 		id: 1,
+			// 		type: '实时监测',
+			// 		num: 2
+			// 	}
+			// ],
 			alarmTypes: [
 				{
 					id: 1,
@@ -128,20 +133,24 @@ export default {
 			status: '0,1',
 			recordsNum: 0,
 			monitorData: [],
-			equipMonitorData: []
+			equipMonitorData: [],
+			monitorDataNotReadLen:0,
+			realDataNotReadLen:0,
 		};
 	},
 	mixins: [mixin],
 	onShow() {
 		vm = this;
-		// vm.isAcceptedFn()  //判断当前是否打开了订阅功能
-
+		vm.getMainSwitch()//判断是否打开了订阅总开关
 		if (!vm.userInfo || !vm.userInfo.nickName) {
 			vm.boolShow = true;
 			vm.$refs.popupRef.show(); // 或者 boolShow = rue
 			vm.getuserinfo();
 		} else {
-			vm.changeType(vm.curType);
+			// vm.changeType(vm.curType);
+			this.getAlarmInfoFn();
+			this.getEquipMonitorFn();
+			
 			vm.boolShow = false;
 			vm.$refs.popupRef.close();
 		}
@@ -157,7 +166,24 @@ export default {
 			userInfo: ({ user }) => user.userInfo,
 			tmplIds: ({ tmplate }) => tmplate.tmplIds,
 			isSubscribed: ({ tmplate }) => tmplate.isSubscribed
-		})
+		}),
+		btns(){
+			return [
+				{
+					id: 0,
+					type: '报警列表',
+					num: this.monitorDataNotReadLen
+				},
+				{
+					id: 1,
+					type: '实时监测',
+					num: this.realDataNotReadLen
+				}
+			]
+		},
+		totalNotRead(){
+			return this.monitorDataNotReadLen + this.realDataNotReadLen
+		}
 	},
 	watch: {
 		alarmTypes: {
@@ -187,6 +213,12 @@ export default {
 				this.getEquipMonitorFn();
 			},
 			deep: true
+		},
+		totalNotRead(newVal){
+			uni.setTabBarBadge({
+			  index: 0,
+			  text: `${newVal}`
+			})
 		}
 	},
 	methods: {
@@ -253,7 +285,11 @@ export default {
 				})
 				.then(res => {
 					this.monitorData = res.data.data;
-					this.recordsNum = this.monitorData.length;
+					let monitorDataNotRead = this.monitorData.filter(item => !item.isRead)
+					this.monitorDataNotReadLen = monitorDataNotRead.length
+					if (this.curType == '报警列表') {
+						this.recordsNum = this.monitorData.length;
+					}
 				});
 		},
 		getEquipMonitorFn() {
@@ -266,7 +302,11 @@ export default {
 				})
 				.then(res => {
 					this.equipMonitorData = res.data;
-					this.recordsNum = this.equipMonitorData.length;
+					let realDataNotRead = this.equipMonitorData.filter(item => !item.isRead)
+					this.realDataNotReadLen = realDataNotRead.length
+					if (this.curType == '实时监测') {
+						this.recordsNum = this.equipMonitorData.length;
+					}
 				});
 		}
 	}
@@ -313,6 +353,21 @@ switch {
 				bottom: -8rpx;
 				transform: translateX(-50%);
 			}
+		}
+		view {
+			position: relative;
+		}
+		text {
+			position: absolute;
+			right: -20rpx;
+			top: -10rpx;
+			background: red;
+			color: #fff;
+			width: 30rpx;
+			height: 30rpx;
+			border-radius: 50%;
+			text-align: center;
+			font-size: 24rpx;
 		}
 	}
 	image {
