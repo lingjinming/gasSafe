@@ -8,7 +8,8 @@ export const mixin = {
 	data() {
 		return {
 			isAccepted: true, //是否订阅了消息
-			mainSwitch: true, //订阅总开关
+			mainSwitch: true, //订阅总开关,
+			tmplIds : ['C8CpfXuRYqaZ1T8SYPISLoa3spdSNx89RD1YEpoBjSE','rId4AN9JbtRHydN09h-OP7C3M4k2Dfseo3xoUzETDgw'],
 		}
 	},
 	created() {
@@ -28,9 +29,6 @@ export const mixin = {
 	},
 	computed: {
 		...mapState({
-			tmplIds: ({
-				tmplate
-			}) => tmplate.tmplIds,
 			userInfo: ({
 				user
 			}) => user.userInfo,
@@ -70,7 +68,7 @@ export const mixin = {
 					uni.requestSubscribeMessage({
 						tmplIds: vm.tmplIds,
 						success(res) {
-							vm.isAccepted = vm.tmplIds.every(item => { //只要有一个信息模板订阅了则表示已订阅
+							vm.isAccepted = vm.tmplIds.some(item => { //只要有一个信息模板订阅了则表示已订阅
 								console.log('res[item]->', res[item])
 								return res[item] == 'accept'
 							})

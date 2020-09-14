@@ -164,7 +164,7 @@ export default {
 	computed: {
 		...mapState({
 			userInfo: ({ user }) => user.userInfo,
-			tmplIds: ({ tmplate }) => tmplate.tmplIds,
+			// tmplIds: ({ tmplate }) => tmplate.tmplIds,
 			isSubscribed: ({ tmplate }) => tmplate.isSubscribed
 		}),
 		btns(){
@@ -359,12 +359,13 @@ switch {
 		}
 		text {
 			position: absolute;
-			right: -20rpx;
-			top: -10rpx;
+			right: -30rpx;
+			top: -20rpx;
 			background: red;
 			color: #fff;
-			width: 30rpx;
-			height: 30rpx;
+			width: 40rpx;
+			height: 40rpx;
+			line-height: 40rpx;
 			border-radius: 50%;
 			text-align: center;
 			font-size: 24rpx;
