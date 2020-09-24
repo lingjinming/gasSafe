@@ -2,7 +2,10 @@
 	<view class="item_box box_shadow">
 	  	<view class="info" @click.stop="enterEquipDetailInfo(realtimeMonitorData)">
 			<view class="tit flex_between_row">
-				<view class="alarm_level">{{realtimeMonitorData.equipmentCode}}</view>
+				<view class="alarm_level">
+					{{realtimeMonitorData.equipmentCode}}
+					<text class="not_readed"></text>
+				</view>
 				<view class="alarm_type" @click.stop="enterMonitorData(realtimeMonitorData.alarmInspect)" >
 					<image src="../../static/img/chart.png" mode=""></image>
 					<text>监测曲线</text>
@@ -135,6 +138,16 @@ export default {
 				left: -20rpx;
 				top: 6rpx;
 			}
+			.not_readed{
+				position: absolute;
+				display: inline-block;
+				width: 10rpx;
+				height: 10rpx;
+				border-radius: 50%;
+				background: #d8605f;
+				right: -10rpx;
+				top: 0;
+			}
 		}
 		.alarm_type{
 			color: $uni-color-warning;
@@ -214,4 +227,5 @@ export default {
 		}
 	}
 }
+		
 </style>
