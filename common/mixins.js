@@ -20,12 +20,12 @@ export const mixin = {
 		vm.getMainSwitch()//判断是否打开了订阅总开关
 	},
 	mounted() {
-		uni.$on('relieveAlarmSuccess', () => {
-			this.requestSubscribeMessageFn(true)
-		})
+		// uni.$on('relieveAlarmSuccess', () => {
+		// 	this.requestSubscribeMessageFn(true)
+		// })
 	},
 	beforeDestroy() {
-		uni.$off('relieveAlarmSuccess')
+		// uni.$off('relieveAlarmSuccess')
 	},
 	computed: {
 		...mapState({

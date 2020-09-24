@@ -363,9 +363,9 @@ switch {
 			top: -20rpx;
 			background: red;
 			color: #fff;
-			width: 40rpx;
-			height: 40rpx;
-			line-height: 40rpx;
+			width: 30rpx;
+			height: 30rpx;
+			line-height: 30rpx;
 			border-radius: 50%;
 			text-align: center;
 			font-size: 24rpx;

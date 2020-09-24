@@ -93,6 +93,9 @@ export default {
 				success: function(res) {
 					vm.longitude = res.longitude;
 					vm.latitude = res.latitude;
+					console.log('fromMapEnter-->')
+					console.log('longitude-->',vm.longitude)
+					console.log('latitude-->',vm.latitude)
 				}
 			});
 		}
@@ -107,6 +110,9 @@ export default {
 				longitude: data.longtitude,
 				latitude: data.latitude
 			});
+			console.log('alarmDetailPos-->')
+			console.log('longitude-->',data.longtitude)
+			console.log('latitude-->',data.latitude)
 			if (!vm.fromMapEnter) {
 				vm.markers = [];
 			}
@@ -130,7 +136,9 @@ export default {
 				longitude: data.longtitude,
 				latitude: data.latitude
 			});
-
+			console.log('realtimeMonitorDetail-->')
+			console.log('longitude-->',data.longtitude)
+			console.log('latitude-->',data.latitude)
 			if (!vm.fromMapEnter) {
 				vm.markers = [];
 			}
