@@ -42,6 +42,11 @@ export default {
 			},
 		},
 	},
+	computed:{
+		...mapState({
+			userInfo: ({ user }) => user.userInfo,
+		}),
+	},
 	methods: {
 		...mapActions('user',['setUserInfo']),
 		removeAlarm(id){
@@ -60,9 +65,12 @@ export default {
 
 		},
 		enterMap(data){
-			this.$api.saveAlarmRead({
-				alarmId:data.alarmId
-			})
+			if(!data.isRead){
+				this.$api.saveAlarmRead({
+					userName: this.userInfo.nickName,
+					infoId:data.alarmId
+				})
+			}
 			uni.setStorage({
 				key:'monitorDetail',
 				data,

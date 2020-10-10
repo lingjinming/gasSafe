@@ -8,7 +8,8 @@ export const mixin = {
 	data() {
 		return {
 			isAccepted: true, //是否订阅了消息
-			mainSwitch: true, //订阅总开关
+			mainSwitch: true, //订阅总开关,
+			tmplIds : ['uoNcYWBSUvI6O2cu3Zr4qK5g_Q4N9cDR1uxkrimSqa4','C8CpfXuRYqaZ1T8SYPISLjV7m6D5lc86RGbyfKCJWNc'],
 		}
 	},
 	created() {
@@ -16,21 +17,18 @@ export const mixin = {
 		vm.setSubscribeStatus()
 	},
 	onShow(){
-		vm.getMainSwitch()//判断是否打开了订阅总开关
+		// vm.getMainSwitch()//判断是否打开了订阅总开关
 	},
 	mounted() {
-		uni.$on('relieveAlarmSuccess', () => {
-			this.requestSubscribeMessageFn(true)
-		})
+		// uni.$on('relieveAlarmSuccess', () => {
+		// 	this.requestSubscribeMessageFn(true)
+		// })
 	},
 	beforeDestroy() {
-		uni.$off('relieveAlarmSuccess')
+		// uni.$off('relieveAlarmSuccess')
 	},
 	computed: {
 		...mapState({
-			tmplIds: ({
-				tmplate
-			}) => tmplate.tmplIds,
 			userInfo: ({
 				user
 			}) => user.userInfo,
@@ -70,7 +68,7 @@ export const mixin = {
 					uni.requestSubscribeMessage({
 						tmplIds: vm.tmplIds,
 						success(res) {
-							vm.isAccepted = vm.tmplIds.every(item => { //只要有一个信息模板订阅了则表示已订阅
+							vm.isAccepted = vm.tmplIds.some(item => { //只要有一个信息模板订阅了则表示已订阅
 								console.log('res[item]->', res[item])
 								return res[item] == 'accept'
 							})

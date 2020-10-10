@@ -4,7 +4,7 @@
 			<view class="tit flex_between_row">
 				<view class="alarm_level">
 					{{realtimeMonitorData.equipmentCode}}
-					<text class="not_readed"></text>
+					<!-- <text class="not_readed" v-if="!realtimeMonitorData.isRead"></text> -->
 				</view>
 				<view class="alarm_type" @click.stop="enterMonitorData(realtimeMonitorData.alarmInspect)" >
 					<image src="../../static/img/chart.png" mode=""></image>
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+	import { mapActions, mapState } from 'vuex';
 export default {
 	data() {
 		return {
@@ -73,6 +74,11 @@ export default {
 		realtimeMonitorData:{
 			type:Object
 		},
+	},
+	computed:{
+		...mapState({
+			userInfo: ({ user }) => user.userInfo,
+		}),
 	},
 	mounted() {
 		this.getEquipDetailInfoFn(this.realtimeMonitorData.equipId)
@@ -87,6 +93,12 @@ export default {
 			})
 		},
 		enterEquipDetailInfo(data){
+			if(!data.isRead){
+				this.$api.saveAlarmRead({
+					userName: this.userInfo.nickName,
+					infoId: data.equipId
+				})
+			}
 			uni.setStorage({
 				key:'realtimeMonitorDetail',
 				data,

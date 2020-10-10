@@ -50,8 +50,17 @@ export default {
 				alarmId:this.alarmId,
 				operator:this.operator
 			}).then(res => {
-				uni.$emit('relieveAlarmSuccess')
-				// uni.navigateBack()
+				// uni.$emit('relieveAlarmSuccess')
+				uni.showToast({
+					title:'解除成功',
+					duration:1500,
+					success() {
+						setTimeout(()=>{
+							uni.navigateBack()
+						},1500)
+					}
+				})
+				
 			})
 		},
 		getDate(e) {

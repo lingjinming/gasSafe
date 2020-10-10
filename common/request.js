@@ -1,7 +1,7 @@
 import urlConfig from './config.js'
 
 const request = {}
-const headers = {}
+const header = {}
     
 request.globalRequest = (url, method, data, power) => {
 	/*   权限判断 因为有的接口请求头可能需要添加的参数不一样，所以这里做了区分
@@ -11,29 +11,29 @@ request.globalRequest = (url, method, data, power) => {
 	// uni.showLoading({
 	// 	title:'加载中'
 	// })
-    switch (power){
-        case 1:
-            headers['Authorization'] = 'Basic a3N1ZGk6a3N1ZGk='
-            break;
-        case 2:
-            headers['Authorization'] = 'Basic a3N1ZGlfcGM6a3N1ZGlfcGM='
-            break;
-        case 3:
-            responseType = 'blob'
-            break;
-        default:
-            headers['Authorization'] = 'Basic'
-            break;
-    }
+    // switch (power){
+    //     case 1:
+    //         headers['Authorization'] = 'Basic a3N1ZGk6a3N1ZGk='
+    //         break;
+    //     case 2:
+    //         headers['Authorization'] = 'Basic a3N1ZGlfcGM6a3N1ZGlfcGM='
+    //         break;
+    //     case 3:
+    //         responseType = 'blob'
+    //         break;
+    //     default:
+    //         headers['Authorization'] = 'Basic'
+    //         break;
+    // }
             
     return uni.request({
         url: urlConfig + url,
         method:method || 'GET',
-        data: data,
+        data,
         dataType: 'json',
-        header: headers
+        header,
     }).then(res => {
-		uni.hideLoading()
+		// uni.hideLoading()
 		// debugger
         if (res[1].statusCode ==200 || res[1].data.status =="success" || res[1].data.code == 200) {
             return res[1]

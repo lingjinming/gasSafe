@@ -1,7 +1,7 @@
 import context from '../main.js'
 const state = {
 	isSubscribed:true,//默认未订阅消息
-    tmplIds : ['C8CpfXuRYqaZ1T8SYPISLoa3spdSNx89RD1YEpoBjSE','rId4AN9JbtRHydN09h-OP7C3M4k2Dfseo3xoUzETDgw'],
+    tmplIds : ['uoNcYWBSUvI6O2cu3Zr4qK5g_Q4N9cDR1uxkrimSqa4','C8CpfXuRYqaZ1T8SYPISLjV7m6D5lc86RGbyfKCJWNc'],
 }
 const mutations = {
     setSubscribed(state,data){
