@@ -62,18 +62,6 @@ export default {
 		return {
 			urlConfig,
 			curType: '报警列表',
-			// btns: [
-			// 	{
-			// 		id: 0,
-			// 		type: '报警列表',
-			// 		num: 1
-			// 	},
-			// 	{
-			// 		id: 1,
-			// 		type: '实时监测',
-			// 		num: 2
-			// 	}
-			// ],
 			alarmTypes: [
 				{
 					id: 1,
@@ -141,7 +129,6 @@ export default {
 	mixins: [mixin],
 	onShow() {
 		vm = this;
-		// vm.getMainSwitch()//判断是否打开了订阅总开关
 		if (!vm.userInfo || !vm.userInfo.nickName) {
 			vm.boolShow = true;
 			vm.$refs.popupRef.show(); // 或者 boolShow = rue

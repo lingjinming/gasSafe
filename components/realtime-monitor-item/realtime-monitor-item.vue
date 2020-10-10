@@ -8,7 +8,8 @@
 				</view>
 				<view class="alarm_type" @click.stop="enterMonitorData(realtimeMonitorData.alarmInspect)" >
 					<image src="../../static/img/chart.png" mode=""></image>
-					<text>监测曲线</text>
+					<text>甲烷：{{realtimeMonitorDetailInfo.realdata}}</text>
+					<!-- <text>监测曲线</text> -->
 				</view>
 			</view>
 				
@@ -31,10 +32,10 @@
 				<view class="value">{{realtimeMonitorData.installPos}}</view>
 			</view>
 			<view class="flex_around_row device_status_box">
-				<view class="flex_around_column">
+			<!-- 	<view class="flex_around_column">
 					<text>{{realtimeMonitorDetailInfo.realdata}}</text>
 					<text>甲烷(%VOL)</text>
-				</view>
+				</view> -->
 				<view class="flex_around_column">
 					<text>{{realtimeMonitorDetailInfo.voltage}}</text>
 					<text>电压(V)</text>
@@ -46,6 +47,10 @@
 				<view class="flex_around_column">
 					<text>{{realtimeMonitorDetailInfo.temperature}}</text>
 					<text>温度(℃)</text>
+				</view>
+				<view class="flex_around_column">
+					<text>{{realtimeMonitorDetailInfo.humidity}}</text>
+					<text>湿度(%RH)</text>
 				</view>
 			</view>
 			<!-- <view class="info_box">
@@ -115,6 +120,7 @@ export default {
 			}).then(res => {
 				// this.realtimeMonitorDetail = res.data
 				this.realtimeMonitorDetailInfo = res.data.monitorIndex
+				console.log('this.realtimeMonitorDetailInfo',this.realtimeMonitorDetailInfo)
 			})
 		}
 	}

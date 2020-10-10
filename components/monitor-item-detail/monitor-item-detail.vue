@@ -22,7 +22,7 @@
 					<view>监测曲线</view>
 					<view>》</view>
 				</view>
-				<view class="con_box">
+				<view class="con_box" v-if="monitorDetail.historyCurveData.length">
 					<view class="chart_info flex_between_row">
 						<view>最高值：{{monitorDetail.historyCurveData[0].maxValue}}%VOL</view>
 						<view>{{monitorDetail.historyCurveData[0].maxTime}}</view>
@@ -33,6 +33,7 @@
 						<!-- <monitor-chart :chartData='chartData' v-if='chartData !==null'></monitor-chart> -->
 					</view>
 				</view>
+				<view class="no_data" v-else>暂无数据</view>
 			</view>
 			<view class="comm_box flex_column">
 				<view class="tit_box flex_between_row">
@@ -171,25 +172,32 @@ export default {
 				alarmId:this.alarmId
 			}).then(res => {
 				this.monitorDetail = res.data[0]
-				let tempchartData = {
-					categories: this.monitorDetail.historyCurveData[0]['times'],
-					series: [
-						{
-							data:this.monitorDetail.historyCurveData[0]['values'],
-							name:'甲烷浓度',
-							index:0,
-						},
-						{
-							data:this.monitorDetail.historyCurveData[0]['wendu'],
-							name:'温度',
-							index:1,
-						},
-					]
+				console.log('this.monitorDetail.historyCurveData.length',this.monitorDetail.historyCurveData.length)
+				if(this.monitorDetail.historyCurveData.length){
+					let tempchartData = {
+						categories: this.monitorDetail.historyCurveData[0]['times'],
+						series: [
+							{
+								data:this.monitorDetail.historyCurveData[0]['values'],
+								name:'甲烷浓度',
+								index:0,
+							},
+							{
+								data:this.monitorDetail.historyCurveData[0]['wendu'],
+								name:'温度',
+								index:1,
+							},
+						]
+					}
+					uni.setStorage({
+						key:'monitorDetailData',
+						data:tempchartData,
+					})
+				}else{
+					uni.clearStorage('monitorDetailData')
 				}
-				uni.setStorage({
-					key:'monitorDetailData',
-					data:tempchartData,
-				})
+				
+				
 				uni.$emit('alarmDetailPos',res.data)
 			})
 		},
@@ -271,7 +279,7 @@ export default {
 			display: block;
 			width: calc(100% - 180rpx);
 			overflow: hidden;
-			text-overflow: hidden;
+			white-space: nowrap;
 			text-overflow: ellipsis;
 		}
 	}
@@ -352,6 +360,22 @@ scroll-view{
 	.alarm_removed{
 		color: $uni-text-color-disable;
 		border: 2rpx solid $uni-text-color-disable;
+	}
+}
+.no_data{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	margin: 20rpx 0;
+	color: $uni-text-color-disable;
+}
+.flex_between_row:last-child{
+	.device_info_row{
+		text:last-child{
+			width: 100rpx;
+		}
 	}
 }
 </style>
