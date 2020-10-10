@@ -42,6 +42,15 @@
 					<input class="uni-input" disabled v-model="userInfoByApi.roleName" />
 				</view>
 			</view>
+			
+			<view class="flex_between_row">
+				<view >
+					<image src="../../../static/img/about.png" mode=""></image>
+					<text>报警推送</text>
+				</view>
+				<switch @click="requestSubscribeMessageFn" :checked="isSubscribed" disabled="true" />
+			</view>
+			
 			<view class="flex_between_row">
 				<view>
 					<image src="../../../static/img/about.png" mode=""></image>
@@ -62,6 +71,8 @@
 import {mapActions, mapState} from 'vuex'
 import urlConfig from '../../../common/config.js'
 let vm ;
+import { mixin } from '../../../common/mixins.js';
+
 export default {
 	data() {
 		return {
@@ -78,15 +89,18 @@ export default {
 			phoneNumber:''
 		};
 	},
+	mixins: [mixin],
 	computed: {
 		...mapState({
 			//这里可以通过这种方式引用相应模块的state数据，其中user是模块名。在代码的其他部分可以使用this.userInfo访问数据
 			userInfo: ({user}) => user.userInfo,
+			isSubscribed: ({ tmplate }) => tmplate.isSubscribed
 		})
 	},
 	onShow() {
 		vm = this
 		vm.getUserInfoFn()
+		vm.getMainSwitch()//判断是否打开了订阅总开关
 	},
 	methods: {
 		getUserInfoFn(){
@@ -105,6 +119,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+switch {
+	transform: scale(0.7) translateX(40rpx);
+}
 .container{
 	background-size: 100% 400rpx;
 	background-position: top center;

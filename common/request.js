@@ -33,7 +33,7 @@ request.globalRequest = (url, method, data, power) => {
         dataType: 'json',
         header,
     }).then(res => {
-		uni.hideLoading()
+		// uni.hideLoading()
 		// debugger
         if (res[1].statusCode ==200 || res[1].data.status =="success" || res[1].data.code == 200) {
             return res[1]

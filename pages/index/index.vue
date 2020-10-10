@@ -31,10 +31,10 @@
 				<text>{{ recordsNum }}</text>
 				{{ curType == '报警列表' ? '起报警' : '台设备' }}
 			</view>
-			<view @click="requestSubscribeMessageFn" class="subscribe_btn">
+		<!-- 	<view @click="requestSubscribeMessageFn" class="subscribe_btn">
 				报警推送
 				<switch :checked="isSubscribed" disabled="true" />
-			</view>
+			</view> -->
 			<!-- 暂时隐藏搜索功能 -->
 			<!-- <view @click="enterSearch">
 			<image src="../../static/img/search.png" mode=""></image>
@@ -141,7 +141,7 @@ export default {
 	mixins: [mixin],
 	onShow() {
 		vm = this;
-		vm.getMainSwitch()//判断是否打开了订阅总开关
+		// vm.getMainSwitch()//判断是否打开了订阅总开关
 		if (!vm.userInfo || !vm.userInfo.nickName) {
 			vm.boolShow = true;
 			vm.$refs.popupRef.show(); // 或者 boolShow = rue
@@ -177,13 +177,13 @@ export default {
 				{
 					id: 1,
 					type: '实时监测',
-					num: this.realDataNotReadLen
+					// num: this.realDataNotReadLen
 				}
 			]
 		},
-		totalNotRead(){
-			return this.monitorDataNotReadLen + this.realDataNotReadLen
-		}
+		// totalNotRead(){
+		// 	return this.monitorDataNotReadLen + this.realDataNotReadLen
+		// }
 	},
 	watch: {
 		alarmTypes: {
@@ -214,12 +214,12 @@ export default {
 			},
 			deep: true
 		},
-		totalNotRead(newVal){
-			uni.setTabBarBadge({
-			  index: 0,
-			  text: `${newVal}`
-			})
-		}
+		// totalNotRead(newVal){
+		// 	uni.setTabBarBadge({
+		// 	  index: 0,
+		// 	  text: `${newVal}`
+		// 	})
+		// }
 	},
 	methods: {
 		...mapActions('user', ['setUserInfo']),
@@ -314,9 +314,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-switch {
-	transform: scale(0.6);
-}
+
 .container {
 	background-size: 100% 400rpx;
 	background-position: top center;
@@ -359,8 +357,8 @@ switch {
 		}
 		text {
 			position: absolute;
-			right: -30rpx;
-			top: -20rpx;
+			right: -24rpx;
+			top: -10rpx;
 			background: red;
 			color: #fff;
 			width: 30rpx;
@@ -416,12 +414,12 @@ type-tab {
 		margin: 0 10rpx;
 	}
 	.subscribe_btn {
-		position: relative;
-		right: -20rpx;
-		border-radius: 10rpx;
-		height: 40rpx;
-		line-height: 40rpx;
-		font-size: 24rpx;
+		// position: relative;
+		// right: -20rpx;
+		// border-radius: 10rpx;
+		// height: 40rpx;
+		// line-height: 40rpx;
+		// font-size: 24rpx;
 		// color: #fff !important;
 	}
 }

@@ -4,7 +4,7 @@
 			<view class="tit flex_between_row">
 				<view class="alarm_level">
 					{{realtimeMonitorData.equipmentCode}}
-					<text class="not_readed" v-if="!realtimeMonitorData.isRead"></text>
+					<!-- <text class="not_readed" v-if="!realtimeMonitorData.isRead"></text> -->
 				</view>
 				<view class="alarm_type" @click.stop="enterMonitorData(realtimeMonitorData.alarmInspect)" >
 					<image src="../../static/img/chart.png" mode=""></image>

@@ -57,6 +57,7 @@ export default {
 	watch: {
 		markers(newVal) {
 			this.newMarkers = this.unique(newVal, 'id');
+			console.log('this.newMarkers-->',this.newMarkers)
 		},
 		alarmTypes: {
 			handler(newVal) {
@@ -93,9 +94,8 @@ export default {
 				success: function(res) {
 					vm.longitude = res.longitude;
 					vm.latitude = res.latitude;
-					console.log('fromMapEnter-->')
-					console.log('longitude-->',vm.longitude)
-					console.log('latitude-->',vm.latitude)
+					console.log('fromMapEnter-->longitude:',vm.longitude)
+					console.log('fromMapEnter-->latitude:',vm.latitude)
 				}
 			});
 		}
@@ -110,9 +110,8 @@ export default {
 				longitude: data.longtitude,
 				latitude: data.latitude
 			});
-			console.log('alarmDetailPos-->')
-			console.log('longitude-->',data.longtitude)
-			console.log('latitude-->',data.latitude)
+			console.log('alarmDetailPos-->longitude:',data.longtitude)
+			console.log('alarmDetailPos-->latitude:',data.latitude)
 			if (!vm.fromMapEnter) {
 				vm.markers = [];
 			}
@@ -132,13 +131,14 @@ export default {
 		});
 		uni.$on('realtimeMonitorDetail', data => {
 			vm.scale = 16;
+			// vm.longitude = data.longtitude
+			// vm.latitude = data.latitude
 			mapContext.moveToLocation({
 				longitude: data.longtitude,
 				latitude: data.latitude
 			});
-			console.log('realtimeMonitorDetail-->')
-			console.log('longitude-->',data.longtitude)
-			console.log('latitude-->',data.latitude)
+			console.log('realtimeMonitorDetail-->longitude:',data.longtitude)
+			console.log('realtimeMonitorDetail-->latitude:',data.latitude)
 			if (!vm.fromMapEnter) {
 				vm.markers = [];
 			}
@@ -233,6 +233,12 @@ export default {
 					userName: vm.$store.state.user.userInfo.nickName
 				})
 				.then(res => {
+					if(!res.data.data.length && vm.fromMapEnter){
+						uni.showToast({
+							title:res.data.msg
+						})
+						return
+					}
 					vm.showMarkers(res.data.data);
 				});
 		},
@@ -255,7 +261,7 @@ export default {
 					alarmLevel: item.alarmLevel || ''
 				});
 			});
-			// console.log(vm.markers)
+			console.log('vm.markers',vm.markers)
 		}
 	}
 };
