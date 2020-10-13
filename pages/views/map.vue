@@ -3,7 +3,7 @@
 		<map class="map" id="map" ref="map" :longitude="longitude" :latitude="latitude" :scale="scale" :markers="newMarkers" @markertap="chooseMarker" show-location></map>
 		<view class="layer_box" @click="show"><image src="../../static/img/layer.png"></image></view>
 		<uni-search-bar :placeholder="'搜地点,查设备,找窨井'" @confirm="getkeyword" @clear="getkeyword"></uni-search-bar>
-		<popup-layer v-show="boolShow" ref="popupRef" :direction="'left'">
+		<popup-layer v-if="boolShow" ref="popupRef" :direction="'left'">
 			<type-tab v-if="curType == '报警列表'" :title="'报警级别'" :isColumn="true" :tabs.sync="alarmTypes"></type-tab>
 			<type-tab v-else :title="'运行状态'" :isColumn="true" :tabs.sync="runStatus"></type-tab>
 		</popup-layer>
@@ -212,7 +212,10 @@ export default {
 		},
 		show() {
 			this.boolShow = true;
-			this.$refs.popupRef.show(); // 或者 boolShow = rue
+			this.$nextTick(function(){
+				this.$refs.popupRef.show(); // 或者 boolShow = rue
+			})
+			
 		},
 		close() {
 			this.$refs.popupRef.close(); // 或者 boolShow = false

@@ -120,7 +120,7 @@ export default {
 			}).then(res => {
 				// this.realtimeMonitorDetail = res.data
 				this.realtimeMonitorDetailInfo = res.data.monitorIndex
-				console.log('this.realtimeMonitorDetailInfo',this.realtimeMonitorDetailInfo)
+				// console.log('this.realtimeMonitorDetailInfo',this.realtimeMonitorDetailInfo)
 			})
 		}
 	}
