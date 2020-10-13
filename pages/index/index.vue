@@ -173,6 +173,15 @@ export default {
 		// }
 	},
 	watch: {
+		curType: {
+			handler(newVal) {
+				uni.setStorage({
+					key:'curType',
+					data:newVal
+				})
+			},
+			immediate: true
+		},
 		alarmTypes: {
 			handler(newVal) {
 				this.transformArrToStr(newVal, 'level');

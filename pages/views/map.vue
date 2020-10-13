@@ -3,7 +3,10 @@
 		<map class="map" id="map" ref="map" :longitude="longitude" :latitude="latitude" :scale="scale" :markers="newMarkers" @markertap="chooseMarker" show-location></map>
 		<view class="layer_box" @click="show"><image src="../../static/img/layer.png"></image></view>
 		<uni-search-bar :placeholder="'搜地点,查设备,找窨井'" @confirm="getkeyword" @clear="getkeyword"></uni-search-bar>
-		<popup-layer v-show="boolShow" ref="popupRef" :direction="'left'"><type-tab :title="'报警级别'" :isColumn="true" :tabs.sync="alarmTypes"></type-tab></popup-layer>
+		<popup-layer v-show="boolShow" ref="popupRef" :direction="'left'">
+			<type-tab v-if="curType == '报警列表'" :title="'报警级别'" :isColumn="true" :tabs.sync="alarmTypes"></type-tab>
+			<type-tab v-else :title="'运行状态'" :isColumn="true" :tabs.sync="runStatus"></type-tab>
+		</popup-layer>
 
 		<monitor-item-detail v-if="monitorDetail" ref="monitorDetail"></monitor-item-detail>
 		<realtime-monitor-item-detail v-if="showRealtimeMonitorDetail" ref="showRealtimeMonitorDetail"></realtime-monitor-item-detail>
@@ -19,6 +22,7 @@ const deviceIconPath = `../../static/img/alarm/device_alarm.png`;
 export default {
 	data() {
 		return {
+			curType:'',
 			fromMapEnter: false, //默认从列表进入的地图
 			scale: 10,
 			showRealtimeMonitorDetail: false, // 默认不展示监测详情
@@ -51,7 +55,19 @@ export default {
 					value: '无报警',
 					checked: true
 				}
-			]
+			],
+			runStatus: [
+				{
+					id: 0,
+					value: '设备异常',
+					checked: true
+				},
+				{
+					id: 1,
+					value: '正常运行',
+					checked: true
+				}
+			],
 		};
 	},
 	watch: {
@@ -76,7 +92,14 @@ export default {
 			},
 			deep: true,
 			immediate: true
-		}
+		},
+		runStatus: {
+			handler(newVal) {
+				this.transformArrToStr(newVal, 'status');
+				this.getEquipMonitorFn();
+			},
+			deep: true
+		},
 	},
 	onLoad(options) {
 		vm = this;
@@ -99,6 +122,15 @@ export default {
 				}
 			});
 		}
+	},
+	onShow(){
+		uni.getStorage({
+			key:'curType',
+			success(data) {
+				vm.curType = data.data
+				console.log('vm.curType',vm.curType)
+			}
+		})
 	},
 	mounted() {
 		mapContext = uni.createMapContext('map', this);
