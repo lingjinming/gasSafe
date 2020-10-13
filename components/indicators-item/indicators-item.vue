@@ -42,17 +42,14 @@
 				<text>激光超时</text>
 			</view>
 			<view class="flex_around_column">
-				{{realtimeMonitorDetailInfo.laseraAnomaly == '是'?'异常':'正常'}}
+				{{equipMonitorData.laseraAnomaly == '是'?'异常':'正常'}}
 				<text>激光光强</text>
 			</view>
-	<!-- 		<view class="flex_around_column">
-				{{equipMonitorData.guard}}
-				<text>GPS状态</text>
-			</view>
 			<view class="flex_around_column">
-				{{equipMonitorData.guard}}
+				{{equipMonitorData.netStatus}}
 				<text>网络状态</text>
-			</view> -->
+			</view>
+	
 		</view>
 		<view>
 			<text>数据时间 : {{equipMonitorData.datatime}}</text>
