@@ -22,7 +22,7 @@
 					<view>监测曲线</view>
 					<view>》</view>
 				</view>
-				<view class="con_box" v-if="monitorDetail.historyCurveData.length">
+				<view class="con_box" v-show="monitorDetail.historyCurveData.length">
 					<view class="chart_info flex_between_row">
 						<view>最高值：{{monitorDetail.historyCurveData[0].maxValue}}%VOL</view>
 						<view>{{monitorDetail.historyCurveData[0].maxTime}}</view>
@@ -33,7 +33,7 @@
 						<!-- <monitor-chart :chartData='chartData' v-if='chartData !==null'></monitor-chart> -->
 					</view>
 				</view>
-				<view class="no_data" v-else>暂无数据</view>
+				<view class="no_data" v-show="!monitorDetail.historyCurveData.length">暂无数据</view>
 			</view>
 			<view class="comm_box flex_column">
 				<view class="tit_box flex_between_row">
