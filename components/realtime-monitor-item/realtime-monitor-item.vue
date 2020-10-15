@@ -85,9 +85,18 @@ export default {
 			userInfo: ({ user }) => user.userInfo,
 		}),
 	},
-	mounted() {
-		this.getEquipDetailInfoFn(this.realtimeMonitorData.equipId)
+	watch:{
+		realtimeMonitorData:{
+			handler(newVal){
+				this.getEquipDetailInfoFn(newVal.equipId)
+			},
+			deep:true,
+			immediate:true
+		}
 	},
+	// mounted() {
+		
+	// },
 	methods: {
 		enterMonitorData(alarmInspect){
 			uni.navigateTo({

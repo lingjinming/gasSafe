@@ -272,6 +272,9 @@ export default {
 			}
 		},
 		getAlarmInfoFn() {
+			uni.showLoading({
+				title:'数据加载中'
+			})
 			// 接口获取报警列表信息
 			this.$api
 				.getAlarmInfo({
@@ -286,9 +289,13 @@ export default {
 					if (this.curType == '报警列表') {
 						this.recordsNum = this.monitorData.length;
 					}
+					uni.hideLoading()
 				});
 		},
 		getEquipMonitorFn() {
+			uni.showLoading({
+				title:'数据加载中'
+			})
 			// 接口获取设备列表信息
 			this.$api
 				.getEquipMonitor({
@@ -303,6 +310,7 @@ export default {
 					if (this.curType == '实时监测') {
 						this.recordsNum = this.equipMonitorData.length;
 					}
+					uni.hideLoading()
 				});
 		}
 	}

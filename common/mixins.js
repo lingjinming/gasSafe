@@ -69,10 +69,10 @@ export const mixin = {
 						tmplIds: vm.tmplIds,
 						success(res) {
 							vm.isAccepted = vm.tmplIds.some(item => { //只要有一个信息模板订阅了则表示已订阅
-								console.log('res[item]->', res[item])
+								// console.log('res[item]->', res[item])
 								return res[item] == 'accept'
 							})
-							console.log('vm.isAccepted->',vm.isAccepted)
+							// console.log('vm.isAccepted->',vm.isAccepted)
 							if (!vm.isAccepted) { //用户选择了取消订阅，给后台发送取消订阅
 								vm.$api.deteleUserOpenId({
 										userName: vm.userInfo.nickName

@@ -21,7 +21,7 @@ let mapContext;
 const deviceCheckedIconPath = `../../static/img/alarm/device_checked.png`; //设备选中后图标
 const deviceIconPath = `../../static/img/alarm/device_alarm.png`;
 export default {
-	mixin:[mixin],
+	mixins:[mixin],
 	data() {
 		return {
 			level:'',
@@ -101,14 +101,16 @@ export default {
 		},
 		runStatus: {
 			handler(newVal) {
-				vm.transformArrToStr(newVal, 'status');
-				vm.initMap();
+				console.log('runStatus',JSON.stringify(newVal))
+				this.transformArrToStr(newVal, 'status');
+				this.initMap();
 			},
 			deep: true
 		},
 	},
 	onLoad(options) {
 		vm = this;
+		console.log('options-->',options)
 		if (options.realtimeMonitorDetail) {
 			this.showRealtimeMonitorDetail = true;
 			this.fromMapEnter = false;
@@ -117,6 +119,13 @@ export default {
 			this.fromMapEnter = false;
 		} else {
 			this.fromMapEnter = true;
+			uni.getStorage({
+				key:'curType',
+				success(data) {
+					vm.curType = data.data
+					vm.initMap()
+				}
+			})
 			uni.getLocation({
 				// 默认定位到用户位置
 				type: 'gcj02',
@@ -130,13 +139,13 @@ export default {
 		}
 	},
 	onShow(){
-		uni.getStorage({
-			key:'curType',
-			success(data) {
-				vm.curType = data.data
-				vm.initMap()
-			}
-		})
+		// uni.getStorage({
+		// 	key:'curType',
+		// 	success(data) {
+		// 		vm.curType = data.data
+		// 		vm.initMap()
+		// 	}
+		// })
 	},
 	mounted() {
 		mapContext = uni.createMapContext('map', this);
@@ -250,7 +259,9 @@ export default {
 					key: 'realtimeMonitorDetail',
 					data: curMarker[0],
 					success() {
-						vm.$refs.showRealtimeMonitorDetail.init();
+						vm.$nextTick(()=>{
+							vm.$refs.showRealtimeMonitorDetail.init();
+						})
 					}
 				});
 			} else {
@@ -261,13 +272,17 @@ export default {
 					key: 'monitorDetail',
 					data: curMarker[0],
 					success() {
-						vm.$refs.monitorDetail.init();
+						vm.$nextTick(()=>{
+							vm.$refs.monitorDetail.init();
+						})
 					}
 				});
 			}
 		},
 		initMap() {
 			vm.scale = 10;
+			vm.showRealtimeMonitorDetail = false;
+			vm.monitorDetail = false;
 			if(vm.curType == '报警列表'){
 				vm.$api
 					.getAlarmMapView({
@@ -299,7 +314,6 @@ export default {
 						vm.showMarkers(res.data.data);
 					});
 			}
-			
 		},
 		showMarkers(markersArr) {
 			vm.markers = [];

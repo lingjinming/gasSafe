@@ -142,6 +142,7 @@ export default {
 			uni.getStorage({
 			    key: 'monitorDetail',
 			    success(res) {
+					console.log('getStorage-monitorDetail',JSON.stringify(res))
 					vm.alarmId = res.data.alarmId || res.data.alarmid
 					if(!vm.alarmId){
 						return false
