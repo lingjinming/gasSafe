@@ -4,8 +4,11 @@ const api = {
 	// GET /mini/getUserInfo用户信息
 	getUserInfo:(params) => request.globalRequest(`/gas/mini/getUserInfo.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 	
-	// GET /mini/getAlarmMapView地图分布
+	// GET /mini/getAlarmMapView报警地图分布
 	getAlarmMapView:(params) => request.globalRequest(`/gas/mini/getAlarmMapView.mvc${formatGetUri(params)}`, 'GET',{}, 1),
+	
+	// GET /mini/getEquipMapView设备地图分布
+	getEquipMapView:(params) => request.globalRequest(`/gas/mini/getEquipMapView.mvc${formatGetUri(params)}`, 'GET',{}, 1),
 	
 	// 报警信息 request.globalRequest(`/gas/mini/getAlarmInfo`, 'GET',{}, 1)
 	getAlarmInfo:(params) => request.globalRequest(`/gas/mini/getAlarmInfo.mvc${formatGetUri(params)}`, 'GET',{}, 1),

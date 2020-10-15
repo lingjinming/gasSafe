@@ -14,15 +14,19 @@
 </template>
 
 <script>
+import { mixin } from '../../common/mixins.js';
 let amapFile = require('../../libs/amap-wx.js'); //引入高德js
 let vm;
 let mapContext;
 const deviceCheckedIconPath = `../../static/img/alarm/device_checked.png`; //设备选中后图标
 const deviceIconPath = `../../static/img/alarm/device_alarm.png`;
 export default {
+	mixin:[mixin],
 	data() {
 		return {
-			curType:'',
+			level:'',
+			status:'',
+			curType:'报警列表',
 			fromMapEnter: false, //默认从列表进入的地图
 			scale: 10,
 			showRealtimeMonitorDetail: false, // 默认不展示监测详情
@@ -71,9 +75,12 @@ export default {
 		};
 	},
 	watch: {
-		markers(newVal) {
-			this.newMarkers = this.unique(newVal, 'id');
-			console.log('this.newMarkers-->',this.newMarkers)
+		markers:{
+			handler(newVal){
+				this.newMarkers = this.unique(newVal, 'id');
+				console.log('this.newMarkers-->',this.newMarkers)
+			},
+			deep:true
 		},
 		alarmTypes: {
 			handler(newVal) {
@@ -91,12 +98,11 @@ export default {
 				this.initMap();
 			},
 			deep: true,
-			immediate: true
 		},
 		runStatus: {
 			handler(newVal) {
-				this.transformArrToStr(newVal, 'status');
-				this.getEquipMonitorFn();
+				vm.transformArrToStr(newVal, 'status');
+				vm.initMap();
 			},
 			deep: true
 		},
@@ -128,7 +134,7 @@ export default {
 			key:'curType',
 			success(data) {
 				vm.curType = data.data
-				console.log('vm.curType',vm.curType)
+				vm.initMap()
 			}
 		})
 	},
@@ -262,25 +268,43 @@ export default {
 		},
 		initMap() {
 			vm.scale = 10;
-			vm.$api
-				.getAlarmMapView({
-					level: vm.level,
-					userName: vm.$store.state.user.userInfo.nickName
-				})
-				.then(res => {
-					if(!res.data.data.length && vm.fromMapEnter){
-						uni.showToast({
-							title:res.data.msg
-						})
-						return
-					}
-					vm.showMarkers(res.data.data);
-				});
+			if(vm.curType == '报警列表'){
+				vm.$api
+					.getAlarmMapView({
+						level: vm.level,
+						userName: vm.$store.state.user.userInfo.nickName
+					})
+					.then(res => {
+						if(!res.data.data.length && vm.fromMapEnter){
+							uni.showToast({
+								title:res.data.msg
+							})
+							return
+						}
+						vm.showMarkers(res.data.data);
+					});
+			}else{
+				vm.$api
+					.getEquipMapView({
+						status: vm.status,
+						userName: vm.$store.state.user.userInfo.nickName
+					})
+					.then(res => {
+						if(!res.data.data.length && vm.fromMapEnter){
+							uni.showToast({
+								title:res.data.msg
+							})
+							return
+						}
+						vm.showMarkers(res.data.data);
+					});
+			}
+			
 		},
 		showMarkers(markersArr) {
 			vm.markers = [];
 			markersArr.forEach((item, index) => {
-				let iconPath = item.alarmid ? `../../static/img/alarm/alarm_level${item.alarmLevel}.png` : `../../static/img/alarm/device_alarm.png`;
+				let iconPath = item.alarmId ? `../../static/img/alarm/alarm_level${item.alarmLevel}.png` : `../../static/img/alarm/device_alarm.png`;
 				// let title = '甲烷浓度超标报警'
 				// debugger
 				vm.markers.push({
