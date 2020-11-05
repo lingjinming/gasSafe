@@ -6,7 +6,7 @@ const state = {
 const mutations = {
     setSubscribed(state,data){
         state.isSubscribed = data;
-		// console.log('state.isSubscribed->',state.isSubscribed)
+		console.log('state.isSubscribed->',state.isSubscribed)
     },
 }
 const actions = {

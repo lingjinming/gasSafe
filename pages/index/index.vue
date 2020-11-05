@@ -1,5 +1,6 @@
 <template>
-	<view class="container" :style="{ 'background-image': `url(${urlConfig}/gas/mini/getLocalFile/bg)` }">
+	<!-- <view class="container" :style="{ 'background-image': `url(${urlConfig}/gas/mini/getLocalFile/bg)` }"> -->
+	<view class="container" :style="{ 'background-image':  `url(${base64PageImg})`}">
 		<popup-layer v-show="boolShow" ref="popupRef" :direction="'top'">
 			<button plain @getuserinfo="getuserinfo" class="btn_getuserinfo" open-type="getUserInfo">请授权获取用户信息</button>
 		</popup-layer>
@@ -41,12 +42,12 @@
 		  </view> -->
 		</view>
 		<scroll-view scroll-y="true" :style="{ height: curType == '报警列表' ? 'calc(100% - 690rpx)' : 'calc(100% - 690rpx)' }">
-			<image class="no_alarm" :src="`${urlConfig}/gas/mini/getLocalFile/no_alarm`" v-if="!recordsNum"></image>
+			<image class="no_alarm" src="/static/img/noData.png" v-if="!recordsNum"></image>
 			<template v-if="curType == '报警列表'">
-				<monitor-item v-for="item in monitorData" :monitorData.sync="item" :key="item.alarmId"></monitor-item>
+				<monitor-item v-for="(item,index) in monitorData" :monitorData.sync="item" :key="index"></monitor-item>
 			</template>
 			<template v-else>
-				<realtime-monitor-item v-for="item in equipMonitorData" :realtimeMonitorData.sync="item" :key="item.alarmId"></realtime-monitor-item>
+				<realtime-monitor-item v-for="(item,index) in equipMonitorData" :realtimeMonitorData.sync="item" :key="index"></realtime-monitor-item>
 			</template>
 		</scroll-view>
 	</view>
@@ -144,9 +145,9 @@ export default {
 	},
 	mounted() {
 		// 监听 报警解除成功事件
-		uni.$on('relieveAlarmSuccess', () => {
-			vm.changeType(this.curType);
-		});
+		// uni.$on('relieveAlarmSuccess', () => {
+		// 	vm.changeType(this.curType);
+		// });
 	},
 	computed: {
 		...mapState({
@@ -222,6 +223,7 @@ export default {
 		getuserinfo() {
 			// 小程序获取用户昵称头像等信息
 			uni.getUserInfo({
+				lang:'zh_CN',
 				success: res => {
 					vm.setUserInfo(res.userInfo);
 					vm.getUserInfoFn(res.userInfo.nickName);
@@ -296,6 +298,13 @@ export default {
 			uni.showLoading({
 				title:'数据加载中'
 			})
+			console.log('this.status',this.status)
+			if(this.status==''||this.install==''){
+				this.equipMonitorData = []
+				this.recordsNum = 0
+				uni.hideLoading()
+				return
+			}
 			// 接口获取设备列表信息
 			this.$api
 				.getEquipMonitor({
@@ -311,6 +320,7 @@ export default {
 						this.recordsNum = this.equipMonitorData.length;
 					}
 					uni.hideLoading()
+					return
 				});
 		}
 	}

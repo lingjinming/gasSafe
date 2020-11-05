@@ -15,7 +15,7 @@
 
 <script>
 import { mixin } from '../../common/mixins.js';
-let amapFile = require('../../libs/amap-wx.js'); //引入高德js
+// let amapFile = require('../../libs/amap-wx.js'); //引入高德js
 let vm;
 let mapContext;
 const deviceCheckedIconPath = `../../static/img/alarm/device_checked.png`; //设备选中后图标
@@ -24,11 +24,11 @@ export default {
 	mixins:[mixin],
 	data() {
 		return {
-			level:'',
-			status:'',
+			level:'0,1,2,3',
+			status:'0,1',
 			curType:'报警列表',
 			fromMapEnter: false, //默认从列表进入的地图
-			scale: 10,
+			scale: 3,
 			showRealtimeMonitorDetail: false, // 默认不展示监测详情
 			monitorDetail: false, // 默认不展示设备详情
 			key: '9e794c3f3803c391c37b1a815f05a504',
@@ -92,10 +92,10 @@ export default {
 					}
 				});
 				this.level = arr.join(',');
-				if (arr.length == vm.alarmTypes.length) {
-					this.level = '';
-				}
-				this.initMap();
+				// if (arr.length == vm.alarmTypes.length) {
+				// 	this.level = '';
+				// }
+				this.initMap('报警列表');
 			},
 			deep: true,
 		},
@@ -103,7 +103,7 @@ export default {
 			handler(newVal) {
 				console.log('runStatus',JSON.stringify(newVal))
 				this.transformArrToStr(newVal, 'status');
-				this.initMap();
+				this.initMap('实时监测');
 			},
 			deep: true
 		},
@@ -123,7 +123,7 @@ export default {
 				key:'curType',
 				success(data) {
 					vm.curType = data.data
-					vm.initMap()
+					vm.initMap(data.data)
 				}
 			})
 			uni.getLocation({
@@ -138,73 +138,101 @@ export default {
 			});
 		}
 	},
-	onShow(){
-		// uni.getStorage({
-		// 	key:'curType',
-		// 	success(data) {
-		// 		vm.curType = data.data
-		// 		vm.initMap()
-		// 	}
-		// })
-	},
 	mounted() {
-		mapContext = uni.createMapContext('map', this);
+		this.$nextTick(()=>{
+			mapContext = uni.createMapContext('map', this);
+		})
 
 		uni.$on('alarmDetailPos', alarmDetailPos => {
+			vm.curType = '报警列表'
 			let data = alarmDetailPos[0];
+			console.log('alarmDetailPos',data)
 			vm.scale = 16;
-			mapContext.moveToLocation({
-				longitude: data.longtitude,
-				latitude: data.latitude
-			});
-			console.log('alarmDetailPos-->longitude:',data.longtitude)
-			console.log('alarmDetailPos-->latitude:',data.latitude)
-			if (!vm.fromMapEnter) {
-				vm.markers = [];
+			if(!data.longtitude || !data.latitude || data.longtitude == '' || data.latitude == ''){
+				console.log('没有经纬度')
+				uni.getLocation({
+					// 默认定位到用户位置
+					type: 'gcj02',
+					success: function(res) {
+						vm.longitude = res.longitude;
+						vm.latitude = res.latitude;
+					}
+				});
+			}else{
+				vm.longitude = data.longtitude
+				vm.latitude = data.latitude
+				// mapContext.moveToLocation({
+				// 	longitude: data.longtitude,
+				// 	latitude: data.latitude
+				// });
+				console.log('alarmDetailPos-->longitude:',data.longtitude)
+				console.log('alarmDetailPos-->latitude:',data.latitude)
+				if (!vm.fromMapEnter) {
+					vm.markers = [];
+				}
+				
+				let iconPath = `../../static/img/alarm/alarm_level${data.alarmLevel.substring(0, 1)}.png`;
+				vm.markers.push({
+					id: data.markerId,
+					latitude: data.latitude || '',
+					longitude: data.longtitude || '',
+					iconPath,
+					width: 40,
+					height: 40,
+					alarmId: data.alarmId || '',
+					equipId: data.equipId || '',
+					alarmLevel: data.alarmLevel || ''
+				});
 			}
-
-			let iconPath = `../../static/img/alarm/alarm_level${data.alarmLevel.substring(0, 1)}.png`;
-			vm.markers.push({
-				id: data.markerId,
-				latitude: data.latitude || '',
-				longitude: data.longtitude || '',
-				iconPath,
-				width: 40,
-				height: 40,
-				alarmId: data.alarmId || '',
-				equipId: data.equipId || '',
-				alarmLevel: data.alarmLevel || ''
-			});
 		});
 		uni.$on('realtimeMonitorDetail', data => {
-			vm.scale = 16;
-			// vm.longitude = data.longtitude
-			// vm.latitude = data.latitude
-			mapContext.moveToLocation({
-				longitude: data.longtitude,
-				latitude: data.latitude
-			});
-			console.log('realtimeMonitorDetail-->longitude:',data.longtitude)
-			console.log('realtimeMonitorDetail-->latitude:',data.latitude)
-			if (!vm.fromMapEnter) {
+			console.log('realtimeMonitorDetail',data)
+			vm.curType = '实时监测'
+			vm.scale = 16;				
+			if(!data.longtitude || !data.latitude || data.longtitude == '' || data.latitude == ''){
+				console.log('没有经纬度')
 				vm.markers = [];
+				vm.newMarkers = [];
+				uni.getLocation({
+					// 默认定位到用户位置
+					type: 'gcj02',
+					success: function(res) {
+						vm.longitude = res.longitude;
+						vm.latitude = res.latitude;
+					}
+				});
+			}else{
+				console.log('有经纬度')
+				vm.longitude = data.longtitude
+				vm.latitude = data.latitude
+				// mapContext.moveToLocation({
+				// 	longitude: data.longtitude,
+				// 	latitude: data.latitude
+				// });
+				console.log('realtimeMonitorDetail-->longitude:',data.longtitude)
+				console.log('realtimeMonitorDetail-->latitude:',data.latitude)
+				if (!vm.fromMapEnter) {
+					vm.markers = [];
+				}
+				vm.markers.push({
+					id: data.markerId,
+					latitude: data.latitude || '',
+					longitude: data.longtitude || '',
+					iconPath: deviceCheckedIconPath,
+					width: 40,
+					height: 40,
+					alarmId: data.alarmId || '',
+					equipId: data.equipId || '',
+					alarmLevel: data.alarmLevel || ''
+				});
 			}
-			vm.markers.push({
-				id: data.markerId,
-				latitude: data.latitude || '',
-				longitude: data.longtitude || '',
-				iconPath: deviceCheckedIconPath,
-				width: 40,
-				height: 40,
-				alarmId: data.alarmId || '',
-				equipId: data.equipId || '',
-				alarmLevel: data.alarmLevel || ''
-			});
 		});
 	},
 	beforeDestroy() {
 		uni.$off('alarmDetailPos');
 		uni.$off('realtimeMonitorDetail');
+		this.markers = []
+		this.newMarkers = []
 	},
 	methods: {
 		unique(arr, attrName) {
@@ -212,17 +240,19 @@ export default {
 			return arr.filter(a => !res.has(a[attrName]) && res.set(a[attrName], 1));
 		},
 		getkeyword(data) {
-			vm.scale = 10;
+			uni.showLoading()
+			vm.scale = 3;
 			vm.monitorDetail = false;
 			vm.showRealtimeMonitorDetail = false;
 			vm.$api
 				.getGlobalSearchInfo({
-					name: data.value,
+					name: data.value || ' ',
 					userName: vm.$store.state.user.userInfo.nickName
 				})
 				.then(res => {
 					vm.fromMapEnter = true;
 					vm.showMarkers(res.data.data);
+					uni.hideLoading()
 				});
 		},
 		show() {
@@ -238,7 +268,8 @@ export default {
 		chooseMarker(e) {
 			vm.scale = 16;
 			let curMarker = vm.markers.filter(item => item.id == e.detail.markerId);
-			if (this.markers.length == 1) {
+			console.log('curMarker-->',curMarker)
+			if (!this.fromMapEnter) {
 				return false;
 			}
 			this.markers.forEach(item => {
@@ -279,11 +310,11 @@ export default {
 				});
 			}
 		},
-		initMap() {
-			vm.scale = 10;
+		initMap(curType) {
+			vm.scale = 3;
 			vm.showRealtimeMonitorDetail = false;
 			vm.monitorDetail = false;
-			if(vm.curType == '报警列表'){
+			if(curType == '报警列表'){
 				vm.$api
 					.getAlarmMapView({
 						level: vm.level,
@@ -294,6 +325,7 @@ export default {
 							uni.showToast({
 								title:res.data.msg
 							})
+							vm.markers = [];
 							return
 						}
 						vm.showMarkers(res.data.data);
@@ -309,6 +341,7 @@ export default {
 							uni.showToast({
 								title:res.data.msg
 							})
+							vm.markers = [];
 							return
 						}
 						vm.showMarkers(res.data.data);
@@ -317,30 +350,44 @@ export default {
 		},
 		showMarkers(markersArr) {
 			vm.markers = [];
+			let iconPath = ''
 			markersArr.forEach((item, index) => {
-				let iconPath = item.alarmId ? `../../static/img/alarm/alarm_level${item.alarmLevel}.png` : `../../static/img/alarm/device_alarm.png`;
+				if(!item.latitude || !item.longtitude){
+					iconPath = ''
+				}else{
+					iconPath = item.alarmId ? `../../static/img/alarm/alarm_level${item.alarmLevel}.png` : `../../static/img/alarm/device_alarm.png`;
+					vm.markers.push({
+						// title,
+						id: item.markerId,
+						latitude: item.latitude || '',
+						longitude: item.longtitude || '',
+						iconPath,
+						width: 30,
+						height: 30,
+						alarmId: item.alarmId || '',
+						equipId: item.equipId || '',
+						alarmLevel: item.alarmLevel || ''
+					});
+				}
 				// let title = '甲烷浓度超标报警'
 				// debugger
-				vm.markers.push({
-					// title,
-					id: item.markerId,
-					latitude: item.latitude || '',
-					longitude: item.longtitude || '',
-					iconPath,
-					width: 30,
-					height: 30,
-					alarmId: item.alarmId || '',
-					equipId: item.equipId || '',
-					alarmLevel: item.alarmLevel || ''
-				});
+				
 			});
-			console.log('vm.markers',vm.markers)
+			// console.log('vm.markers',vm.markers)
 		}
 	}
 };
 </script>
 
 <style lang="scss">
+	monitor-item-detail,
+	realtime-monitor-item-detail,
+	uni-search-bar,
+	.layer_box,
+	.item_detail_box{
+		z-index: 999;
+	}
+	
 .map {
 	width: 100%;
 	height: 100%;

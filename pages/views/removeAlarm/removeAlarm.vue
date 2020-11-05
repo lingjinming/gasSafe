@@ -26,7 +26,8 @@ export default {
 	data() {
 		return {
 			alarmId:'',
-			relieveTime:''
+			relieveTime:'',
+			operator:''
 		};
 	},
 	computed: {
@@ -34,8 +35,14 @@ export default {
 			//这里可以通过这种方式引用相应模块的state数据，其中user是模块名。在代码的其他部分可以使用this.userInfo访问数据
 			userInfo: ({user}) => user.userInfo,
 		}),
-		operator(){
-			return this.userInfo.nickName
+	},
+	watch:{
+		userInfo:{
+			handler(newVal){
+				this.operator = newVal.nickName
+			},
+			deep:true,
+			immediate:true
 		}
 	},
 	onLoad(option) {
@@ -45,12 +52,19 @@ export default {
 	},
 	methods: {
 		relieveAlarmFn(){
+			if(!this.operator.trim()){
+				uni.showToast({
+					icon:'none',
+					title:'请输入操作人员名字'
+				})
+				return
+			}
 			this.$api.relieveAlarm({
 				relieveTime:this.relieveTime,
 				alarmId:this.alarmId,
 				operator:this.operator
 			}).then(res => {
-				// uni.$emit('relieveAlarmSuccess')
+				uni.$emit('relieveAlarmSuccess')
 				uni.showToast({
 					title:'解除成功',
 					duration:1500,

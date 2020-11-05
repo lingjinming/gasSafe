@@ -2,43 +2,43 @@
 	<view>
 		<view class="item_box">
 		  	<view class="flex_around_column">
-				{{equipMonitorData.speed}}
+				{{equipMonitorData.speed || '--'}}
 				<text>泵转速（r/s）</text>
 			</view>
 			<view class="flex_around_column">
-				{{equipMonitorData.voltage}}
+				{{equipMonitorData.voltage || '--'}}
 				<text>电池电压</text>
 			</view>
-			<view class="flex_around_column" v-if="equipMonitorData.liquid">
-				{{equipMonitorData.liquid}}
+			<view class="flex_around_column">
+				{{equipMonitorData.liquid || '--'}}
 				<text>液位（cm）</text>
 			</view>
 			<view class="flex_around_column">
-				{{equipMonitorData.temperature}}
+				{{equipMonitorData.temperature || '--'}}
 				<text>温度℃</text>
 			</view>
 			<view class="flex_around_column">
-				{{equipMonitorData.humidity}}
+				{{equipMonitorData.humidity || '--'}}
 				<text>湿度%RH</text>
 			</view>
-			<view class="flex_around_column" v-if="equipMonitorData.flow">
-				{{equipMonitorData.flow}}
+			<view class="flex_around_column">
+				{{equipMonitorData.flow || '--'}}
 				<text>流量（m3/h）</text>
 			</view>
 			<view class="flex_around_column">
-				{{equipMonitorData.signal}}
+				{{equipMonitorData.signal || '--'}}
 				<text>CSQ</text>
 			</view>
 			<view class="flex_around_column">
-				{{equipMonitorData.water}}
+				{{equipMonitorData.water || '--'}}
 				<text>浸水状态</text>
 			</view>
 			<view class="flex_around_column">
-				{{equipMonitorData.guard}}
+				{{equipMonitorData.guard || '--'}}
 				<text>防盗状态</text>
 			</view>
 			<view class="flex_around_column">
-				{{equipMonitorData.laserTimeout}}
+				{{equipMonitorData.laserTimeout || '--'}}
 				<text>激光超时</text>
 			</view>
 			<view class="flex_around_column">
@@ -46,13 +46,13 @@
 				<text>激光光强</text>
 			</view>
 			<view class="flex_around_column">
-				{{equipMonitorData.netStatus}}
+				{{equipMonitorData.netStatus || '--'}}
 				<text>网络状态</text>
 			</view>
 	
 		</view>
 		<view>
-			<text>数据时间 : {{equipMonitorData.datatime}}</text>
+			<text>数据时间 : {{equipMonitorData.datatime || '--'}}</text>
 		</view>
 	</view>
 </template>
@@ -93,7 +93,7 @@ export default {
 				equipmentCode
 			}).then(res => {
 				this.equipMonitorData = res.data
-				console.log('this.equipMonitorData',this.equipMonitorData)
+				// console.log('this.equipMonitorData',this.equipMonitorData)
 			})
 		}
 	}

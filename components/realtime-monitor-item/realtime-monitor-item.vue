@@ -8,18 +8,20 @@
 				</view>
 				<view class="alarm_type" @click.stop="enterMonitorData(realtimeMonitorData.alarmInspect)" >
 					<image src="../../static/img/chart.png" mode=""></image>
-					<text>甲烷：{{realtimeMonitorDetailInfo.realdata}}</text>
+					<text>甲烷：{{realtimeMonitorData.monitorValue}}</text>
 					<!-- <text>监测曲线</text> -->
 				</view>
 			</view>
 				
 			<view class="status_box">
-				<view class="normal" v-if="realtimeMonitorData.status == 'normal'">正常运行</view>
+				<view class="normal" v-if="!realtimeMonitorData.equipStatus">正常运行</view>
 				<template v-else>
-					<view v-if="realtimeMonitorDetailInfo.guard == '是'" >移动</view>
+					<!-- <view>{{realtimeMonitorData.equipStatus}}</view> -->
+					<view v-for="item in equipStatus" :key='item'>{{item}}</view>
+					<!-- <view v-if="realtimeMonitorDetailInfo.guard == '是'" >移动</view>
 					<view v-if="realtimeMonitorDetailInfo.laserTimeout == '是'" >激光超时</view>
 					<view v-if="realtimeMonitorDetailInfo.laseraAnomaly == '是'" >激光异常</view>
-					<view v-if="realtimeMonitorDetailInfo.water == '是'" >浸水</view>
+					<view v-if="realtimeMonitorDetailInfo.water == '是'" >浸水</view> -->
 				</template>
 			</view>
 			
@@ -37,19 +39,19 @@
 					<text>甲烷(%VOL)</text>
 				</view> -->
 				<view class="flex_around_column">
-					<text>{{realtimeMonitorDetailInfo.voltage}}</text>
+					<text>{{realtimeMonitorData.voltage}}</text>
 					<text>电压(V)</text>
 				</view>
 				<view class="flex_around_column">
-					<text>{{realtimeMonitorDetailInfo.signal}}</text>
+					<text>{{realtimeMonitorData.CSQ}}</text>
 					<text>CSQ(dbm)</text>
 				</view>
 				<view class="flex_around_column">
-					<text>{{realtimeMonitorDetailInfo.temperature}}</text>
+					<text>{{realtimeMonitorData.temperature}}</text>
 					<text>温度(℃)</text>
 				</view>
 				<view class="flex_around_column">
-					<text>{{realtimeMonitorDetailInfo.humidity}}</text>
+					<text>{{realtimeMonitorData.humidity}}</text>
 					<text>湿度(%RH)</text>
 				</view>
 			</view>
@@ -72,28 +74,46 @@
 export default {
 	data() {
 		return {
-			realtimeMonitorDetailInfo:null
+			realtimeMonitorDetailInfo:null,
 		};
 	},
 	props:{
 		realtimeMonitorData:{
-			type:Object
+			type:Object,
+			default:{
+				monitorValue:'--',
+				monitorTime:'--',
+				installPos:'--',
+				voltage:'--',
+				CSQ:'--',
+				temperature:'--',
+				humidity:'--'
+			}
 		},
 	},
 	computed:{
 		...mapState({
 			userInfo: ({ user }) => user.userInfo,
 		}),
-	},
-	watch:{
-		realtimeMonitorData:{
-			handler(newVal){
-				this.getEquipDetailInfoFn(newVal.equipId)
-			},
-			deep:true,
-			immediate:true
+		equipStatus(){
+			if(this.realtimeMonitorData.equipStatus && this.realtimeMonitorData.equipStatus.length > 0){
+				return this.realtimeMonitorData.equipStatus.split(',')
+			}else{
+				return 
+			}
+			 
 		}
 	},
+	// watch:{
+	// 	realtimeMonitorData:{
+	// 		handler(newVal){
+	// 			// console.log('realtimeMonitorData',newVal)
+				
+	// 		},
+	// 		deep:true,
+	// 		immediate:true
+	// 	}
+	// },
 	// mounted() {
 		
 	// },
@@ -123,15 +143,7 @@ export default {
 				}
 			})
 		},
-		getEquipDetailInfoFn(equipId){
-			this.$api.getEquipDetailInfo({
-				equipId
-			}).then(res => {
-				// this.realtimeMonitorDetail = res.data
-				this.realtimeMonitorDetailInfo = res.data.monitorIndex
-				// console.log('this.realtimeMonitorDetailInfo',this.realtimeMonitorDetailInfo)
-			})
-		}
+
 	}
 };
 </script>

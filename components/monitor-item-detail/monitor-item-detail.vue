@@ -2,7 +2,8 @@
 	<view class="item_detail_box box_shadow" :style="!isUp?hide:show">
 		<pull-up :isUp.sync='isUp'></pull-up>
 		<view class="fixed_box removeAlarm_btn_box">
-			<view class="btn_removeAlarm" :class="{alarm_removed:monitorDetail.ravelFlag}" @click="removeAlarm">{{monitorData.ravelFlag?'报警已解除':'报警解除'}}</view>
+			<view class="btn_removeAlarm alarm_removed" v-if="monitorDetail.ravelFlag=='1'">报警已解除</view>
+			<view class="btn_removeAlarm" v-else @click="removeAlarm">报警解除</view>
 		</view>
 		<image @click="openLocation" class="openLocation_btn" src="../../static/img/open_location.png" mode=""></image>
 		<view class="detail_head">
@@ -33,7 +34,7 @@
 						<!-- <monitor-chart :chartData='chartData' v-if='chartData !==null'></monitor-chart> -->
 					</view>
 				</view>
-				<view class="no_data" v-show="!monitorDetail.historyCurveData.length">暂无数据</view>
+				<view class="no_data" v-if="!monitorDetail.historyCurveData.length">暂无数据</view>
 			</view>
 			<view class="comm_box flex_column">
 				<view class="tit_box flex_between_row">
@@ -95,8 +96,8 @@
 						</view>
 						<view class="flex_between_row">
 							<view class="device_info_row">
-								<text>最高浓度报警</text>
-								<text>{{item.maxLevel}}级</text>
+								<text>最高报警浓度</text>
+								<text>{{item.alarmMaxValue}}</text>
 							</view>
 							<text>{{item.maxTime}}</text>
 						</view>
@@ -124,6 +125,9 @@ export default {
 	mounted() {
 		vm = this;
 		vm.init()
+		uni.$on('relieveAlarmSuccess', () => {
+			vm.$set(vm.monitorDetail, 'ravelFlag', '1')
+		});
 	},
 	watch:{
 		isUp(newVal){
@@ -160,7 +164,7 @@ export default {
 			})
 		},
 		removeAlarm(){
-			if(vm.monitorDetail.ravelFlag){
+			if(vm.monitorDetail.ravelFlag == '1'){
 				return false
 			}
 			let id = vm.alarmId
@@ -173,6 +177,7 @@ export default {
 				alarmId:this.alarmId
 			}).then(res => {
 				this.monitorDetail = res.data[0]
+				debugger
 				console.log('this.monitorDetail.historyCurveData.length',this.monitorDetail.historyCurveData.length)
 				if(this.monitorDetail.historyCurveData.length){
 					let tempchartData = {
@@ -278,7 +283,7 @@ export default {
 		}
 		&:last-child{
 			display: block;
-			width: calc(100% - 180rpx);
+			min-width: 200rpx;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
@@ -372,11 +377,11 @@ scroll-view{
 	margin: 20rpx 0;
 	color: $uni-text-color-disable;
 }
-.flex_between_row:last-child{
-	.device_info_row{
-		text:last-child{
-			width: 100rpx;
-		}
-	}
-}
+// .flex_between_row:last-child{
+// 	.device_info_row{
+// 		text:last-child{
+// 			width: 100rpx;
+// 		}
+// 	}
+// }
 </style>

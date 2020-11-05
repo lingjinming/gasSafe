@@ -1,6 +1,6 @@
 <template>
-	<view class="container"  :style="{'background-image': `url(${urlConfig}/gas/mini/getLocalFile/bg)`}">
-		
+	<!-- <view class="container"  :style="{'background-image': `url(${urlConfig}/gas/mini/getLocalFile/bg)`}"> -->
+		<view class="container" :style="{ 'background-image':  `url(${base64PageImg})`}">
 		<view class="header_box">
 			<image :src="userInfo.avatarUrl" class="box_shadow"></image>
 			<view class="flex_around_column">
@@ -84,7 +84,7 @@ export default {
 				userId: "",
 				userName: ""
 			},
-			about:'系统版本 v1.0.0',
+			about:'系统版本 v1.0.1',
 			pwd:'******',
 			phoneNumber:''
 		};
@@ -104,10 +104,22 @@ export default {
 	},
 	methods: {
 		getUserInfoFn(){
+			// 接口获取用户信息
+			
 			uni.getStorage({
 				key:'userInfoByApi',
 				success(data){
 					vm.userInfoByApi = data.data
+				},
+				fail() {
+					vm.$api
+					.getUserInfo({
+						userName:vm.userInfo.nickName
+					})
+					.then(res => {
+						console.log('vm.userInfoByApi',vm.userInfoByApi)
+						vm.userInfoByApi = res.data
+					});	
 				}
 			})
 		},

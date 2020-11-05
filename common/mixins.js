@@ -7,6 +7,8 @@ let vm;
 export const mixin = {
 	data() {
 		return {
+			bgImg:'/static/img/bg.png',
+			noDataImg:'/static/img/noData.png',
 			isAccepted: true, //是否订阅了消息
 			mainSwitch: true, //订阅总开关,
 			tmplIds : ['uoNcYWBSUvI6O2cu3Zr4qK5g_Q4N9cDR1uxkrimSqa4','C8CpfXuRYqaZ1T8SYPISLjV7m6D5lc86RGbyfKCJWNc'],
@@ -32,7 +34,17 @@ export const mixin = {
 			userInfo: ({
 				user
 			}) => user.userInfo,
-		})
+		}),
+		base64PageImg() {
+			let that = this
+			let base64Img = uni.getFileSystemManager().readFileSync(that.bgImg, "base64");//转码  
+			return 'data:image/png;base64,' + base64Img//拼接后返回  
+		} ,
+		base64NoDataImg() {
+			let that = this
+			let base64Img = uni.getFileSystemManager().readFileSync(that.noDataImg, "base64");//转码  
+			return 'data:image/png;base64,' + base64Img//拼接后返回  
+		} 
 	},
 	methods: {
 		...mapMutations('tmplate', ['setSubscribed']),
